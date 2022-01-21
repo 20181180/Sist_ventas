@@ -12,4 +12,5 @@ class Category extends Model
     protected $fillable = ['name', 'image'];
 
     ///aqui se pondran las categorias
+
 }
