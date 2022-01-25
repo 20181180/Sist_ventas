@@ -8,11 +8,11 @@
 					<li><a href="javascript:void(0);" class="tabmenu bg-dark" data-toggle="modal" data-target="#theModal">Agregar</a></li>
 				</ul>
 			</div>
-				search
+			search
 			<div class="widget-content">
 
 				<div class="table-responsive">
-					<table  class="table table-bordered table-striped  mt-1">
+					<table class="table table-bordered table-striped  mt-1">
 						<thead class="text-white" style="background: #3B3F5C">
 							<tr>
 								<th class="table-th text-white">DESCRIPCIÓN</th>
@@ -22,7 +22,9 @@
 						</thead>
 						<tbody>
 							<tr>
-								<td><h6>Category Name</h6></td>
+								<td>
+									<h6>Category Name</h6>
+								</td>
 
 								<td class="text-center">
 									<span>
@@ -31,12 +33,11 @@
 								</td>
 
 								<td class="text-center">
-									<a href="javascript:void(0);"  class="btn btn-dark mtmobile" title="Edit">
+									<a href="javascript:void(0);" class="btn btn-dark mtmobile" title="Edit">
 										<i class="fas fa-edit"></i>
 									</a>
 
-									<a href="javascript:void(0);"
-										class="btn btn-dark" title="Delete">
+									<a href="javascript:void(0);" class="btn btn-dark" title="Delete">
 										<i class="fas fa-trash"></i>
 									</a>
 
@@ -58,7 +59,7 @@
 			</div>
 		</div>
 	</div>
-	include form
+
 </div>
 
 
@@ -66,15 +67,10 @@
 
 
 <script>
-	document.addEventListener('DOMContentLoaded', function () {
+	document.addEventListener('DOMContentLoaded', function() {
 
 		//events
 
 
-
-
 	})
-
-
-
 </script>
