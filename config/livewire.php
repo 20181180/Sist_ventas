@@ -54,7 +54,7 @@ return [
     |
     */
 
-    'asset_url' => null,
+    'asset_url' => 'http://localhost:81/Sist_ventas/public',
 
     /*
     |--------------------------------------------------------------------------
@@ -68,7 +68,7 @@ return [
     |
     */
 
-    'app_url' => null,
+    'app_url' => 'http://localhost:81/Sist_ventas/public',
 
     /*
     |--------------------------------------------------------------------------
