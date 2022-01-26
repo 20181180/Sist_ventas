@@ -21,7 +21,8 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($categories as $category)
+
+                            @foreach($categories as $category)
                             <tr>
                                 <td>
                                     <h6>{{$category->name}}</h6>
@@ -51,7 +52,7 @@
             </div>
         </div>
     </div>
-@include('livewire.category.form')
+    @include('livewire.category.form')
 </div>
 
 <script>
