@@ -8,7 +8,7 @@
         </button>
         @else
         <button type="button" wire:click.prevent="Update()" class="btn btn-dark close-modal">
-            CERRAR
+            ACTUALIZAR
         </button>
         @endif
 

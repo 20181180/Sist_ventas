@@ -30,7 +30,7 @@
 
                                 <td class="text-center">
                                     <span>
-                                        <img src="{{ asset('storage/categories/' .$category->image) }}" height="70" width="80" class="rounded" alt="no-image">
+                                        <img src="{{ asset('storage/categories/' .$category->image) }}" alt="ejemplo" height="70" width="80" class="rounded">
                                     </span>
                                 </td>
 
@@ -56,5 +56,12 @@
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {})
+    document.addEventListener('DOMContentLoaded', function() {
+        window.livewire.on('show-modal', msg => {
+            $('#theModal').modal('show');
+        });
+        window.livewire.on('category-added', msg => {
+            $('#theModal').modal('hide');
+        });
+    });
 </script>
