@@ -4,6 +4,7 @@
             <li class="nav-item theme-logo">
                 <a href="index.html">
                     <img src="assets/img/90x90.jpg" class="navbar-logo" alt="logo">
+                    <b>MEJIROMECHATRPNICS</b>
                 </a>
             </li>
         </ul>
