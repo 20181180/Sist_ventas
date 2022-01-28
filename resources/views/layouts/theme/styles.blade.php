@@ -61,6 +61,8 @@
         box-shadow: none;
         border-radius: 30px;
         }
+
+        /*aqui hubo un pedo*/
     </style>
 
     @livewireStyles
