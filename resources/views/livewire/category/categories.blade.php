@@ -30,7 +30,7 @@
 
                                 <td class="text-center">
                                     <span>
-                                        <img src="{{ asset('storage/categories/' .$category->image) }}" alt="ejemplo" height="70" width="80" class="rounded">
+                                        <img src="{{ asset('storage/categories/' .$category->imagen) }}" alt="ejemplo" height="70" width="80" class="rounded">
                                     </span>
                                 </td>
 
@@ -39,9 +39,10 @@
                                         <i class="fas fa-edit"></i>
                                     </a>
 
-                                    <a href="javascript:void(0);" onclick="Confirm('{{$category->id}}')" class="btn btn-dark" title="Delete">
+                                    <a href="javascript:void(0);" onclick="Confirm('{{$category->id}}','{{$category->products->count()}}')" class="btn btn-dark" title="Delete">
                                         <i class="fas fa-trash"></i>
                                     </a>
+
                                 </td>
                             </tr>
                             @endforeach
@@ -63,5 +64,30 @@
         window.livewire.on('category-added', msg => {
             $('#theModal').modal('hide');
         });
+        window.livewire.on('category-updated', msg => {
+            $('#theModal').modal('hide');
+        });
     });
+
+   function Confirm(id, products){
+       if(products > 0){
+           swal('NO SE PUEDE ELIMINAR LA CATEGORIA POR QUE EXISTEN PRODUCTOS RELACIONADOS')
+           return;
+       }
+       swal({
+           title: 'CONFIRMAR',
+           text: '¿CONFIRMAS ELIMINAR EL REGISTRO?',
+           type: 'warning',
+           showCancelButton:  true,
+           cancelButtonText: 'Cerrar',
+           cancelButtonColor: '#fff',
+           confirmButtonColor: '#3BEF5C',
+           confirmButtonText: 'Aceptar'
+       }).then(function(result){
+           if(result.value){
+               window.livewire.emit('deleteRow', id)
+               swal.close()
+           }
+       });
+   }
 </script>
