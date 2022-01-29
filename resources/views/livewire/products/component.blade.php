@@ -17,25 +17,37 @@
 							<tr>
 								<th class="table-th text-white">NOMBRE</th>
 								<th class="table-th text-white text-center">CODIGO BARRA</th>
-                                <th class="table-th text-white text-center">PRECIO</th>
+								<th class="table-th text-white text-center">PRECIO</th>
 								<th class="table-th text-white text-center">STOCK</th>
 								<th class="table-th text-white text-center">INV. MIN</th>
 								<th class="table-th text-white text-center">CATEGORIA</th>
-                                <th class="table-th text-white text-center">IMAGEN</th>
-                                <th class="table-th text-white text-center">ACTIONS</th>
+								<th class="table-th text-white text-center">IMAGEN</th>
+								<th class="table-th text-white text-center">ACTIONS</th>
 							</tr>
 						</thead>
 						<tbody>
-                            @foreach ($products as $product)
+							@foreach ($products as $product)
 
 
 							<tr>
-								<td><h6>{{$product->name}}</h6></td>
-                                <td><h6 class="text-center">{{$product->barcode}}</h6></td>
-                                <td><h6 class="text-center">{{$product->price}}</h6></td>
-                                <td><h6 class="text-center">{{$product->stock}}</h6></td>
-                                <td><h6 class="text-center">{{$product->alerts}}</h6></td>
-                                <td><h6 class="text-center">{{$product->category}}</h6></td>
+								<td>
+									<h6>{{$product->name}}</h6>
+								</td>
+								<td>
+									<h6 class="text-center">{{$product->barcode}}</h6>
+								</td>
+								<td>
+									<h6 class="text-center">{{$product->price}}</h6>
+								</td>
+								<td>
+									<h6 class="text-center">{{$product->stock}}</h6>
+								</td>
+								<td>
+									<h6 class="text-center">{{$product->alerts}}</h6>
+								</td>
+								<td>
+									<h6 class="text-center">{{$product->category}}</h6>
+								</td>
 
 								<td class="text-center">
 									<span>
@@ -55,7 +67,7 @@
 								</td>
 
 							</tr>
-                            @endforeach
+							@endforeach
 
 
 						</tbody>
@@ -65,29 +77,48 @@
 			</div>
 		</div>
 	</div>
-@include('livewire.products.form')
+	@include('livewire.products.form')
 </div>
 
 <script>
 	document.addEventListener('DOMContentLoaded', function() {
 
-        window.livewire.on('product-added', msg => {
-            $('#theModal').modal('hide');
-        });
-        window.livewire.on('product-updated', msg => {
-            $('#theModal').modal('hide');
-        });
-        window.livewire.on('product-deleted', msg => {
-           //noty
-        });
-        window.livewire.on('modal-show', msg => {
-            $('#theModal').modal('show');
-        });
-        window.livewire.on('modal-hide', msg => {
-            $('#theModal').modal('hide');
-        });
-        window.livewire.on('hidden.bs.modal', msg => {
-            $('.er').css('display', 'none');
-        });
+		window.livewire.on('product-added', msg => {
+			$('#theModal').modal('hide');
+		});
+		window.livewire.on('product-updated', msg => {
+			$('#theModal').modal('hide');
+		});
+		window.livewire.on('product-deleted', msg => {
+			//noty
+		});
+		window.livewire.on('modal-show', msg => {
+			$('#theModal').modal('show');
+		});
+		window.livewire.on('modal-hide', msg => {
+			$('#theModal').modal('hide');
+		});
+		window.livewire.on('hidden.bs.modal', msg => {
+			$('.er').css('display', 'none');
+		});
 	})
+
+	function Confirm(id) {
+
+		swal({
+			title: 'CONFIRMAR',
+			text: '¿DESEA ELIMINAR EL REGISTRO?',
+			type: 'warning',
+			showCancelButton: true,
+			cancelButtonText: 'Cerrar',
+			cancelButtonColor: '#fff',
+			confirmButtonColor: '#3BEF5C',
+			confirmButtonText: 'Aceptar'
+		}).then(function(result) {
+			if (result.value) {
+				window.livewire.emit('deleteRow', id)
+				swal.close()
+			}
+		});
+	}
 </script>

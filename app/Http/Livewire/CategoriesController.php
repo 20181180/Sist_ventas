@@ -81,8 +81,9 @@ class CategoriesController extends Component
         $this->emit('category-added', 'Categoria registrado xd');
     }
 
-    public function Update(){
-        $rules =[
+    public function Update()
+    {
+        $rules = [
             'name' => "required|min:3|unique:categories,name,{$this->selected_id}"
         ];
         $messages = [
@@ -97,16 +98,15 @@ class CategoriesController extends Component
             'name' => $this->name
         ]);
 
-        if ($this->image)
-         {
+        if ($this->image) {
             $customFileName = uniqid() . '_.' . $this->image->extension();
             $this->image->storeAs('public/categories', $customFileName);
             $imageName = $category->image;
 
             $category->image = $customFileName;
             $category->save();
-            if($imageName !=null){
-                if(file_exists('storage/categories/' . $imageName)){
+            if ($imageName != null) {
+                if (file_exists('storage/categories/' . $imageName)) {
                     unlink('storage/categories/' . $imageName);
                 }
             }
@@ -115,23 +115,23 @@ class CategoriesController extends Component
         $this->resetUI();
         $this->emit('category-updated', 'categoria Actualizada');
     }
+
     protected $listeners = [
         'deleteRow' => 'Destroy'
     ];
 
-    public function Destroy(Category $category){
+    public function Destroy(Category $category)
+    {
         //$category = Category::find($id);
         $imageName = $category->image;
         $category->delete();
 
-        if($imageName !=null){
+        if ($imageName != null) {
             unlink('storage/categories/' . $imageName);
-
         }
 
         $this->resetUI();
         $this->emit('category-deleted', 'Categoria Eliminada');
-
     }
 
     public function resetUI()
