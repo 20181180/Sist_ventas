@@ -17,17 +17,11 @@ class Category extends Model
     }
 
     public function getImagenAttribute(){
-        if($this->image==null){
-            return 'logo.png';
-        }
-        else if(file_exists('storage/categories/' . $this->image))
-           {
-               return $this->image;
-            }
-        else
-            {
-                return 'logo.png';
-            }
+        if ($this->image != null)
+            return (file_exists('storage/categories/' . $this->image) ? 'categories/' . $this->image : 'img_no.jpg');
+         else 
+            return 'img_no.jpg';
     }
 
 }
+

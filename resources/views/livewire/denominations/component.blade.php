@@ -16,7 +16,7 @@
                         <thead class="text-white" style="background: #3B3F5C">
                             <tr>
                                 <th class="table-th text-white">TIPO</th>
-                                <th class="table-th text-white">VALOR</th>
+                                <th class="table-th text-center text-white">VALOR</th>
                                 <th class="table-th text-center text-white">IMAGEN</th>
                                 <th class="table-th text-center text-white">ACCIONES</th>
                             </tr>
@@ -28,12 +28,12 @@
                                     <h6>{{$coin->type}}</h6>
                                 </td>
                                 <td>
-                                    <h6>{{ number_format($coin->value,2)}}</h6>
+                                    <h6 class="text-center">{{ number_format($coin->value,2)}}</h6>
                                 </td>
 
                                 <td class="text-center">
                                     <span>
-                                        <img src="{{ asset('storage/coins/' .$coin->imagen) }}" alt="ejemplo" height="70" width="80" class="rounded">
+                                        <img src="{{ asset('storage/' .$coin->imagen) }}" alt="ejemplo" height="70" width="80" class="rounded">
                                     </span>
                                 </td>
 
@@ -70,7 +70,7 @@
         window.livewire.on('item-deleted', msg => {
             //noty
         });
-        window.livewire.on('modal-show', msg => {
+        window.livewire.on('show-modal', msg => {
             $('#theModal').modal('show');
         });
         window.livewire.on('modal-hide', msg => {

@@ -51,7 +51,7 @@
 
 								<td class="text-center">
 									<span>
-										<img src=" {{asset('storage/products/' . $product->imagen )}}" height="70" width="80" class="rounded" alt="no-image">
+										<img src=" {{asset('storage/' . $product->imagen )}}" height="70" width="80" class="rounded" alt="no-image">
 									</span>
 								</td>
 
