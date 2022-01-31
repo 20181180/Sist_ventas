@@ -20,7 +20,7 @@ class Product extends Model
     {
         if ($this->image != null)
             return (file_exists('storage/products/' . $this->image) ? 'products/' . $this->image : 'img_no.jpg');
-         else 
+        else
             return 'img_no.jpg';
     }
 }
