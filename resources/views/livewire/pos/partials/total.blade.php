@@ -17,6 +17,7 @@
                                 </div>
                                 <div>
                                     <h4 class="mt-3">Articulos: {{$itemsQuantity}}</h4>
+                                    <h4 class="mt-3">Meripuntos:{{$itemsQuantity}}</h4>
                                 </div>
                             </div>
                         </div>

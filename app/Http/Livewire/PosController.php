@@ -49,6 +49,8 @@ class PosController extends Component
     public function ScanCode($barcode, $cant = 1)
     {
 
+        dd($barcode);
+
         $product = Product::where('barcode', $barcode)->first();
 
         if ($product == null || empty($empty)) {
@@ -112,7 +114,6 @@ class PosController extends Component
             $title = 'Cantidad actualizada';
         else
             $title = 'Producto agregado';
-
         if ($exist) {
             if ($product->stock < $cant) {
                 $this->emit('no-stock', 'Stock insuficiente');
@@ -127,7 +128,6 @@ class PosController extends Component
 
             $this->total = Cart::getTotal();
             $this->itemsQuantity = Cart::getTotalQuantity();
-
             $this->emit('scan-ok', $title);
         }
     }
