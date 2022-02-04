@@ -1,5 +1,6 @@
 <?php
 
+
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Livewire\CategoriesController;
@@ -30,3 +31,4 @@ Route::get('categories', CategoriesController::class);
 Route::get('products', ProductsController::class);
 Route::get('coins', CoinsController::class);
 Route::get('pos', PosController::class);
+

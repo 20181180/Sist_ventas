@@ -31,7 +31,7 @@
             background-color: #3b3f5c;
             border-color: #3b3f5c;
         }
-        @media (max-widht: 480px)
+        @media (max-width: 480px)
         {
             .mtmobile {
                 margin-bottom: 20px!important;

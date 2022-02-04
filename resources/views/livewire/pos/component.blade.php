@@ -4,7 +4,6 @@
     <div class="row layout-top-spacing">
 
     <div class="col-sm-12 col-md-8">
-        <!--detalle-->
         @include('livewire.pos.partials.detail')
     </div>
 
@@ -20,5 +19,9 @@
 </div>
 
 <script>
-
+/* @include('livewire.pos.script.events')
+ @include('livewire.pos.script.general')
+ @include('livewire.pos.script.scan')
+ @include('livewire.pos.script.shortcuts')
+ */
 </script>

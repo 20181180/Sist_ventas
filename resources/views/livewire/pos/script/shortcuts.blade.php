@@ -10,7 +10,7 @@
     })
 
     listener.simple_combo("f4", function(){
-       var total=parseFloat( document.getElementById('hiddenTotal'));
+       var total=parseFloat( document.getElementById('hiddenTotal').value);
        if(total>0){
            Confirm(0,'clearCart','¿confirmar de eliminar la venta?')
        }else{

@@ -8,9 +8,10 @@ use App\Models\Product;
 use Livewire\Component;
 use App\Models\SaleDetails;
 use App\Models\Denomination;
+use Darryldecode\Cart\Facades\CartFacade as Cart;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use Darryldecode\Cart\Facades\CartFacade as Cart;
+
 
 class PosController extends Component
 {
@@ -18,7 +19,7 @@ class PosController extends Component
 
     public function mount()
     {
-        $this->efectivo = 0;
+        $this->efectivo = 1500;
         $this->change = 0;
         $this->total = Cart::getTotal();
         $this->itemsQuantity = Cart::getTotalQuantity();
@@ -33,6 +34,7 @@ class PosController extends Component
             ->extends('layouts.theme.app')
             ->section('content');
     }
+    //el metodo a cash es para calcular el cambio
     public function ACash($value)
     {
         $this->efectivo += ($value == 0 ? $this->total : $value);
@@ -45,22 +47,25 @@ class PosController extends Component
         'clearCart' => 'clearCart',
         'saveSale' => 'saveSale'
     ];
-
+    //este evento es pra escanear el codigo de barras
     public function ScanCode($barcode, $cant = 1)
     {
 
-        dd($barcode);
+
 
         $product = Product::where('barcode', $barcode)->first();
 
-        if ($product == null || empty($empty)) {
+        if ($product == null) {
             $this->emit('scan-notfound', 'El producto no esta registrado');
+
         } else {
             if ($this->InCart($product->id)) {
-                $this->increasQty($product->id);
+
+                $this->increaseQty($product->id);
                 return;
             }
-            if ($product->stok < 1) {
+            if ($product->stock < 1) {
+
                 $this->emit('no-stock', 'Stock insuficiente :/');
                 return;
             }
@@ -71,6 +76,7 @@ class PosController extends Component
             $this->emit('scan-ok', 'Producto agregado');
         }
     }
+    //valida si el id del producto ya existe en el carrito
     public function InCart($productId)
     {
         $exist = Cart::get($productId);
@@ -79,7 +85,7 @@ class PosController extends Component
         else
             return false;
     }
-
+//actualiza la cantidad de la existencia del producto
     public function increaseQty($productId, $cant = 1)
     {
         $title = '';
@@ -104,7 +110,7 @@ class PosController extends Component
         $this->emit('scan-ok', $title);
     }
 
-
+//reemplaza el registro del carrito
     public function updateQty($productId, $cant = 1)
     {
         $title = '';
@@ -131,6 +137,8 @@ class PosController extends Component
             $this->emit('scan-ok', $title);
         }
     }
+
+//elimnar el producto del carrito
     public function removeItem($productId)
     {
         Cart::remove($productId);
@@ -139,6 +147,7 @@ class PosController extends Component
         $this->itemsQuantity = Cart::getTotalQuantity();
         $this->emit('scan-ok', 'Producto eliminado');
     }
+    //disminuir la cantidad de los productos en el carrito
     public function decreaseQty($productId)
     {
         $item = Cart::get($productId);
