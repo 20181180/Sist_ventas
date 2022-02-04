@@ -179,7 +179,7 @@ class PosController extends Component
             $this->emit('sale-error', 'Agrega prodctos...');
             return;
         }
-        if ($this->total <= 0) {
+        if ($this->efectivo <= 0) {
             $this->emit('sale-error', 'Ingrese el efetivo...');
             return;
         }
