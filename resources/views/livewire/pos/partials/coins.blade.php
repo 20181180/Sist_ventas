@@ -25,10 +25,10 @@
                                     EFECTIVO
                                 </span>
                             </div>
-                            <input type="number" id="cash" wire:model="efectivo" wire:keydown.enter="" class="form-control text-center" value="{{$efectivo}}">
+                            <input type="number" id="cash" wire:model="efectivo" wire:keydown.enter="saveSale" class="form-control text-center" value="{{$efectivo}}">
 
                             <div class="input-group-append">
-                                <span wire:click="$set('efectivo', 0)" class="input-group-text" style="background: #3B3F5C;
+                                <span wire:click="$set('efectivo', 0)" class="input-group-text" wire:keydown.enter="" style="background: #3B3F5C;
                                 color:white">
                                     <i class="fas fa-backspace fa-2x"></i>
                                 </span>
