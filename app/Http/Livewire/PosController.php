@@ -19,14 +19,13 @@ class PosController extends Component
 
     public function mount()
     {
-        $this->efectivo = 1500;
+        $this->efectivo = 0;
         $this->change = 0;
         $this->total = Cart::getTotal();
         $this->itemsQuantity = Cart::getTotalQuantity();
     }
     public function render()
     {
-
         return view('livewire.pos.component', [
             'denominations' => Denomination::orderBy('value', 'desc')->get(),
             'cart' => Cart::getContent()->sortBy('name')
@@ -38,26 +37,23 @@ class PosController extends Component
     public function ACash($value)
     {
         $this->efectivo += ($value == 0 ? $this->total : $value);
-        $this->change = ($this->efectivo - $this->total);
+        $this->change = ($this->efectivo - $this->total) - 0.5;
+        $this->efectivo = $this->efectivo - 0.5;
     }
 
     protected $listeners = [
         'scan-code' => 'ScanCode',
         'removeItem' => 'removeItem',
         'clearCart' => 'clearCart',
-        'saveSale' => 'saveSale'
+        'saveSale' => 'saveSale',
     ];
     //este evento es pra escanear el codigo de barras
     public function ScanCode($barcode, $cant = 1)
     {
-
-
-
         $product = Product::where('barcode', $barcode)->first();
 
         if ($product == null) {
             $this->emit('scan-notfound', 'El producto no esta registrado');
-
         } else {
             if ($this->InCart($product->id)) {
 
@@ -85,7 +81,7 @@ class PosController extends Component
         else
             return false;
     }
-//actualiza la cantidad de la existencia del producto
+    //actualiza la cantidad de la existencia del producto
     public function increaseQty($productId, $cant = 1)
     {
         $title = '';
@@ -110,7 +106,7 @@ class PosController extends Component
         $this->emit('scan-ok', $title);
     }
 
-//reemplaza el registro del carrito
+    //reemplaza el registro del carrito
     public function updateQty($productId, $cant = 1)
     {
         $title = '';
@@ -138,7 +134,7 @@ class PosController extends Component
         }
     }
 
-//elimnar el producto del carrito
+    //elimnar el producto del carrito
     public function removeItem($productId)
     {
         Cart::remove($productId);
