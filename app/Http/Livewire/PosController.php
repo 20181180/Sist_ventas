@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Auth;
 
 class PosController extends Component
 {
-    public $total, $itemsQuantity, $efectivo, $change;
+    public $total, $itemsQuantity, $efectivo, $change, $valiente;
 
     public function mount()
     {
@@ -36,10 +36,22 @@ class PosController extends Component
     //el metodo a cash es para calcular el cambio
     public function ACash($value)
     {
-        $this->efectivo += ($value == 0 ? $this->total : $value);
+        //dd($value);
+        /*$this->efectivo += ($value == 0 ? $this->total : $value);
         $this->change = ($this->efectivo - $this->total) - 0.5;
-        $this->efectivo = $this->efectivo - 0.5;
+        $this->efectivo = $this->efectivo - 0.5;*/
+
+        $this->efectivo += ($value == 0 ? $this->total : $value);
+        $this->change = ($this->efectivo - $this->total);
+
     }
+    public function ACashAmano($value)
+    {
+        $this->efectivo = ($value == 0 ? $this->total : $value);
+        $this->change = ($this->efectivo - $this->total);
+
+    }
+
 
     protected $listeners = [
         'scan-code' => 'ScanCode',
