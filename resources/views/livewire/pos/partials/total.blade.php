@@ -16,9 +16,10 @@
                                     <input type="hidden" value="{{$total}}" id="hiddenTotal">
                                 </div>
                                 <div>
-                                    <h4 class="mt-3">Articulos: {{$itemsQuantity}}</h4>
-                                    <!--  <h4 class="mt-3">Meripuntos:{{$itemsQuantity}}</h4>-->
+                                    <h5 class="mt-3">ARTICULOS: {{$itemsQuantity}}</h5>
+
                                 </div>
+
                             </div>
                         </div>
                     </div>
