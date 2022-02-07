@@ -15,13 +15,14 @@ use Illuminate\Support\Facades\Auth;
 
 class PosController extends Component
 {
-    public $total, $itemsQuantity, $efectivo, $change, $valiente;
+    public $total, $itemsQuantity, $efectivo, $change, $valiente, $meri, $puntos;
 
     public function mount()
     {
         $this->efectivo = 0;
         $this->change = 0;
         $this->total = Cart::getTotal();
+        $this->puntos = (Cart::getTotal()) / 100 * 10;
         $this->itemsQuantity = Cart::getTotalQuantity();
     }
     public function render()
@@ -43,15 +44,13 @@ class PosController extends Component
 
         $this->efectivo += ($value == 0 ? $this->total : $value);
         $this->change = ($this->efectivo - $this->total);
-
     }
+
     public function ACashAmano($value)
     {
         $this->efectivo = ($value == 0 ? $this->total : $value);
         $this->change = ($this->efectivo - $this->total);
-
     }
-
 
     protected $listeners = [
         'scan-code' => 'ScanCode',

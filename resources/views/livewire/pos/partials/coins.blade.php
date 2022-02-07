@@ -6,11 +6,11 @@
             <div class="container">
                 <div class="row">
                     @foreach ($denominations as $d)
-                        <div class="col-sm mt-2">
-                            <button wire:click.prevent="ACash({{$d->value}})" class="btn btn-dark btn-block den">
-                                {{ $d->value >0 ? '$' . number_format($d->value,2, '.', '') : 'Exacto'}}
-                            </button>
-                        </div>
+                    <div class="col-sm mt-2">
+                        <button wire:click.prevent="ACash({{$d->value}})" class="btn btn-dark btn-block den">
+                            {{ $d->value >0 ? '$' . number_format($d->value,2, '.', '') : 'Exacto'}}
+                        </button>
+                    </div>
                     @endforeach
                 </div>
             </div>
@@ -21,20 +21,15 @@
 
                             <div class="input-group-prepend">
                                 <button wire:click.prevent="ACashAmano({{$efectivo}})" class="btn btn-dark btn-block den">
-                                    Efectivo F8
+                                    Efectivo:
                                 </button>
                             </div>
 
-                            <input type="number" id="cash"
-
-                            wire:model="efectivo"
-                            class="form-control text-center"
-                            value="{{$efectivo}}">
+                            <input type="number" id="cash" wire:model="efectivo" placeholder="$0.00" class="form-control text-center" value="{{$efectivo}}">
 
 
                             <div class="input-group-append">
-                                <span wire:click="$set('efectivo', 0)" class="input-group-text"  style="background: #3B3F5C;
-                                color:white">
+                                <span wire:click="$set('efectivo', 0)" class="input-group-text" style="background: #3B3F5C;color:white">
                                     <i class="fas fa-backspace fa-2x"></i>
                                 </span>
                             </div>
@@ -42,8 +37,10 @@
 
                         @if ($efectivo >= $total && $total > 0)
                         <h4 class="text-muted">Cambio: ${{number_format($change,2)}}</h4>
+                        <h4 class="text-muted">Meripuntos:{{$puntos}}</h4>
                         @else
                         <h4 class="text-muted">Cambio: $0.00</h4>
+                        <h4 class="text-muted">Meripuntos:$0.00</h4>
                         @endif
                         <div class="row justify-content-between">
                             <div class="col-sm-12 col-md-12 col-lg-6">
