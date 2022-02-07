@@ -46,18 +46,21 @@ class PosController extends Component
         $this->change = ($this->efectivo - $this->total);
     }
 
-    public function ACashAmano($value)
-    {
-        $this->efectivo = ($value == 0 ? $this->total : $value);
-        $this->change = ($this->efectivo - $this->total);
-    }
+
 
     protected $listeners = [
         'scan-code' => 'ScanCode',
         'removeItem' => 'removeItem',
         'clearCart' => 'clearCart',
         'saveSale' => 'saveSale',
+        'ACashAmano' => 'ACashAmano',
     ];
+
+    public function ACashAmano($value)
+    {
+        $this->efectivo = ($value == 0 ? $this->total : $value);
+        $this->change = ($this->efectivo - $this->total);
+    }
     //este evento es pra escanear el codigo de barras
     public function ScanCode($barcode, $cant = 1)
     {
