@@ -200,7 +200,7 @@ class PosController extends Component
         try {
             $sale = Sale::create([
                 'total' => $this->total,
-                'items' => $this->items,
+                'items' => $this->itemsQuantity,
                 'dinero' => $this->efectivo,
                 'cambio' => $this->change,
                 'user_id' => Auth()->user()->id,
