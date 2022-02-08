@@ -54,7 +54,7 @@
                             <div class="col-sm-12 col-md-12 col-lg-6">
                                 @if ($efectivo >= $total && $total > 0)
                                 <button wire:click.prevent="saveSale" class="btn btn-dark btn-md btn-block">
-                                    GUARDAR Z </button>
+                                    GUARDAR Zs </button>
                                 @endif
                             </div>
                         </div>
@@ -64,3 +64,4 @@
         </div>
     </div>
 </div>
+<!--comentario-->
