@@ -60,12 +60,15 @@
     document.addEventListener('DOMContentLoaded', function() {
         window.livewire.on('show-modal', msg => {
             $('#theModal').modal('show');
+            noty(msg)
         });
         window.livewire.on('category-added', msg => {
             $('#theModal').modal('hide');
+            noty(msg)
         });
         window.livewire.on('category-updated', msg => {
             $('#theModal').modal('hide');
+            noty(msg)
         });
     });
 

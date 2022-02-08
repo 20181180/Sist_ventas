@@ -13,7 +13,7 @@ class RolesController extends Component
 {
     use WithPagination;
 
-    public  $rolName, $search, $selected_id, $pageTitle, $componentName;
+    public  $roleName, $search, $selected_id, $pageTitle, $componentName;
     private $pagination = 5;
 
 
@@ -24,7 +24,7 @@ class RolesController extends Component
 
     public function mount()
     {
-        $this->pageTitle = 'Listado';
+        $this->pageTitle = 'Listados';
         $this->componentName = 'Roles';
     }
 
@@ -36,7 +36,7 @@ class RolesController extends Component
             $roles = Role::OrderBy('name', 'asc')->paginate($this->pagination);
         }
         return view(
-            'livewire.role.componet',
+            'livewire.roles.componet',
             [
                 'roles' => $roles
             ]
@@ -59,22 +59,22 @@ class RolesController extends Component
         //metdo de crear el producto
 
         Role::create([
-            'name' => $this->rolName,
+            'name' => $this->roleName,
         ]);
         $this->resetUI();
-        $this->emit('rol-added', 'Registrado con exito xd');
+        $this->emit('role-added', 'Registrado con exito xd');
     }
 
     public function Edit(Role $role)
     {
         // $role = Role::find($id);
         $this->selected_id = $role->id;
-        $this->rolName = $role->name;
+        $this->roleName = $role->name;
 
         $this->emit('show-modal', 'Show modal');
     }
 
-    public function Update()
+    public function UpdateRole()
     {
         $rules = ['roleName' => "required|min:2|unique:roles,name,{$this->selected_id}"];
 
@@ -88,11 +88,10 @@ class RolesController extends Component
         //metdo de crear el producto
 
         $role = Role::find($this->selected_id);
-        $role->name = $this->rolName;
+        $role->name = $this->roleName;
         $role->save();
-
-        $this->emit('rol-update', 'Actualizacion con exito xd');
         $this->resetUI();
+        $this->emit('role-updated', 'Actualizacion con exito xd');
     }
 
     protected $listeners = ['destroy' => 'Destroy'];
@@ -102,17 +101,19 @@ class RolesController extends Component
         $permissionsCount = Role::find($id)->permissions->count();
 
         if ($permissionsCount > 0) {
-            $this->emit('rol-delete', 'No se puede eliminar por que el rol esta en uso..Ups');
+            $this->emit('role-deleted', 'No se puede eliminar por que el rol esta en uso..Ups');
             return;
         }
         Role::find($id)->delete();
-        $this->emit('rol-delete', 'Eliminado con exito xd');
+        $this->emit('role-deleted', 'Eliminado con exito xd');
     }
 
     public function resetUI()
     {
-        $this->rolName = '';
+        $this->roleName = '';
         $this->search = '';
-        $this->selected_id = '';
+        $this->selected_id = 0;
+        //$this->resetErrorBag();
+        $this->resetValidation();
     }
 }

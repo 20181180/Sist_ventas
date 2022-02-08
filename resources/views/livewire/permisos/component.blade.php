@@ -21,22 +21,22 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($roles as $role)
+                            @foreach($permisos as $permiso)
                             <tr>
                                 <td>
-                                    <h6>{{$role->id}}</h6>
+                                    <h6>{{$permiso->id}}</h6>
                                 </td>
 
                                 <td class="text-center">
-                                    <h6>{{$role->name}}</h6>
+                                    <h6>{{$permiso->name}}</h6>
                                 </td>
 
                                 <td class="text-center">
-                                    <a href="javascript:void(0);" wire:click="Edit({{$role->id}})" class="btn btn-dark mtmobile" title="Editar registro">
+                                    <a href="javascript:void(0);" wire:click="Edit({{$permiso->id}})" class="btn btn-dark mtmobile" title="Editar Permiso">
                                         <i class="fas fa-edit"></i>
                                     </a>
 
-                                    <a href="javascript:void(0);" onclick="Confirm('{{$role->id}}')" class="btn btn-dark" title="Eliminar registro">
+                                    <a href="javascript:void(0);" onclick="Confirm('{{$permiso->id}}')" class="btn btn-dark" title="Eliminar Permiso">
                                         <i class="fas fa-trash"></i>
                                     </a>
 
@@ -47,34 +47,34 @@
                             @endforeach
                         </tbody>
                     </table>
-                    {{$roles->links()}}
+                    {{$permisos->links()}}
                 </div>
             </div>
         </div>
     </div>
-    @include('livewire.roles.form')
+    @include('livewire.permisos.form')
 </div>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        window.livewire.on('role-added', Msg => {
+        window.livewire.on('permiso-added', Msg => {
             $('#theModal').modal('hide')
             noty(Msg)
         });
-        window.livewire.on('role-updated', Msg => {
+        window.livewire.on('permiso-updated', Msg => {
             $('#theModal').modal('hide')
             noty(Msg)
         });
 
-        window.livewire.on('role-deleted', Msg => {
+        window.livewire.on('permiso-deleted', Msg => {
             noty(Msg)
         });
 
-        window.livewire.on('role-exists', Msg => {
+        window.livewire.on('permisos-exists', Msg => {
             noty(Msg)
         });
 
-        window.livewire.on('role-error', Msg => {
+        window.livewire.on('permiso-error', Msg => {
             noty(Msg)
         });
 

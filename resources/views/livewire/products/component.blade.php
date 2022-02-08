@@ -112,7 +112,7 @@
 			showCancelButton: true,
 			cancelButtonText: 'Cerrar',
 			cancelButtonColor: '#fff',
-			confirmButtonColor: '#3BEF5C',
+			confirmButtonColor: '#3b3f5c',
 			confirmButtonText: 'Aceptar'
 		}).then(function(result) {
 			if (result.value) {

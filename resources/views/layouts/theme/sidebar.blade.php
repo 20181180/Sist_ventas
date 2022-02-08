@@ -46,7 +46,7 @@
                 </a>
             </li>
             <li class="active">
-                <a href="#" data-active="false" class="menu-toggle">
+                <a href=" {{ url('roles') }} " data-active="false" class="menu-toggle">
                     <div class="base-menu">
                         <div class="base-icons">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-key">
