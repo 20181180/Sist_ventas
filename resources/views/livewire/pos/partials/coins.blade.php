@@ -21,7 +21,7 @@
 
                             <div class="input-group-prepend">
                                 <button wire:click.prevent="ACashAmano({{$efectivo}})" class="btn btn-dark btn-block den">
-                                    Efectivo:
+                                    Efectivo S:
                                 </button>
                             </div>
 
@@ -30,8 +30,9 @@
 
                             <div class="input-group-append">
                                 <span wire:click="$set('efectivo', 0)" class="input-group-text" style="background: #3B3F5C;color:white">
-                                    <i class="fas fa-backspace fa-2x"></i>
+                                   <i class="fas fa-backspace fa-2x"></i>
                                 </span>
+                                <h5 >X</h5>
                             </div>
                         </div>
 
@@ -46,14 +47,14 @@
                             <div class="col-sm-12 col-md-12 col-lg-6">
                                 @if ($total> 0)
                                 <button onclick="Confirm('','clearCart','¿SEGURO DE ELIMINAR EL CARRITO?')" class="btn btn-dark mtmobile">
-                                    CANCELAR F4
+                                    CANCELAR C
                                 </button>
                                 @endif
                             </div>
                             <div class="col-sm-12 col-md-12 col-lg-6">
                                 @if ($efectivo >= $total && $total > 0)
                                 <button wire:click.prevent="saveSale" class="btn btn-dark btn-md btn-block">
-                                    GUARDAR F9</button>
+                                    GUARDAR Zs </button>
                                 @endif
                             </div>
                         </div>
@@ -63,3 +64,4 @@
         </div>
     </div>
 </div>
+<!--comentario-->
