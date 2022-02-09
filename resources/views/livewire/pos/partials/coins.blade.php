@@ -21,7 +21,7 @@
 
                             <div class="input-group-prepend">
                                 <button wire:click.prevent="ACashAmano({{$efectivo}})" class="btn btn-dark btn-block den">
-                                    Efectivo S:
+                                    Efectivo$:
                                 </button>
                             </div>
 
@@ -30,9 +30,9 @@
 
                             <div class="input-group-append">
                                 <span wire:click="$set('efectivo', 0)" class="input-group-text" style="background: #3B3F5C;color:white">
-                                   <i class="fas fa-backspace fa-2x"></i>
+                                    <i class="fas fa-backspace fa-2x"></i>
                                 </span>
-                                <h5 >X</h5>
+                                <h5>X</h5>
                             </div>
                         </div>
 
