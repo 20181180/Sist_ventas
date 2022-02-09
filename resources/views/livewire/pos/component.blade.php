@@ -19,10 +19,9 @@
 </div>
 <script src="{{ asset('js/onscan.js') }}"></script>
 <script src="{{ asset('plugins/Keypress-development/keypress-2.1.5.min.js') }}"></script>
+@include('livewire.pos.script.events')
+@include('livewire.pos.script.general')
+@include('livewire.pos.script.scan')
+@include('livewire.pos.script.shortcuts')
 <script>
-/* @include('livewire.pos.script.events')
- @include('livewire.pos.script.general')
- @include('livewire.pos.script.scan')
- @include('livewire.pos.script.shortcuts')
- */
 </script>
