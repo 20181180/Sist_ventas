@@ -36,7 +36,7 @@ class PermisosController extends Component
             $permisos = Permission::OrderBy('name', 'asc')->paginate($this->pagination);
         }
         return view(
-            'livewire.permisos.componet',
+            'livewire.permisos.component',
             [
                 'permisos' => $permisos
             ]
@@ -98,7 +98,7 @@ class PermisosController extends Component
 
     public function Destroy($id)
     {
-        $rolesCount = Permission::find($id)->getRolesName->count();
+        $rolesCount = Permission::find($id)->getRoleNames()->count();
 
         if ($rolesCount > 0) {
             $this->emit('pemiso-error', '¡Ups!,No se puede eliminar el permiso por que tiene roles asignados..');

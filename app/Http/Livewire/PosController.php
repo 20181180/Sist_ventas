@@ -46,8 +46,6 @@ class PosController extends Component
         $this->change = ($this->efectivo - $this->total);
     }
 
-
-
     protected $listeners = [
         'scan-code' => 'ScanCode',
         'removeItem' => 'removeItem',
@@ -82,7 +80,7 @@ class PosController extends Component
 
             Cart::add($product->id, $product->name, $product->price, $cant, $product->image);
             $this->total = Cart::getTotal();
-
+            $this->itemsQuantity = Cart::getTotalQuantity();
             $this->emit('scan-ok', 'Producto agregado');
         }
     }
