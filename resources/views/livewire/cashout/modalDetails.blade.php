@@ -16,7 +16,7 @@
                         <thead class="text-white" style="background:#3B3FF5;">
                             <tr>
                                 <th class="table-th text-center text-white"> Producto</th>
-                                <th class="table-th text-center text-white">Cantidas</th>
+                                <th class="table-th text-center text-white">Cant_Art</th>
                                 <th class="table-th text-center text-white">Precio</th>
                                 <th class="table-th text-center text-white">Importe</th>
 

@@ -19,7 +19,7 @@ class CashoutController extends Component
         $this->toDate = null;
         $this->userid = 0;
         $this->total = 0;
-        $this->items = 0;
+        //$this->items = [];
         $this->sales = [];
         $this->details = [];
     }
@@ -37,10 +37,9 @@ class CashoutController extends Component
 
         $this->sales = Sale::WhereBetween('created_at', [$fi, $ff])
             ->where('estado', 'Pagado')
-            ->where('user_id', $this->userid)
-            ->get();
+            ->where('user_id', $this->userid)->get();
         $this->total = $this->sales ? $this->sales->sum('total') : 0;
-        $this->items = $this->items ? $this->items->sum('items') : 0;
+        $this->items = $this->sales ? $this->sales->sum('items') : 0;
     }
 
     public function viewDeatails(Sale $sale)

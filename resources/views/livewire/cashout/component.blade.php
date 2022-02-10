@@ -8,7 +8,7 @@
                 <div class="row">
                     <div class="col-sm-12 col-md-3">
                         <div class="form-group">
-                            <label for="">Usuario</label>
+                            <label for="">Usuario *</label>
                             <select class="form-control" wire:model="userid">
                                 <option value="0" disabled>Elegir</option>
                                 @foreach($users as $u)
@@ -21,7 +21,7 @@
 
                     <div class="col-sm-12 col-md-3">
                         <div class="form-group">
-                            <label>Fecha Inicial</label>
+                            <label>Fecha Inicial *</label>
                             <input type="date" wire:model.lazy="fromDate" class="form-control">
                             @error('fromDate')<span class="text-danger er">{{$message}}</span>@enderror
                         </div>
@@ -29,13 +29,13 @@
 
                     <div class="col-sm-12 col-md-3">
                         <div class="form-group">
-                            <label>Fecha Final</label>
+                            <label>Fecha Final *</label>
                             <input type="date" wire:model.lazy="toDate" class="form-control">
                             @error('toDate')<span class="text-danger er">{{$message}}</span>@enderror
                         </div>
                     </div>
 
-                    <div class="col-sm-12 col-md-3 aling-self-center d-flex justify-content-around">
+                    <div class="col-sm-12 col-md-3">
                         @if($userid >0 && $fromDate !=null && $toDate !=null)
                         <button wire:click.prevent="Consultar" type="button" class="btn btn-dark"> Consultar</button>
                         @endif
@@ -61,16 +61,16 @@
                         <table class="table table-bordered table-striped mt-1">
                             <thead class="text-white" style="background:#3B3F4C;">
                                 <tr>
-                                    <th class="table-th text-center text-white"> Folio</th>
-                                    <th class="table-th text-center text-white">Total</th>
-                                    <th class="table-th text-center text-white"> Items</th>
-                                    <th class="table-th text-center text-white">Fecha</th>
-                                    <th class="table-th text-center text-white"> </th>
+                                    <th class="table-th text-center text-white"> Folio*</th>
+                                    <th class="table-th text-center text-white">Total*</th>
+                                    <th class="table-th text-center text-white"> Cant_Art*</th>
+                                    <th class="table-th text-center text-white">Fecha*</th>
+                                    <th class="table-th text-center text-white"></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @if($total<=0) <tr>
-                                    <td colspan="4">
+                                    <td colspan="5">
                                         <h6 class="text-center">
                                             No Hay Ventas Para La Fecha Seleccionada
                                         </h6>
@@ -93,7 +93,7 @@
                                             <h6> {{$row->created_at}} </h6>
                                         </td>
                                         <td class="text-center">
-                                            <button wire:click.prevent="viewDeatails({{$row}})" class="btn btn-dark btn-sm"> <i class="fast fa-list"></i> </button>
+                                            <button wire:click.prevent="viewDeatails({{$row}})" class="btn btn-dark btn-sm"> Detalles <i class="fast fa-list"></i> </button>
                                         </td>
                                     </tr>
                                     @endforeach
