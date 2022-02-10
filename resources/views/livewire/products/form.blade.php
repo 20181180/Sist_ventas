@@ -67,9 +67,9 @@
                 <option value="Elegir" disabled>Elegir</option>
                 @foreach ($categories as $category)
                 <option value="{{$category->id}}">{{$category->name}}</option>
-                @error('categoryid')<span class="text-danger er">{{$message}}</span>@enderror
                 @endforeach
             </select>
+            @error('categoryid')<span class="text-danger er">{{$message}}</span>@enderror
         </div>
     </div>
 
