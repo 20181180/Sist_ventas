@@ -9,10 +9,10 @@
                     <div class="col-sm-12 col-md-3">
                         <div class="form-group">
                             <label for="">Usuario</label>
-                            <select wire:model="userid">
+                            <select class="form-control" wire:model="userid">
                                 <option value="0" disabled>Elegir</option>
                                 @foreach($users as $u)
-                                <option value=" {{$u->id}} "> {{$u->name}} </option>
+                                <option value="{{$u->id}}"> {{$u->name}} </option>
                                 @endforeach
                             </select>
                             @error('userid')<span class="text-danger er">{{$message}}</span>@enderror
@@ -36,12 +36,12 @@
                     </div>
 
                     <div class="col-sm-12 col-md-3 aling-self-center d-flex justify-content-around">
-                        @if($userid >0 && $fromDate ¡=null && $toDate ¡=null)
-                        <button wire:click.prevent="Consultar" type="button" class="btn btn-dark"> CONSULTAR</button>
+                        @if($userid >0 && $fromDate !=null && $toDate !=null)
+                        <button wire:click.prevent="Consultar" type="button" class="btn btn-dark"> Consultar</button>
                         @endif
 
-                        @if($total > 0 )
-                        <button wire:click.prevent="Print()" type="button" class="btn btn-dark"> IMPRIMIR</button>
+                        @if($total >0 )
+                        <button wire:click.prevent="Print()" type="button" class="btn btn-dark">Imprirmir</button>
                         @endif
                     </div>
                 </div>
@@ -51,15 +51,15 @@
             <div class="row mt-5">
                 <div class="col-sm-12 col-md-4 mbmobile">
                     <div class="connect-sorting bg-dark">
-                        <h5 class="text-white">Ventas Totales *: {{number_format($total,2)}} </h5>
-                        <h5 class="text-white">Articulos *: {{$items}} </h5>
+                        <h5 class="text-white">Ventas Totales: {{number_format($total,2)}} </h5>
+                        <h5 class="text-white">Articulos: {{$items}} </h5>
                     </div>
                 </div>
 
                 <div class="col-sm-12 col-md-8">
                     <div class="table-resposive">
                         <table class="table table-bordered table-striped mt-1">
-                            <thead class="text-white" style="background:#3B3FF5;">
+                            <thead class="text-white" style="background:#3B3F4C;">
                                 <tr>
                                     <th class="table-th text-center text-white"> Folio</th>
                                     <th class="table-th text-center text-white">Total</th>
@@ -69,9 +69,11 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @if($total <=0 ) <tr>
-                                    <td colspan="5">
-                                        <h6 class="text-center">No Hay Ventas Para La Fecha Seleccionada..</h6>
+                                @if($total<=0) <tr>
+                                    <td colspan="4">
+                                        <h6 class="text-center">
+                                            No Hay Ventas Para La Fecha Seleccionada
+                                        </h6>
                                     </td>
                                     </tr>
                                     @endif
@@ -88,10 +90,10 @@
                                             <h6> {{$row->items}} </h6>
                                         </td>
                                         <td class="text-center">
-                                            <h6> {{$row->created_ad}} </h6>
+                                            <h6> {{$row->created_at}} </h6>
                                         </td>
                                         <td class="text-center">
-                                            <button wire:click.prevent="viewDeatails( {{$row}} ) " class="btn btn-dark btn-sm"> <i class="fast fa-list"></i> </button>
+                                            <button wire:click.prevent="viewDeatails({{$row}})" class="btn btn-dark btn-sm"> <i class="fast fa-list"></i> </button>
                                         </td>
                                     </tr>
                                     @endforeach
@@ -112,7 +114,6 @@
         window.livewire.on('show-modal', Msg => {
             $('#modal-details').modal('show')
             noty(Msg)
-        });   
+        });
     })
-
 </script>
