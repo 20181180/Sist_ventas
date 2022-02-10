@@ -12,11 +12,15 @@ use App\Http\Livewire\AsignarController;
 
 use App\Http\Livewire\CashoutController;
 
-use App\Http\Livewire\PermisosController;
+//use App\Http\Livewire\PermisosController;
 
 use App\Http\Livewire\ProductsController;
 
 use App\Http\Livewire\CategoriesController;
+
+use App\Http\Livewire\PermisosController;
+
+use App\Http\Livewire\UsersController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -39,5 +43,7 @@ Route::get('roles', RolesController::class);
 Route::get('permisos', PermisosController::class);
 
 Route::get('asignar', AsignarController::class);
+
+Route::get('users', UsersController::class);
 
 Route::get('Cort_de_caja', CashoutController::class);
