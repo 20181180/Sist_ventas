@@ -12,7 +12,7 @@
                             <div class="col-sm-12">
                                 <h6>Elige el usuario *</h6>
                                 <div class="form-gropup">
-                                    <select class="form-control">
+                                    <select wire:model="userId" class="form-control">
                                         <option value="0">Todos</option>
                                         @foreach($users as $u)
                                         <option value="{{$u->id}}">{{$u->name}} </option>
@@ -24,7 +24,7 @@
                             <div class="col-sm-12">
                                 <h6>Tipo de reporte a generar *</h6>
                                 <div class="form-gropup">
-                                    <select class="form-control">
+                                    <select wire:model="reportType" class="form-control">
                                         <option value="0">Ventas del día</option>
                                         <option value="1">Ventas por fecha</option>
                                     </select>
@@ -45,15 +45,13 @@
                                 </div>
                             </div>
 
-                            <div class="col-sm-12">
+                            <div class="col-sm-12 mt-2">
                                 <button wire:click="$refresh" class="btn btn-dark btn-block">
                                     Generar Consulta
                                 </button>
                             </div>
-                            <div class="col-sm-12">
-                                <button wire:click="$refresh" class="btn btn-dark btn-block">
-                                    Generar Consulta
-                                </button>
+                            <div class="col-sm-12 mt-2">
+
 
                                 <a class="btn btn-dark btn-block {{count($data) <1 ? 'disabled':''}} " href="{{ url('report/pdf' . '/' . $userId . '/' . '' . $reportType . '/' . $dateFrom . '/' . $dateTo) }}" target="_black">Generar archivo PDF</a>
 
@@ -78,12 +76,10 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if($count($data) <1 ) <tr>
-                                        <td class="text-center">
+                                    @if(count($data) <1 )
+                                        <tr><td colspan="7">
                                             <h5>No hay resultados.</h5>
-                                        </td>
-
-                                        </tr>
+                                        </td></tr>
                                         @endif
 
                                         @foreach($data as $d)
@@ -92,7 +88,7 @@
                                                 <h6>{{$d->id}}</h6>
                                             </td>
                                             <td class="text-center">
-                                                <h6> number_format({{$d->total,2}}) </h6>
+                                                <h6>$ {{number_format( $d->total,2)}} </h6>
                                             </td>
                                             <td class="text-center">
                                                 <h6>{{$d->items}}</h6>
@@ -108,8 +104,8 @@
                                             </td>
 
                                             <td class="text-center" width="50px">
-                                                <button wire:click.prevent="getDetails{{($d->id)}} " class="btn btn-dark btn-sm">
-                                                    <i class="fas fa-lis"></i>
+                                                <button wire:click.prevent="getDetails({{$d->id}}) " class="btn btn-dark btn-sm">
+                                                    <i class="fas fa-list"></i>
                                                 </button>
                                             </td>
                                         </tr>
@@ -124,5 +120,66 @@
             </div>
         </div>
     </div>
-    @include('livewire.reportes.sales-details')
+    @include('livewire.reportes.sales-detail')
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function()
+    {
+        flatpickr(document.getElementsByClassName('flatpickr'),{
+            enableTime: false,
+            dateFormat: 'Y-m-d',
+            locale: {
+                firstDayofWeek: 1,
+                weekdays: {
+                    shorthand: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"],
+                    longhand: [
+                    "Domingo",
+                    "Lunes",
+                    "Martes",
+                    "Miércoles",
+                    "Jueves",
+                    "Viernes",
+                    "Sábado",
+                    ],
+                },
+                months: {
+                    shorthand: [
+                    "Ene",
+                    "Feb",
+                    "Mar",
+                    "Abr",
+                    "May",
+                    "Jun",
+                    "Jul",
+                    "Ago",
+                    "Sep",
+                    "Oct",
+                    "Nov",
+                    "Dic",
+                    ],
+                    longhand: [
+                    "Enero",
+                    "Febrero",
+                    "Marzo",
+                    "Abril",
+                    "Mayo",
+                    "Junio",
+                    "Julio",
+                    "Agosto",
+                    "Septiembre",
+                    "Octubre",
+                    "Noviembre",
+                    "Diciembre",
+                    ],
+                },
+
+            }
+        })
+
+        window.livewire.on('show-modal', Msg =>{
+            $('#modalDetails').modal('show')
+        })
+
+    })
+</script>

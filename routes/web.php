@@ -19,7 +19,7 @@ use App\Http\Livewire\ProductsController;
 use App\Http\Livewire\CategoriesController;
 
 use App\Http\Livewire\PermisosController;
-
+use App\Http\Livewire\ReportsController;
 use App\Http\Livewire\UsersController;
 
 Route::get('/', function () {
@@ -47,3 +47,6 @@ Route::get('asignar', AsignarController::class);
 Route::get('users', UsersController::class);
 
 Route::get('Cort_de_caja', CashoutController::class);
+
+Route::get('reports', ReportsController::class);
+

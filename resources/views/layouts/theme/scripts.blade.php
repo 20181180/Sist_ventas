@@ -16,7 +16,7 @@
 <script src="{{ asset('assets/js/custom.js') }}"></script>
 <script src="{{ asset('plugins/sweetalerts/sweetalert2.min.js') }}"></script>
 <script src="{{ asset('plugins/notification/snackbar/snackbar.min.js') }}"></script>
-<script src="{{ asset('plugins/nicescroll/nicescroll.min.js') }}"></script>
+<script src="{{ asset('plugins/nicescroll/nicescroll.js') }}"></script>
 <script src="{{ asset('plugins/currency/currency.js') }}"></script>
 <script>
     function noty(msg, option = 1) {
@@ -29,5 +29,6 @@
         });
     }
 </script>
+<script src="{{ asset('plugins/flatpickr/flatpickr.js') }}"></script>
 
 @livewireScripts

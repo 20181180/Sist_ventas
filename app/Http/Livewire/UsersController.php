@@ -63,9 +63,7 @@ class UsersController extends Component
         $this->name = $user->name;
         $this->phone = $user->phone;
         $this->profile = $user->profile;
-
         $this->status = $user->status;
-
         $this->email = $user->email;
         $this->password = '';
 
