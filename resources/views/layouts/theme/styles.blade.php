@@ -21,6 +21,9 @@
     <link href="{{ asset('assets/css/apps/scrumboard.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/apps/notes.css') }}" rel="stylesheet" type="text/css" />
 
+    <link rel="stylesheet" href="{{ asset('css/custom_pdf.css')}}"   type="text/css">
+    <link rel="stylesheet" href="{{ asset('css/custom_page.css')}}"   type="text/css">
+
     <style>
         aside {
             display: none!important;

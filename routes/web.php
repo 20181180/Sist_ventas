@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ExportController;
 use App\Http\Livewire\PosController;
 
 use Illuminate\Support\Facades\Route;
@@ -50,3 +51,7 @@ Route::get('Cort_de_caja', CashoutController::class);
 
 Route::get('reports', ReportsController::class);
 
+
+
+Route::get('report/pdf/{user}/{type}/{f1}/{f2}', [ExportController::class, 'reportPDF']);
+Route::get('report/pdf/{user}/{type}', [ExportController::class, 'reportPDF']);

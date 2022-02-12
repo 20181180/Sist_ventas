@@ -53,9 +53,13 @@
                             <div class="col-sm-12 mt-2">
 
 
-                                <a class="btn btn-dark btn-block {{count($data) <1 ? 'disabled':''}} " href="{{ url('report/pdf' . '/' . $userId . '/' . '' . $reportType . '/' . $dateFrom . '/' . $dateTo) }}" target="_black">Generar archivo PDF</a>
+                                <a class="btn btn-dark btn-block {{count($data) <1 ? 'disabled' : '' }} "
+                                 href="{{ url('report/pdf' . '/' . $userId . '/' . $reportType . '/'
+                                  . $dateFrom . '/' . $dateTo) }}" target="_black">Generar archivo PDF</a>
 
-                                <a class="btn btn-dark btn-block {{count($data) <1 ? 'disabled':''}}" href="{{ url('report/excel' . '/' . $userId . '/' . '' . $reportType . '/' . $dateFrom . '/' . $dateTo) }}" target="_black">Exportar A Excel</a>
+                                <a class="btn btn-dark btn-block {{count($data) <1 ? 'disabled' : ''}}"
+                                href="{{ url('report/excel' . '/' . $userId . '/' . $reportType . '/'
+                                 . $dateFrom . '/' . $dateTo) }}" target="_black">Exportar A Excel</a>
 
                             </div>
                         </div>
