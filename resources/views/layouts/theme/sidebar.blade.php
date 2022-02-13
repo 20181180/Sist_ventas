@@ -2,6 +2,7 @@
 
     <nav id="compactSidebar">
         <ul class="menu-categories">
+            @role('Admin')
             <li class="active">
                 <a href="{{ url('categories') }}" data-active="true" class="menu-toggle">
                     <div class="base-menu">
@@ -16,8 +17,9 @@
                         <span>CATEGORIAS</span>
                     </div>
                 </a>
-
             </li>
+            @endcan
+
             <li class="active">
                 <a href="{{ url('products') }}" data-active="false" class="menu-toggle">
                     <div class="base-menu">

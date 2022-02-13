@@ -5,11 +5,16 @@
             <div class="widget-heading">
                 <h4 class="card-title"><b>{{$componentName}} | {{$pageTitle}}</b></h4>
                 <ul class="tabs tab-pills">
+                    @can('Crear_categoria')
                     <li><a href="javascript:void(0);" class="tabmenu bg-dark" data-toggle="modal" data-target="#theModal">Agregar</a></li>
+                    @endcan
                 </ul>
             </div>
+            @can('categoria_buscar')
             @include('commont.searchbox')
+            @endcan
             <div class="widget-content">
+
 
                 <div class="table-responsive">
                     <table class="table table-bordered table-striped  mt-1">
@@ -35,14 +40,16 @@
                                 </td>
 
                                 <td class="text-center">
+                                    @can('categorias_Act')
                                     <a href="javascript:void(0);" wire:click="Edit({{$category->id}})" class="btn btn-dark mtmobile" title="Edit">
                                         <i class="fas fa-edit"></i>
                                     </a>
-
+                                    @endcan
+                                    @can('Eliminar_Categ')
                                     <a href="javascript:void(0);" onclick="Confirm('{{$category->id}}','{{$category->products->count()}}')" class="btn btn-dark" title="Delete">
                                         <i class="fas fa-trash"></i>
                                     </a>
-
+                                    @endcan
                                 </td>
                             </tr>
                             @endforeach

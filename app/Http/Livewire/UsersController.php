@@ -22,26 +22,26 @@ class UsersController extends Component
     {
         return 'vendor.livewire.bootstrap';
     }
-    public function mount(){
-        $this->pageTitle='Listado';
-        $this->componentName='Usuarios';
+    public function mount()
+    {
+        $this->pageTitle = 'Listado';
+        $this->componentName = 'Usuarios';
         $this->status = 'Elegir';
-
     }
     public function render()
     {
         if (strlen($this->search) > 0)
             $data = User::Where('name', 'like', '%' . $this->search . '%')
-            ->select('*')->oderBy('name', 'asc')->paginate($this->pagination);
-         else
+                ->select('*')->oderBy('name', 'asc')->paginate($this->pagination);
+        else
             $data = User::select('*')->orderBy('name', 'asc')->paginate($this->pagination);
 
         return view('livewire.users.component', [
             'data' => $data,
             'roles' => Role::orderBy('name', 'asc')->get()
         ])
-        ->extends('layouts.theme.app')
-        ->section('content');
+            ->extends('layouts.theme.app')
+            ->section('content');
     }
     public function resetUI()
     {
@@ -59,7 +59,7 @@ class UsersController extends Component
     }
     public function edit(User $user)
     {
-        $this->selected_id=$user->id;
+        $this->selected_id = $user->id;
         $this->name = $user->name;
         $this->phone = $user->phone;
         $this->profile = $user->profile;
@@ -73,7 +73,8 @@ class UsersController extends Component
         'deleteRow' => 'destroy',
         'resetUI' => 'resetUI'
     ];
-    public function Store(){
+    public function Store()
+    {
         $rules = [
             'name' => 'required|min:3',
             'email' => 'required|unique:users|email',
@@ -81,7 +82,7 @@ class UsersController extends Component
             'profile' => 'required|not_in:Elegir',
             'password' => 'required|min:3'
         ];
-        $messages =[
+        $messages = [
             'name.required' => 'Ingrese el nombre',
             'name.min' => 'El nombre del usuario debe tener al menos 3 caracteres',
             'email.required' => 'Ingresa el correo',
@@ -95,15 +96,18 @@ class UsersController extends Component
             'password.min' => 'El password debe contener minimo 3 caracteres'
         ];
         $this->validate($rules, $messages);
-            $user = User::create([
-                'name' => $this->name,
-                'email' => $this->email,
-                'phone'=> $this->phone,
-                'status'=> $this->status,
-                'profile'=> $this->profile,
-                'password'=> bcrypt($this->password)
-            ]);
-        if($this->image){
+        $user = User::create([
+            'name' => $this->name,
+            'email' => $this->email,
+            'phone' => $this->phone,
+            'status' => $this->status,
+            'profile' => $this->profile,
+            'password' => bcrypt($this->password)
+        ]);
+
+        $user->syncRoles($this->profile);
+
+        if ($this->image) {
             $customFileName = uniqid() . '_.' . $this->image->extension();
             $this->image->storeAs('public/users', $customFileName);
             $user->image = $customFileName;
@@ -112,9 +116,9 @@ class UsersController extends Component
 
         $this->resetUI();
         $this->emit('user-added', 'Usuario registrado');
-
     }
-    public function Update(){
+    public function Update()
+    {
         $rules = [
             'email' => "required|email|unique:users,email,{$this->selected_id}",
             'name' => 'required|min:3',
@@ -122,7 +126,7 @@ class UsersController extends Component
             'profile' => 'required|not_in:Elegir',
             'password' => 'required|min:3'
         ];
-        $messages =[
+        $messages = [
             'name.required' => 'Ingrese el nombre',
             'name.min' => 'El nombre del usuario debe tener al menos 3 caracteres',
             'email.required' => 'Ingresa el correo',
@@ -140,23 +144,23 @@ class UsersController extends Component
         $user->update([
             'name' => $this->name,
             'email' => $this->email,
-            'phone'=> $this->phone,
-            'status'=> $this->status,
-            'profile'=> $this->profile,
-            'password'=> bcrypt($this->password)
+            'phone' => $this->phone,
+            'status' => $this->status,
+            'profile' => $this->profile,
+            'password' => bcrypt($this->password)
         ]);
-        if($this->image)
-        {
+
+        $user->syncRoles($this->profile);
+
+        if ($this->image) {
             $customFileName = uniqid() . '_.' . $this->image->extension();
             $this->image->storeAs('public/users', $customFileName);
             $imageTemp = $user->image;
             $user->image = $customFileName;
             $user->save();
 
-            if($imageTemp !=null)
-            {
-                if(file_exists('storage/users/' . $imageTemp))
-                {
+            if ($imageTemp != null) {
+                if (file_exists('storage/users/' . $imageTemp)) {
                     unlink('storage/users/' . $imageTemp);
                 }
             }
@@ -164,17 +168,13 @@ class UsersController extends Component
 
         $this->resetUI();
         $this->emit('user-updated', 'Usuario actualizado');
-
     }
     public function destroy(User $user)
     {
-        if($user)
-        {
+        if ($user) {
             $sales = Sale::where('user_id', $user->id)->count();
-            if($sales > 0)
-            {
+            if ($sales > 0) {
                 $this->emit('user-withsales', 'No es posible eliminar el usuario porque tiene ventas registradas');
-
             } else {
                 $user->delete();
                 $this->resetUI();
@@ -182,6 +182,4 @@ class UsersController extends Component
             }
         }
     }
-
-
 }
