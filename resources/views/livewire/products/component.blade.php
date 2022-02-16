@@ -5,7 +5,7 @@
 			<div class="widget-heading">
 				<h4 class="card-title"><b>{{$componentName}} | {{$pageTitle}}</b></h4>
 				<ul class="tabs tab-pills">
-					<li><a href="javascript:void(0);" class="tabmenu bg-dark" data-toggle="modal" data-target="#theModal">Agregar</a></li>
+					<li><a href="javascript:void(0);" class="tabmenu " style="background-color: #2666CF;" data-toggle="modal" data-target="#theModal">Agregar</a></li>
 				</ul>
 			</div>
 			@include('commont.searchbox')
@@ -13,7 +13,7 @@
 
 				<div class="table-responsive">
 					<table class="table table-bordered table-striped  mt-1">
-						<thead class="text-white" style="background: #3B3F5C">
+						<thead class="text-white" style="background: #2666CF">
 							<tr>
 								<th class="table-th text-white">NOMBRE</th>
 								<th class="table-th text-white text-center">CODIGO BARRA</th>
