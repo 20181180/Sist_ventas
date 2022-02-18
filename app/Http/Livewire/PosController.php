@@ -22,7 +22,7 @@ class PosController extends Component
         $this->efectivo = 0;
         $this->change = 0;
         $this->total = Cart::getTotal();
-        $this->puntos = (Cart::getTotal()) / 100 * 10;
+        $this->puntos = Cart::getTotal();
         $this->itemsQuantity = Cart::getTotalQuantity();
     }
     public function render()
@@ -80,6 +80,7 @@ class PosController extends Component
 
             Cart::add($product->id, $product->name, $product->price, $cant, $product->image);
             $this->total = Cart::getTotal();
+            $this->puntos = (Cart::getTotal()) / 100 * 10;
             $this->itemsQuantity = Cart::getTotalQuantity();
             $this->emit('scan-ok', 'Producto agregado');
         }
@@ -113,6 +114,7 @@ class PosController extends Component
         Cart::add($product->id, $product->name, $product->price, $cant, $product->image);
 
         $this->total = Cart::getTotal();
+        $this->puntos = (Cart::getTotal()) / 100 * 10;
         $this->itemsQuantity = Cart::getTotalQuantity();
 
         $this->emit('scan-ok', $title);
@@ -141,6 +143,7 @@ class PosController extends Component
             Cart::add($product->id, $product->name, $product->price, $cant, $product->image);
 
             $this->total = Cart::getTotal();
+            $this->puntos = (Cart::getTotal()) / 100 * 10;
             $this->itemsQuantity = Cart::getTotalQuantity();
             $this->emit('scan-ok', $title);
         }
@@ -152,6 +155,7 @@ class PosController extends Component
         Cart::remove($productId);
 
         $this->total = Cart::getTotal();
+        $this->puntos = (Cart::getTotal()) / 100 * 10;
         $this->itemsQuantity = Cart::getTotalQuantity();
         $this->emit('scan-ok', 'Producto eliminado');
     }
@@ -167,6 +171,7 @@ class PosController extends Component
             Cart::add($item->id, $item->name, $item->price, $newQty, $item->attributes[0]);
 
         $this->total = Cart::getTotal();
+        $this->puntos = (Cart::getTotal()) / 100 * 10;
         $this->itemsQuantity = Cart::getTotalQuantity();
         $this->emit('scan-ok', 'Cantidad actualizada');
     }
@@ -177,6 +182,7 @@ class PosController extends Component
         $this->efectivo = 0;
         $this->change = 0;
         $this->total = Cart::getTotal();
+        $this->puntos = (Cart::getTotal());
         $this->itemsQuantity = Cart::getTotalQuantity();
         $this->emit('scan-ok', 'Carrito vaciado...');
     }
