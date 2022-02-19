@@ -45,10 +45,8 @@
                         @endif
                         <div class="row justify-content-between">
                             <div class="col-sm-12 col-md-12 col-lg-6">
+
                                 @if ($total> 0)
-                                <button class="btn btn-dark btn-block den m-1">
-                                    COTIZACION F5
-                                </button>
                                 <button onclick="Confirm('','clearCart','¿SEGURO DE ELIMINAR EL CARRITO?')" class="btn btn-dark mtmobile">
                                     CANCELAR C
                                 </button>
@@ -59,6 +57,11 @@
                                 <button wire:click.prevent="saveSale" class="btn btn-dark btn-md btn-block">
                                     GUARDAR Zs </button>
                                 @endif
+                            </div>
+                            <div class="col-sm-12 col-md-12 col-lg-12 mt-4">
+                                <a class="btn btn-dark btn-block {{count($cart) <1 ? 'disabled' : '' }} "
+                                href="{{ url('cotizacion/pdf' . '/' . $total . '/'
+                                 . $itemsQuantity) }}" target="_black">Generar cotizacion</a>
                             </div>
                         </div>
                     </div>

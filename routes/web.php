@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CotizacionController;
 use App\Http\Controllers\ExportController;
 use App\Http\Livewire\PosController;
 
@@ -65,4 +66,6 @@ Route::middleware(['auth'])->group(function () {
     //rutas de reportes Excel
     Route::get('report/excel/{user}/{type}/{f1}/{f2}', [ExportController::class, 'reporteExcel']);
     Route::get('report/excel/{user}/{type}', [ExportController::class, 'reporteExcel']);
+
+    Route::get('cotizacion/pdf/{total}/{items}', [CotizacionController::class, 'reportPDF']);
 });

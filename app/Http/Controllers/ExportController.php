@@ -17,7 +17,7 @@ class ExportController extends Controller
 {
     public function reportPDF($userId, $reportType, $dateFrom = null, $dateTo = null)
     {
-        $date = [];
+        $data = [];
 
         if ($reportType == 0) {
 
