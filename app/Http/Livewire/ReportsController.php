@@ -14,7 +14,7 @@ class ReportsController extends Component
 
     public function mount(){
         $this->componentName= 'Reporte de ventas';
-        $this->deta = [];
+        $this->data = [];
         $this->details = [];
         $this->sumDetails = 0;
         $this->countDetails =0;
