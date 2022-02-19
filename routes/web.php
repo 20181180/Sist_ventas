@@ -20,7 +20,11 @@ use App\Http\Livewire\ProductsController;
 use App\Http\Livewire\CategoriesController;
 
 use App\Http\Livewire\PermisosController;
+
+use App\Http\Livewire\ProvedoresController;
+
 use App\Http\Livewire\ReportsController;
+
 use App\Http\Livewire\UsersController;
 
 Route::get('/', function () {
@@ -66,3 +70,5 @@ Route::middleware(['auth'])->group(function () {
     Route::get('report/excel/{user}/{type}/{f1}/{f2}', [ExportController::class, 'reporteExcel']);
     Route::get('report/excel/{user}/{type}', [ExportController::class, 'reporteExcel']);
 });
+
+Route::get('proxd', ProvedoresController::class);

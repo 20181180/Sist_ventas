@@ -5,14 +5,14 @@
             <div class="widget-heading">
                 <h4 class="card-title"><b>{{$componentName}} | {{$pageTitle}}</b></h4>
                 <ul class="tabs tab-pills">
-                    @can('Crear_categoria')
+
                     <li><a href="javascript:void(0);" class="tabmenu bg-dark" data-toggle="modal" data-target="#theModal">Agregar</a></li>
-                    @endcan
+
                 </ul>
             </div>
-            @can('categoria_buscar')
+
             @include('commont.searchbox')
-            @endcan
+
             <div class="widget-content">
 
 
@@ -20,47 +20,50 @@
                     <table class="table table-bordered table-striped  mt-1">
                         <thead class="text-white" style="background: #3B3F5C">
                             <tr>
-                                <th class="table-th text-white">DESCRIPCIÓN</th>
-                                <th class="table-th text-center text-white">IMAGEN</th>
+                                <th class="table-th text-white">PROVEEDOR</th>
+                                <th class="table-th text-center text-white">DIRECCION</th>
+                                <th class="table-th text-center text-white">TELEFONO</th>
+                                <th class="table-th text-center text-white">EMPRESA</th>
                                 <th class="table-th text-center text-white">ACTIONS</th>
                             </tr>
                         </thead>
                         <tbody>
 
-                            @foreach($categories as $category)
+                            @foreach($proveedor as $p)
                             <tr>
                                 <td>
-                                    <h6>{{$category->name}}</h6>
+                                    <h6>{{$p->name}}</h6>
+                                </td>
+                                <td>
+                                    <h6>{{$p->address}}</h6>
+                                </td>
+                                <td>
+                                    <h6>{{$p->phone}}</h6>
+                                </td>
+                                <td>
+                                    <h6>{{$p->taxpayer_id}}</h6>
                                 </td>
 
                                 <td class="text-center">
-                                    <span>
-                                        <img src="{{ asset('storage/' .$category->imagen) }}" alt="ejemplo" height="70" width="80" class="rounded">
-                                    </span>
-                                </td>
-
-                                <td class="text-center">
-                                    @can('categorias_Act')
-                                    <a href="javascript:void(0);" wire:click="Edit({{$category->id}})" class="btn btn-dark mtmobile" title="Edit">
+                                    <a href="javascript:void(0);" wire:click="Edit({{$p->id}})" class="btn btn-dark mtmobile" title="Edit">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    @endcan
-                                    @can('Eliminar_Categ')
-                                    <a href="javascript:void(0);" onclick="Confirm('{{$category->id}}','{{$category->products->count()}}')" class="btn btn-dark" title="Delete">
+
+                                    <a href="javascript:void(0);" onclick="Confirm('{{$p->id}}')" class="btn btn-dark" title="Delete">
                                         <i class="fas fa-trash"></i>
                                     </a>
-                                    @endcan
                                 </td>
+
                             </tr>
                             @endforeach
                         </tbody>
                     </table>
-                    {{$categories->links()}}
+                    {{$proveedor->links()}}
                 </div>
             </div>
         </div>
     </div>
-    @include('livewire.category.form')
+    @include('livewire.proveedor.form')
 </div>
 
 <script>
@@ -69,21 +72,19 @@
             $('#theModal').modal('show');
             noty(msg)
         });
-        window.livewire.on('category-added', msg => {
+        window.livewire.on('pro-added', msg => {
+            $('#theModal').modal('hide');
+
+        });
+        window.livewire.on('item-updated', msg => {
             $('#theModal').modal('hide');
             noty(msg)
         });
-        window.livewire.on('category-updated', msg => {
-            $('#theModal').modal('hide');
-            noty(msg)
-        });
+
     });
 
-    function Confirm(id, products) {
-        if (products > 0) {
-            swal('NO SE PUEDE ELIMINAR LA CATEGORIA POR QUE EXISTEN PRODUCTOS RELACIONADOS')
-            return;
-        }
+    function Confirm(id) {
+
         swal({
             title: 'CONFIRMAR',
             text: '¿CONFIRMAS ELIMINAR EL REGISTRO?',
