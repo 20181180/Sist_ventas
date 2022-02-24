@@ -13,7 +13,7 @@ class ProductsController extends Component
     use WithPagination;
     use WithFileUploads;
 
-    public $name, $barcode, $cost, $price, $stock, $alerts, $categoryid, $search, $image, $selected_id, $pageTitle, $componentName;
+    public $name, $barcode, $cost, $price, $price_m, $stock, $alerts, $categoryid, $search, $image, $selected_id, $pageTitle, $componentName;
     private $pagination = 10;
 
     public function paginationView()
@@ -85,6 +85,7 @@ class ProductsController extends Component
             'name' => $this->name,
             'cost' => $this->cost,
             'price' => $this->price,
+            'price_mayoreo' => $this->price_m,
             'barcode' => $this->barcode,
             'stock' => $this->stock,
             'alerts' => $this->alerts,
@@ -111,6 +112,7 @@ class ProductsController extends Component
         $this->barcode = $product->barcode;
         $this->cost = $product->cost;
         $this->price = $product->price;
+        $this->price_mayoreo = $product->price_m;
         $this->stock = $product->stock;
         $this->alerts = $product->alerts;
         $this->categoryid = $product->category_id;

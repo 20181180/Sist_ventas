@@ -4,45 +4,42 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use Livewire\WithPagination;
-use App\Models\Company;
+use App\Models\Cliente;
 
-class ProvedoresController extends Component
+class ClientesController extends Component
 {
-
-    use WithPagination;
-
-    //declaracion de varibales
-    public $search, $name, $direc, $tel, $empresa, $selected_id, $pageTitle, $componentName;
+    public $search, $name, $direc, $tel, $correo, $selected_id, $pageTitle, $componentName;
 
     private $pagination = 4;
 
     public function mount()
     {
         $this->pageTitle = 'Listado';
-        $this->componentName = 'Proveedores';
+        $this->componentName = 'Clientes';
     }
 
     public function render()
     {
         if (strlen($this->search) > 0)
-            $data = Company::Where('name', 'like', '%' . $this->search . '%')->paginate($this->pagination);
+            $data = Cliente::Where('name', 'like', '%' . $this->search . '%')->paginate($this->pagination);
         else
-            $data = Company::orderBy('id', 'desc')->paginate($this->pagination);
-        return view('livewire.proveedor.componet', ['proveedor' => $data])
+            $data = Cliente::orderBy('id', 'desc')->paginate($this->pagination);
+
+        return view('livewire.clients.clientes', ['cliente' => $data])
             ->extends('layouts.theme.app')
             ->section('content');
     }
 
     public function Edit($id)
     {
-        $record = Company::find($id, ['id', 'name', 'address', 'phone', 'taxpayer_id']);
-        $this->name = $record->name;
-        $this->direc = $record->address;
-        $this->selected_id = $record->id;
-        $this->tel = $record->phone;
-        $this->empresa = $record->taxpayer_id;
+        $clien = Cliente::find($id, ['id', 'name', 'address', 'phone', 'email']);
+        $this->name = $clien->name;
+        $this->direc = $clien->address;
+        $this->selected_id = $clien->id;
+        $this->tel = $clien->phone;
+        $this->correo = $clien->email;
         //nos permite mostrar el modal con el elemento.
-        $this->emit('show-modal', 'show modal');
+        $this->emit('show-modal', 'Informacion del cliente');
     }
 
     public function Store()
@@ -51,7 +48,7 @@ class ProvedoresController extends Component
             'name' => 'required',
             'direc' => 'required',
             'tel' => 'required|max:10',
-            'empresa' => 'required'
+            'correo' => 'required|email',
         ];
 
         $messages = [
@@ -59,19 +56,21 @@ class ProvedoresController extends Component
             'direc.required' => 'Direccion obligatorio',
             'tel.required' => 'Ingrese un telefono',
             'tel.max' => 'Numero a digitos',
+            'correo.required' => 'El campo correo es obligatorio',
+            'correo.email' => 'Ingrese un correo valido',
         ];
 
         $this->validate($rules, $messages);
 
-        $companie = Company::create([
+        $clien = Cliente::create([
             'name' => $this->name,
             'address' => $this->direc,
             'phone' => $this->tel,
-            'taxpayer_id' => $this->empresa,
+            'email' => $this->correo,
         ]);
 
         $this->resetUI();
-        $this->emit('pro-added', 'Provedor Registrado con Exito.');
+        $this->emit('pro-added', 'Cliente Registrado con Exito.');
     }
 
     public function Update()
@@ -80,27 +79,26 @@ class ProvedoresController extends Component
             'name' => "required|unique:companies,name,{$this->selected_id}",
             'direc' => 'required',
             'tel' => 'required|max:10',
-            'empresa' => 'required',
+            'correo' => 'required|email',
         ];
         $messages = [
             'name.required' => 'El nombre es obligatorio',
-            'name.unique' => 'El valor que ingreso ya esta registrado',
             'direc.required' => 'Direccion obligatorio',
             'tel.required' => 'Ingrese un telefono',
             'tel.max' => 'Numero a digitos',
+            'correo.required' => 'El campo correo es obligatorio',
+            'correo.email' => 'Ingrese un correo valido',
         ];
 
         $this->validate($rules, $messages);
 
-        $companie = Company::find($this->selected_id);
-        $companie->update([
+        $clien = Cliente::find($this->selected_id);
+        $clien->update([
             'name' => $this->name,
             'address' => $this->direc,
             'phone' => $this->tel,
-            'taxpayer_id' => $this->empresa,
+            'email' => $this->correo,
         ]);
-
-
 
         $this->resetUI();
         $this->emit('item-updated', 'Datos Actualizados');
@@ -111,13 +109,13 @@ class ProvedoresController extends Component
         'deleteRow' => 'Destroy'
     ];
 
-    public function Destroy(Company $companie)
+    public function Destroy(Cliente $clien)
     {
         //$category = Category::find($id);
 
-        $companie->delete();
+        $clien->delete();
         $this->resetUI();
-        $this->emit('item-deleted', 'Denominacion Eliminada');
+        $this->emit('item-deleted', 'Cliente Eliminada');
     }
 
 
@@ -126,7 +124,7 @@ class ProvedoresController extends Component
         $this->name = '';
         $this->direc = '';
         $this->tel = '';
-        $this->empresa = '';
+        $this->correo = '';
         $this->search = '';
         $this->selected_id = 0;
     }

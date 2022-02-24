@@ -19,7 +19,7 @@ use App\Http\Livewire\CashoutController;
 use App\Http\Livewire\ProductsController;
 
 use App\Http\Livewire\CategoriesController;
-
+use App\Http\Livewire\ClientesController;
 use App\Http\Livewire\PermisosController;
 
 use App\Http\Livewire\ProvedoresController;
@@ -27,6 +27,7 @@ use App\Http\Livewire\ProvedoresController;
 use App\Http\Livewire\ReportsController;
 
 use App\Http\Livewire\UsersController;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -75,3 +76,4 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::get('proxd', ProvedoresController::class);
+Route::get('Client', ClientesController::class);

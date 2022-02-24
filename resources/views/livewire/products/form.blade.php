@@ -42,6 +42,16 @@
 
     <div class="col-sm-12 col-md-4">
         <div class="form-group">
+            <label>Precio Mayoreo *</label>
+            <input type="text" data-type="currency" wire:model.lazy="price_m" class="form-control" placeholder="ej: 0.00">
+            @error('price_m')
+            <span class="text-danger er">{{$message}}</span>
+            @enderror
+        </div>
+    </div>
+
+    <div class="col-sm-12 col-md-4">
+        <div class="form-group">
             <label>Stock *</label>
             <input type="number" wire:model.lazy="stock" class="form-control" placeholder="ej: 0">
             @error('stock')
