@@ -20,7 +20,6 @@ class CreateProductsTable extends Migration
             $table->decimal('cost', 10, 2);
             $table->decimal('price', 10, 2);
             $table->decimal('price_mayoreo', 10, 2);
-            $table->decimal('price_menudeo', 10, 2);
             $table->string('stock');
             $table->string('alerts');
             $table->string('image', 100)->nullable();

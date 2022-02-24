@@ -7,16 +7,8 @@
             <div class="card-body">
 
                 <div class="form-inline">
-                    <div class="form-group mr-5">
-                        <select wire:model="tipoVenta" class="form-control">
-                            <option value="Elegir" selected>== Selecciona Tipo ==</option>
-                                <option value="Mayoreo">Mayoreo</option>
-                                <option value="Menudeo">Menudeo</option>
-
-                        </select>
-                    </div>
-                    <button wire:click.prevent="SyncAll()" type="button" class="btn btn-dark mbmobile inblock mr-5">Sincronizar Todos</button>
-                    <button onclick="Revocar()" type="button" class="btn btn-dark mbmobile  mr-5">Revocar Todos</button>
+                    <button wire:click.prevent="SyncAll()" type="button" class="btn btn-dark mbmobile inblock mr-5 {{count($cart) <1 ? 'disabled' : '' }} ">Sincronizar Todos</button>
+                    <button onclick="Revocar()" type="button" class="btn btn-dark mbmobile  mr-5 {{count($cart) <1 ? 'disabled' : '' }} ">Revocar Todos</button>
                     {{$tipoventa}}
                 </div>
                 <br>
@@ -26,7 +18,7 @@
                     <table class="table table-bordered table-striped mt-1">
                         <thead class="text-white" style="background: #3B3F5C">
                             <tr>
-                                <th width="10%" class="table-th text-white">Mayoreo/Menudeo</th>
+                                <th width="10%" class="table-th text-white">Mayoreo</th>
                                 <th class="table-th text-left text-white">Imagen</th>
                                 <th class="table-th text-left text-white">DESCRIPCION</th>
                                 <th class="table-th text-center text-white">PRECIO</th>
@@ -42,10 +34,12 @@
                                     <div class="n-check">
                                         <label class="new-control new-checkbox checkbox-primary">
                                             <input type="checkbox"
-                                            id=""
-                                            value=""
+                                            wire:change="SyncPermiso($('#p' + {{$item->id
+                                            }}).is(':checked'), '{{$item->id}}')"
+                                            id="p{{ $item->id }}"
+                                            value="{{$item->id}}"
                                             class="new-control-input"
-
+                                            {{$item->checked == 1 ? 'checked' : ''}}
                                             >
                                             <span class="new-control-indicator"></span>
                                             <h6>hola amigos</h6>
@@ -55,7 +49,7 @@
                                 <td class="text-center table-th">
                                     @if (count($item->attributes) > 0)
                                     <span>
-                                        <img src="{{ asset('storage/products/' . $item->attributes[0]) }}" alt="imagen de productos" height="90" width="90" class="rounded">
+                                        <img src="{{ asset('storage/products/' . $item->attributes[0]) }}" alt="imagen de items" height="90" width="90" class="rounded">
                                     </span>
                                     @endif
                                 </td>
@@ -89,7 +83,7 @@
                     </table>
                 </div>
                 @else
-                <h5 class="text-center text-muted">Agregar productos a la venta</h5>
+                <h5 class="text-center text-muted">Agregar items a la venta</h5>
                 @endif
 
                 <div wire:loading.inline wire:target="saveSale">

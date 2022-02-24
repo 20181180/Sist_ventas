@@ -256,7 +256,27 @@ class PosController extends Component
         return Redirect::to("print:://$sale->id");
     }
 
-    public function mayoreo(){
+    public function SyncPermiso($state, $id){
+        $product = Product::find($id);
+        $item = Cart::get($id);
+        Cart::remove($id);
+
+
+
+        if($state=='true'){
+            Cart::add($product->id, $product->name, $product->price_mayoreo, $item->quantity , $product->image);
+            $this->emit('scan-ok', "Mayoreo producto: $product->name" );
+        }else{
+
+            Cart::add($product->id, $product->name, $product->price, $item->quantity , $product->image);
+            $this->emit('scan-ok', "Desmarcado producto: $product->name" );
+        }
+
+        $this->total = Cart::getTotal();
+        $this->puntos = (Cart::getTotal()) / 100 * 10;
+        $this->itemsQuantity = Cart::getTotalQuantity();
+
+
 
     }
 }
