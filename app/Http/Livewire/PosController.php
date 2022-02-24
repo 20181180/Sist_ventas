@@ -15,10 +15,11 @@ use Illuminate\Support\Facades\Auth;
 
 class PosController extends Component
 {
-    public $total, $itemsQuantity, $efectivo, $change, $valiente, $meri, $puntos;
+    public $tipoVenta,$total, $itemsQuantity, $efectivo, $change, $valiente, $meri, $puntos;
 
     public function mount()
     {
+        $this->tipoVenta = 'Elegir';
         $this->efectivo = 0;
         $this->change = 0;
         $this->total = Cart::getTotal();
@@ -27,12 +28,19 @@ class PosController extends Component
     }
     public function render()
     {
+
+
+
+
         return view('livewire.pos.component', [
             'denominations' => Denomination::orderBy('value', 'desc')->get(),
-            'cart' => Cart::getContent()->sortBy('name')
+            'cart' => Cart::getContent()->sortBy('name'),
+            'tipoventa' => $this->tipoVenta,
+
         ])
             ->extends('layouts.theme.app')
             ->section('content');
+
     }
     //el metodo a cash es para calcular el cambio
     public function ACash($value)
@@ -246,5 +254,9 @@ class PosController extends Component
     public function printTicket($sale)
     {
         return Redirect::to("print:://$sale->id");
+    }
+
+    public function mayoreo(){
+
     }
 }

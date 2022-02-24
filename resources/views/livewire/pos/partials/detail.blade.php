@@ -1,16 +1,33 @@
 <div class="connect-sorting">
 
+
+
     <div class="connect-sorting-content">
         <div class="card simple-title-task ui-sortable-handle">
             <div class="card-body">
+
+                <div class="form-inline">
+                    <div class="form-group mr-5">
+                        <select wire:model="tipoVenta" class="form-control">
+                            <option value="Elegir" selected>== Selecciona Tipo ==</option>
+                                <option value="Mayoreo">Mayoreo</option>
+                                <option value="Menudeo">Menudeo</option>
+
+                        </select>
+                    </div>
+                    <button wire:click.prevent="SyncAll()" type="button" class="btn btn-dark mbmobile inblock mr-5">Sincronizar Todos</button>
+                    <button onclick="Revocar()" type="button" class="btn btn-dark mbmobile  mr-5">Revocar Todos</button>
+                    {{$tipoventa}}
+                </div>
+                <br>
+
                 @if ($total > 0)
-
-
                 <div class="table-responsive tblscroll" style="max-height: 650px; overflow:hidden">
                     <table class="table table-bordered table-striped mt-1">
                         <thead class="text-white" style="background: #3B3F5C">
                             <tr>
-                                <th width="10%"></th>
+                                <th width="10%" class="table-th text-white">Mayoreo/Menudeo</th>
+                                <th class="table-th text-left text-white">Imagen</th>
                                 <th class="table-th text-left text-white">DESCRIPCION</th>
                                 <th class="table-th text-center text-white">PRECIO</th>
                                 <th width="13%" class="table-th text-center text-white">CANTIDAD</th>
@@ -21,6 +38,20 @@
                         <tbody>
                             @foreach ($cart as $item)
                             <tr>
+                                <td class="text-center">
+                                    <div class="n-check">
+                                        <label class="new-control new-checkbox checkbox-primary">
+                                            <input type="checkbox"
+                                            id=""
+                                            value=""
+                                            class="new-control-input"
+
+                                            >
+                                            <span class="new-control-indicator"></span>
+                                            <h6>hola amigos</h6>
+                                        </label>
+                                    </div>
+                                </td>
                                 <td class="text-center table-th">
                                     @if (count($item->attributes) > 0)
                                     <span>
