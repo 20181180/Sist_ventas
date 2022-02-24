@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Auth;
 
 class PosController extends Component
 {
-    public $tipoVenta,$total, $itemsQuantity, $efectivo, $change, $valiente, $meri, $puntos;
+    public $tipoVenta, $total, $itemsQuantity, $efectivo, $change, $valiente, $meri, $puntos;
 
     public function mount()
     {
@@ -28,10 +28,6 @@ class PosController extends Component
     }
     public function render()
     {
-
-
-
-
         return view('livewire.pos.component', [
             'denominations' => Denomination::orderBy('value', 'desc')->get(),
             'cart' => Cart::getContent()->sortBy('name'),
@@ -40,7 +36,6 @@ class PosController extends Component
         ])
             ->extends('layouts.theme.app')
             ->section('content');
-
     }
     //el metodo a cash es para calcular el cambio
     public function ACash($value)
@@ -190,7 +185,7 @@ class PosController extends Component
         $this->efectivo = 0;
         $this->change = 0;
         $this->total = Cart::getTotal();
-        $this->puntos = (Cart::getTotal());
+        $this->puntos = Cart::getTotal();
         $this->itemsQuantity = Cart::getTotalQuantity();
         $this->emit('scan-ok', 'Carrito vaciado...');
     }
@@ -241,6 +236,7 @@ class PosController extends Component
             Cart::clear(); //limpiamos e inicializamos las varibles..
             $this->efectivo = 0;
             $this->change = 0;
+            $this->puntos = 0;
             $this->total = Cart::getTotal();
             $this->itemsQuantity = Cart::getTotalQuantity();
             $this->emit('sale-ok', 'Venta procesado con Exito.');
@@ -256,12 +252,11 @@ class PosController extends Component
         return Redirect::to("print:://$sale->id");
     }
 
+
     public function SyncPermiso($state, $id){
         $product = Product::find($id);
         $item = Cart::get($id);
         Cart::remove($id);
-
-
 
         if($state=='true'){
             Cart::add($product->id, $product->name, $product->price_mayoreo, $item->quantity , $product->image);
@@ -275,8 +270,9 @@ class PosController extends Component
         $this->total = Cart::getTotal();
         $this->puntos = (Cart::getTotal()) / 100 * 10;
         $this->itemsQuantity = Cart::getTotalQuantity();
-
-
-
     }
+
+
+
+
 }
