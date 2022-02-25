@@ -33,16 +33,10 @@
                                 <td class="text-center">
                                     <div class="n-check">
                                         <label class="new-control new-checkbox checkbox-primary">
-                                            <input type="checkbox"
-                                            wire:change="SyncPermiso($('#p' + {{$item->id
-                                            }}).is(':checked'), '{{$item->id}}')"
-                                            id="p{{ $item->id }}"
-                                            value="{{$item->id}}"
-                                            class="new-control-input"
-                                            {{$item->checked == 1 ? 'checked' : ''}}
-                                            >
+                                            <input type="checkbox" wire:change="SyncPermiso($('#p' + {{$item->id
+                                            }}).is(':checked'), '{{$item->id}}')" id="p{{ $item->id }}" value="{{$item->id}}" class="new-control-input" {{$item->checked == 1 ? 'checked' : ''}}>
                                             <span class="new-control-indicator"></span>
-                                            <h6>hola amigos</h6>
+                                            <h6>M</h6>
                                         </label>
                                     </div>
                                 </td>
