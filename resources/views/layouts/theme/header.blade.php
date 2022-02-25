@@ -4,6 +4,7 @@
             <li class="nav-item theme-logo">
                 <a href="index.html">
                     <img src="assets/img/icon.png" class="navbar-logo" alt="logo">
+                    <span style="font-weight: bold;font-size: 18px;">MERIJOMECHATRONIC</span>
                 </a>
             </li>
         </ul>
