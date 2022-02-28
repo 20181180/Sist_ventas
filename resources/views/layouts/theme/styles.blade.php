@@ -23,6 +23,7 @@
 
     <link rel="stylesheet" href="{{ asset('css/custom_pdf.css')}}" type="text/css">
     <link rel="stylesheet" href="{{ asset('css/custom_page.css')}}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('estilos/style.css')}}" type="text/css">
 
     <style>
         aside {

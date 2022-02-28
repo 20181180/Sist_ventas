@@ -9,7 +9,7 @@
                 <div class="form-inline">
                     <button wire:click.prevent="SyncAll()" type="button" class="btn btn-dark mbmobile inblock mr-5 {{count($cart) <1 ? 'disabled' : '' }} ">Sincronizar Todos</button>
                     <button onclick="Revocar()" type="button" class="btn btn-dark mbmobile  mr-5 {{count($cart) <1 ? 'disabled' : '' }} ">Revocar Todos</button>
-                    {{$tipoventa}}
+
                 </div>
                 <br>
 
@@ -43,7 +43,7 @@
                                 <td class="text-center table-th">
                                     @if (count($item->attributes) > 0)
                                     <span>
-                                        <img src="{{ asset('storage/products/' . $item->attributes[0]) }}" alt="imagen de items" height="90" width="90" class="rounded">
+                                        <img class="zom" src="{{ asset('storage/products/' . $item->attributes[0]) }}" alt="imagen de items" height="90" width="90" class="rounded">
                                     </span>
                                     @endif
                                 </td>
@@ -82,7 +82,7 @@
 
                 <div wire:loading.inline wire:target="saveSale">
                     <h4 class="text-danger text-center">
-                        Guardando venta...
+                        Procesando venta, espere un momento...
                     </h4>
                 </div>
 
