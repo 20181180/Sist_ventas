@@ -8,6 +8,7 @@ use App\Models\Product;
 use Livewire\Component;
 use App\Models\SaleDetails;
 use App\Models\Denomination;
+use App\Models\Cliente;
 use Darryldecode\Cart\Facades\CartFacade as Cart;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -15,11 +16,12 @@ use Illuminate\Support\Facades\Auth;
 
 class PosController extends Component
 {
-    public $tipoVenta, $total, $itemsQuantity, $efectivo, $change, $valiente, $meri, $puntos;
+    public $tipoVenta, $client_id, $total, $itemsQuantity, $efectivo, $change, $valiente, $meri, $puntos;
 
     public function mount()
     {
         $this->tipoVenta = 'Elegir';
+        $this->client_id = 'Elegir';
         $this->efectivo = 0;
         $this->change = 0;
         $this->total = Cart::getTotal();
@@ -30,6 +32,7 @@ class PosController extends Component
     {
         return view('livewire.pos.component', [
             'denominations' => Denomination::orderBy('value', 'desc')->get(),
+            'clientes' => Cliente::orderBy('name', 'desc')->get(),
             'cart' => Cart::getContent()->sortBy('name'),
             'tipoventa' => $this->tipoVenta,
 
@@ -253,26 +256,23 @@ class PosController extends Component
     }
 
 
-    public function SyncPermiso($state, $id){
+    public function SyncPermiso($state, $id)
+    {
         $product = Product::find($id);
         $item = Cart::get($id);
         Cart::remove($id);
 
-        if($state=='true'){
-            Cart::add($product->id, $product->name, $product->price_mayoreo, $item->quantity , $product->image);
-            $this->emit('scan-ok', "Mayoreo producto: $product->name" );
-        }else{
+        if ($state == 'true') {
+            Cart::add($product->id, $product->name, $product->price_mayoreo, $item->quantity, $product->image);
+            $this->emit('scan-ok', "Mayoreo producto: $product->name");
+        } else {
 
-            Cart::add($product->id, $product->name, $product->price, $item->quantity , $product->image);
-            $this->emit('scan-ok', "Desmarcado producto: $product->name" );
+            Cart::add($product->id, $product->name, $product->price, $item->quantity, $product->image);
+            $this->emit('scan-ok', "Desmarcado producto: $product->name");
         }
 
         $this->total = Cart::getTotal();
         $this->puntos = (Cart::getTotal()) / 100 * 10;
         $this->itemsQuantity = Cart::getTotalQuantity();
     }
-
-
-
-
 }
