@@ -60,7 +60,7 @@
                                 </td>
                                 <td class="text-center">${{number_format($item->price,2)}}</td>
                                 <td>
-                                    <input type="number" id="r{{$item->id}}" wire:change="updateQty({{$item->id}}, $('#r' + {{$item->id}}).val())" style="font-size: 1rem!important" class="form-control text-center" value="{{$item->quantity}}">
+                                    <input type="number" id="r{{$item->id}}" wire:change="updateQty({{$item->id}},$('#p' + {{$item->id}}).is(':checked'), $('#r' + {{$item->id}}).val())" style="font-size: 1rem!important" class="form-control text-center" value="{{$item->quantity}}">
                                 </td>
                                 <td class="text-center">
                                     <h6>
@@ -74,7 +74,9 @@
                                     <button wire:click.prevent="decreaseQty({{$item->id}})" class="btn btn-dark mbmobile">
                                         <i class="fas fa-minus"> </i>
                                     </button>
-                                    <button wire:click.prevent="increaseQty({{$item->id}})" class="btn btn-dark mbmobile">
+                                    <button id="p{{$item->id}}" wire:click.prevent="increaseQty({{$item->id}},$('#p' + {{$item->id
+                                    }}).is(':checked'))"
+                                    class="btn btn-dark mbmobile">
                                         <i class="fa fa-cart-plus"></i>
                                     </button>
                                 </td>
