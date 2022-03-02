@@ -12,7 +12,7 @@ use App\Models\Cliente;
 use Darryldecode\Cart\Facades\CartFacade as Cart;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-
+//anadi una prueva
 
 class PosController extends Component
 {
