@@ -7,9 +7,11 @@
             <div class="card-body">
 
                 <div class="form-inline">
+                    @if($cheked==0)
                     <button wire:click.prevent="SyncAll()" type="button" class="btn btn-dark mbmobile inblock mr-5 {{count($cart) <1 ? 'disabled' : '' }} ">Sincronizar Todos</button>
-                    <button onclick="Revocar()" type="button" class="btn btn-dark mbmobile  mr-5 {{count($cart) <1 ? 'disabled' : '' }} ">Revocar Todos</button>
-
+                    @else
+                    <button wire:click.prevent="SyncDel()"  type="button" class="btn btn-dark mbmobile  mr-5 {{count($cart) <1 ? 'disabled' : '' }} ">Revocar Todos</button>
+                    @endif
                 </div>
                 <br>
 
@@ -33,8 +35,14 @@
                                 <td class="text-center">
                                     <div class="n-check">
                                         <label class="new-control new-checkbox checkbox-primary">
-                                            <input type="checkbox" wire:change="SyncPermiso($('#p' + {{$item->id
-                                            }}).is(':checked'), '{{$item->id}}')" id="p{{ $item->id }}" value="{{$item->id}}" class="new-control-input" {{$item->checked == 1 ? 'checked' : ''}}>
+                                            <input type="checkbox"
+                                            wire:change="SyncPermiso($('#p' + {{$item->id
+                                            }}).is(':checked'), '{{$item->id}}')"
+                                            id="p{{ $item->id }}"
+                                            value="{{$item->id}}"
+                                            class="new-control-input"
+                                            {{$cheked == 1 ? 'checked' : ''}}
+                                            >
                                             <span class="new-control-indicator"></span>
                                             <h6>M</h6>
                                         </label>
