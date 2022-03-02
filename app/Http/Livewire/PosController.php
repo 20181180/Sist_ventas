@@ -16,12 +16,14 @@ use Illuminate\Support\Facades\Auth;
 
 class PosController extends Component
 {
-    public $tipoVenta, $client_id, $total, $itemsQuantity, $efectivo, $change, $valiente, $meri, $puntos;
+    public $cheked,$estadoCheck,$producId,$tipoVenta, $client_id, $total, $itemsQuantity, $efectivo, $change, $valiente, $meri, $puntos;
 
     public function mount()
     {
         $this->tipoVenta = 'Elegir';
         $this->client_id = 'Elegir';
+        $this->estadoCheck='false';
+        $this->cheked='0';
         $this->efectivo = 0;
         $this->change = 0;
         $this->total = Cart::getTotal();
@@ -75,7 +77,7 @@ class PosController extends Component
         } else {
             if ($this->InCart($product->id)) {
 
-                $this->increaseQty($product->id);
+                $this->increaseQty($product->id,$this->estadoCheck);
                 return;
             }
             if ($product->stock < 1) {
@@ -101,7 +103,7 @@ class PosController extends Component
             return false;
     }
     //actualiza la cantidad de la existencia del producto
-    public function increaseQty($productId, $cant = 1)
+    public function increaseQty($productId, $state, $cant = 1)
     {
         $title = '';
         $product = Product::find($productId);
@@ -117,8 +119,14 @@ class PosController extends Component
                 return;
             }
         }
-        Cart::add($product->id, $product->name, $product->price, $cant, $product->image);
+        if($state=='true'){
+            Cart::add($product->id, $product->name, $product->price_mayoreo, $cant , $product->image);
 
+        }else{
+
+            Cart::add($product->id, $product->name, $product->price, $cant , $product->image);
+
+        }
         $this->total = Cart::getTotal();
         $this->puntos = (Cart::getTotal()) / 100 * 10;
         $this->itemsQuantity = Cart::getTotalQuantity();
@@ -127,7 +135,7 @@ class PosController extends Component
     }
 
     //reemplaza el registro del carrito
-    public function updateQty($productId, $cant = 1)
+    public function updateQty($productId,$state,$cant = 1)
     {
         $title = '';
         $product = Product::find($productId);
@@ -146,8 +154,14 @@ class PosController extends Component
         $this->removeItem($productId);
 
         if ($cant > 0) {
-            Cart::add($product->id, $product->name, $product->price, $cant, $product->image);
+            if($state=='true'){
+                Cart::add($product->id, $product->name, $product->price_mayoreo, $cant , $product->image);
 
+            }else{
+
+                Cart::add($product->id, $product->name, $product->price, $cant , $product->image);
+
+            }
             $this->total = Cart::getTotal();
             $this->puntos = (Cart::getTotal()) / 100 * 10;
             $this->itemsQuantity = Cart::getTotalQuantity();
@@ -260,19 +274,41 @@ class PosController extends Component
     {
         $product = Product::find($id);
         $item = Cart::get($id);
+        $cart=Cart::getContent()->sortBy('name');
         Cart::remove($id);
 
-        if ($state == 'true') {
-            Cart::add($product->id, $product->name, $product->price_mayoreo, $item->quantity, $product->image);
-            $this->emit('scan-ok', "Mayoreo producto: $product->name");
-        } else {
+        if($state=='true'){
+            Cart::add($product->id, $product->name, $product->price_mayoreo, $item->quantity , $product->image);
+            $title='Mayoreo producto:';
 
-            Cart::add($product->id, $product->name, $product->price, $item->quantity, $product->image);
-            $this->emit('scan-ok', "Desmarcado producto: $product->name");
+        }else{
+
+            Cart::add($product->id, $product->name, $product->price, $item->quantity , $product->image);
+            $title='Menudeo producto:';
         }
 
+        $this->estadoCheck=$state;
+        $this->producId=$id;
         $this->total = Cart::getTotal();
         $this->puntos = (Cart::getTotal()) / 100 * 10;
         $this->itemsQuantity = Cart::getTotalQuantity();
+        $this->emit('scan-ok', "$title $product->name" );
+    }
+    public function SyncAll(){
+
+        $this->cheked= 1;
+        $cart=Cart::getContent()->sortBy('name');
+        foreach($cart as $c){
+            $this->SyncPermiso('true',$c->id);
+        }
+
+    }
+    public function SyncDel(){
+        $this->cheked= 0;
+        $cart=Cart::getContent()->sortBy('name');
+        foreach($cart as $c){
+            $this->SyncPermiso('false',$c->id);
+        }
+
     }
 }
