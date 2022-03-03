@@ -1,19 +1,25 @@
 <div class="connect-sorting">
 
 
-
     <div class="connect-sorting-content">
-        <div class="card simple-title-task ui-sortable-handle">
-            <div class="card-body">
 
+        <div class="card simple-title-task ui-sortable-handle">
+            <div class="widget-heading">
+                <ul class="tabs tab-pills">
+                    <li><a href="javascript:void(0);" class="tabmenu " style="background-color: #2666CF;" data-toggle="modal" data-target="#theModal">Agregar</a></li>
+                </ul>
+            </div>
+
+            <div class="card-body">
                 <div class="form-inline">
                     @if($cheked==0)
                     <button wire:click.prevent="SyncAll()" type="button" class="btn btn-dark mbmobile inblock mr-5 {{count($cart) <1 ? 'disabled' : '' }} ">Sincronizar Todos</button>
                     @else
-                    <button wire:click.prevent="SyncDel()"  type="button" class="btn btn-dark mbmobile  mr-5 {{count($cart) <1 ? 'disabled' : '' }} ">Revocar Todos</button>
+                    <button wire:click.prevent="SyncDel()" type="button" class="btn btn-dark mbmobile  mr-5 {{count($cart) <1 ? 'disabled' : '' }} ">Revocar Todos</button>
                     @endif
                 </div>
                 <br>
+
 
                 @if ($total > 0)
                 <div class="table-responsive tblscroll" style="max-height: 650px; overflow:hidden">
@@ -35,14 +41,8 @@
                                 <td class="text-center">
                                     <div class="n-check">
                                         <label class="new-control new-checkbox checkbox-primary">
-                                            <input type="checkbox"
-                                            wire:change="SyncPermiso($('#p' + {{$item->id
-                                            }}).is(':checked'), '{{$item->id}}')"
-                                            id="p{{ $item->id }}"
-                                            value="{{$item->id}}"
-                                            class="new-control-input"
-                                            {{$cheked == 1 ? 'checked' : ''}}
-                                            >
+                                            <input type="checkbox" wire:change="SyncPermiso($('#p' + {{$item->id
+                                            }}).is(':checked'), '{{$item->id}}')" id="p{{ $item->id }}" value="{{$item->id}}" class="new-control-input" {{$cheked == 1 ? 'checked' : ''}}>
                                             <span class="new-control-indicator"></span>
                                             <h6>M</h6>
                                         </label>
@@ -75,8 +75,7 @@
                                         <i class="fas fa-minus"> </i>
                                     </button>
                                     <button id="p{{$item->id}}" wire:click.prevent="increaseQty({{$item->id}},$('#p' + {{$item->id
-                                    }}).is(':checked'))"
-                                    class="btn btn-dark mbmobile">
+                                    }}).is(':checked'))" class="btn btn-dark mbmobile">
                                         <i class="fa fa-cart-plus"></i>
                                     </button>
                                 </td>
@@ -99,4 +98,30 @@
             </div>
         </div>
     </div>
+    @include('livewire.pos.form')
 </div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+        window.livewire.on('product-added', msg => {
+            $('#theModal').modal('hide');
+        });
+        window.livewire.on('product-updated', msg => {
+            $('#theModal').modal('hide');
+        });
+        window.livewire.on('product-deleted', msg => {
+            //noty
+        });
+        window.livewire.on('modal-show', msg => {
+            $('#theModal').modal('show');
+        });
+        window.livewire.on('modal-hide', msg => {
+            $('#theModal').modal('hide');
+        });
+        window.livewire.on('hidden.bs.modal', msg => {
+            $('.er').css('display', 'none');
+        });
+    })
+</script>

@@ -1,0 +1,70 @@
+<div wire:ignore.self class="modal fade" id="theModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-dark">
+                <h5 class="modal-title text-white">
+                    <b> Productos</b> Buscar
+                </h5>
+                <h6 class="text-center text-warnig" wire:loading>POR FAVOR ESPERE...</h6>
+            </div>
+            @include('commont.searchbox')
+            <div class="modal-body">
+
+                <div class="widget-content">
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped  mt-1">
+                            <thead class="text-white" style="background: #2666CF">
+                                <tr>
+                                    <th class="table-th text-white">NOMBRE</th>
+                                    <th class="table-th text-white text-center">CODIGO BARRA</th>
+                                    <th class="table-th text-white text-center">AGREGAR</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($products as $product)
+
+                                <tr>
+                                    <td>
+                                        <h6>{{$product->name}}</h6>
+                                    </td>
+                                    <td>
+                                        <h6 class="text-center">{{$product->barcode}}</h6>
+                                    </td>
+
+                                    <td class="text-center">
+                                        <a href="javascript:void(0);" id="code" type="text" wire:keydown.enter.prevent="$emit('scan-code',$('#code').val())" class="btn btn-dark mtmobile" title="Edit">
+                                            <i class="fa fa-cart-plus"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" wire:click.prevent="resetUI()" class="btn btn-dark close-btn text-info" data-dismiss="modal">
+                        CERRAR
+                    </button>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            livewire.on('scan-code', action => {
+                $('#code').val('');
+            });
+            /* window.livewire.on('category-added', msg => {
+                 $('#theModal').modal('hide');
+             });
+             window.livewire.on('category-updated', msg => {
+                 $('#theModal').modal('hide');
+             });*/
+        });
+    </script>

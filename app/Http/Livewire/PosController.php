@@ -16,14 +16,14 @@ use Illuminate\Support\Facades\Auth;
 
 class PosController extends Component
 {
-    public $cheked,$estadoCheck,$producId,$tipoVenta, $client_id, $total, $itemsQuantity, $efectivo, $change, $valiente, $meri, $puntos;
+    public $cheked, $search, $estadoCheck, $producId, $tipoVenta, $client_id, $total, $itemsQuantity, $efectivo, $change, $valiente, $meri, $puntos;
 
     public function mount()
     {
         $this->tipoVenta = 'Elegir';
         $this->client_id = 'Elegir';
-        $this->estadoCheck='false';
-        $this->cheked='0';
+        $this->estadoCheck = 'false';
+        $this->cheked = '0';
         $this->efectivo = 0;
         $this->change = 0;
         $this->total = Cart::getTotal();
@@ -32,8 +32,14 @@ class PosController extends Component
     }
     public function render()
     {
+        if (strlen($this->search) > 0)
+            $data = Product::Where('name', 'like', '%' . $this->search . '%')->get();
+        else
+            $data = Product::orderBy('name', 'desc')->get();
+
         return view('livewire.pos.component', [
             'denominations' => Denomination::orderBy('value', 'desc')->get(),
+            'products' => $data,
             'clientes' => Cliente::orderBy('name', 'desc')->get(),
             'cart' => Cart::getContent()->sortBy('name'),
             'tipoventa' => $this->tipoVenta,
@@ -77,7 +83,7 @@ class PosController extends Component
         } else {
             if ($this->InCart($product->id)) {
 
-                $this->increaseQty($product->id,$this->estadoCheck);
+                $this->increaseQty($product->id, $this->estadoCheck);
                 return;
             }
             if ($product->stock < 1) {
@@ -119,13 +125,11 @@ class PosController extends Component
                 return;
             }
         }
-        if($state=='true'){
-            Cart::add($product->id, $product->name, $product->price_mayoreo, $cant , $product->image);
+        if ($state == 'true') {
+            Cart::add($product->id, $product->name, $product->price_mayoreo, $cant, $product->image);
+        } else {
 
-        }else{
-
-            Cart::add($product->id, $product->name, $product->price, $cant , $product->image);
-
+            Cart::add($product->id, $product->name, $product->price, $cant, $product->image);
         }
         $this->total = Cart::getTotal();
         $this->puntos = (Cart::getTotal()) / 100 * 10;
@@ -135,7 +139,7 @@ class PosController extends Component
     }
 
     //reemplaza el registro del carrito
-    public function updateQty($productId,$state,$cant = 1)
+    public function updateQty($productId, $state, $cant = 1)
     {
         $title = '';
         $product = Product::find($productId);
@@ -154,13 +158,11 @@ class PosController extends Component
         $this->removeItem($productId);
 
         if ($cant > 0) {
-            if($state=='true'){
-                Cart::add($product->id, $product->name, $product->price_mayoreo, $cant , $product->image);
+            if ($state == 'true') {
+                Cart::add($product->id, $product->name, $product->price_mayoreo, $cant, $product->image);
+            } else {
 
-            }else{
-
-                Cart::add($product->id, $product->name, $product->price, $cant , $product->image);
-
+                Cart::add($product->id, $product->name, $product->price, $cant, $product->image);
             }
             $this->total = Cart::getTotal();
             $this->puntos = (Cart::getTotal()) / 100 * 10;
@@ -274,41 +276,47 @@ class PosController extends Component
     {
         $product = Product::find($id);
         $item = Cart::get($id);
-        $cart=Cart::getContent()->sortBy('name');
+        $cart = Cart::getContent()->sortBy('name');
         Cart::remove($id);
 
-        if($state=='true'){
-            Cart::add($product->id, $product->name, $product->price_mayoreo, $item->quantity , $product->image);
-            $title='Mayoreo producto:';
+        if ($state == 'true') {
+            Cart::add($product->id, $product->name, $product->price_mayoreo, $item->quantity, $product->image);
+            $title = 'Mayoreo producto:';
+        } else {
 
-        }else{
-
-            Cart::add($product->id, $product->name, $product->price, $item->quantity , $product->image);
-            $title='Menudeo producto:';
+            Cart::add($product->id, $product->name, $product->price, $item->quantity, $product->image);
+            $title = 'Menudeo producto:';
         }
 
-        $this->estadoCheck=$state;
-        $this->producId=$id;
+        $this->estadoCheck = $state;
+        $this->producId = $id;
         $this->total = Cart::getTotal();
         $this->puntos = (Cart::getTotal()) / 100 * 10;
         $this->itemsQuantity = Cart::getTotalQuantity();
-        $this->emit('scan-ok', "$title $product->name" );
+        $this->emit('scan-ok', "$title $product->name");
     }
-    public function SyncAll(){
+    public function SyncAll()
+    {
 
-        $this->cheked= 1;
-        $cart=Cart::getContent()->sortBy('name');
-        foreach($cart as $c){
-            $this->SyncPermiso('true',$c->id);
+        $this->cheked = 1;
+        $cart = Cart::getContent()->sortBy('name');
+        foreach ($cart as $c) {
+            $this->SyncPermiso('true', $c->id);
         }
-
     }
-    public function SyncDel(){
-        $this->cheked= 0;
-        $cart=Cart::getContent()->sortBy('name');
-        foreach($cart as $c){
-            $this->SyncPermiso('false',$c->id);
+    public function SyncDel()
+    {
+        $this->cheked = 0;
+        $cart = Cart::getContent()->sortBy('name');
+        foreach ($cart as $c) {
+            $this->SyncPermiso('false', $c->id);
         }
+    }
 
+    public function resetUI()
+    {
+        $this->name = '';
+
+        $this->barcode = '';
     }
 }
