@@ -316,7 +316,7 @@ class PosController extends Component
     public function resetUI()
     {
         $this->name = '';
-
         $this->barcode = '';
+        $this->search = '';
     }
 }
