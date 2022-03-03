@@ -2,11 +2,12 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header bg-dark">
-                <h5 class="modal-title text-white">
-                    <b> Productos</b> Buscar
+                <h5 class="modal-title text-white text-center">
+                    <b class="text-center"> FORMULARIO DE BUSQUEDA</b>
                 </h5>
                 <h6 class="text-center text-warnig" wire:loading>POR FAVOR ESPERE...</h6>
             </div>
+            <br>
             @include('commont.searchbox')
             <div class="modal-body">
 
@@ -16,8 +17,8 @@
                         <table class="table table-bordered table-striped  mt-1">
                             <thead class="text-white" style="background: #2666CF">
                                 <tr>
-                                    <th class="table-th text-white">IMAGEN</th>
                                     <th class="table-th text-white text-center">NOMBRE</th>
+                                    <th class="table-th text-white">IMAGEN</th>
                                     <th class="table-th text-white text-center">CODIGO BARRA</th>
                                     <th class="table-th text-white text-center">AGREGAR</th>
                                 </tr>
@@ -26,20 +27,21 @@
                                 @foreach ($products as $product)
 
                                 <tr>
+
                                     <td>
-									<span>
-										<img src=" {{asset('storage/' . $product->imagen )}}" onclick="ShowImg('{{ asset('storage/' . $product->imagen) }}','{{$product->name}}')" height="70" width="80" class="rounded zom" alt="no-image">
-									</span>
+                                        <h6 class="text">{{$product->name}}</h6>
                                     </td>
                                     <td>
-                                        <h6 class="text-center">{{$product->name}}</h6>
+                                        <span>
+                                            <img src=" {{asset('storage/' . $product->imagen )}}" onclick="ShowImg('{{ asset('storage/' . $product->imagen) }}','{{$product->name}}')" height="70" width="80" class="rounded zom" alt="no-image">
+                                        </span>
                                     </td>
                                     <td>
                                         <h6 class="text-center">{{$product->barcode}}</h6>
                                     </td>
 
                                     <td class="text-center">
-                                        <a href="javascript:void(0);"  type="text" wire:click.prevent="ScanCode({{$product->barcode}})"  class="btn btn-dark mtmobile" title="Edit">
+                                        <a href="javascript:void(0);" type="text" wire:click.prevent="ScanCode({{$product->barcode}})" class="btn btn-dark mtmobile" title="Edit">
                                             <i class="fa fa-cart-plus"></i>
                                         </a>
                                     </td>
