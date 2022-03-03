@@ -4,11 +4,6 @@
     <div class="connect-sorting-content">
 
         <div class="card simple-title-task ui-sortable-handle">
-            <div class="widget-heading">
-                <ul class="tabs tab-pills">
-                    <li><a href="javascript:void(0);" class="tabmenu " style="background-color: #2666CF;" data-toggle="modal" data-target="#theModal">Agregar</a></li>
-                </ul>
-            </div>
 
             <div class="card-body">
                 <div class="form-inline">
@@ -17,13 +12,13 @@
                     @else
                     <button wire:click.prevent="SyncDel()" type="button" class="btn btn-dark mbmobile  mr-5 {{count($cart) <1 ? 'disabled' : '' }} ">Revocar Todos</button>
                     @endif
+                    <button  class="tabmenu btn mbmobile text-white  mr-5" data-toggle="modal" data-target="#theModal" style="background: #2666CF">Buscar producto</button>
                 </div>
-                <br>
 
 
                 @if ($total > 0)
                 <div class="table-responsive tblscroll" style="max-height: 650px; overflow:hidden">
-                    <table class="table table-bordered table-striped mt-1">
+                    <table class="table table-bordered table-striped mt-3">
                         <thead class="text-white" style="background: #3B3F5C">
                             <tr>
                                 <th width="10%" class="table-th text-white">Mayoreo</th>
@@ -51,7 +46,7 @@
                                 <td class="text-center table-th">
                                     @if (count($item->attributes) > 0)
                                     <span>
-                                        <img class="zom" src="{{ asset('storage/products/' . $item->attributes[0]) }}" alt="imagen de items" height="90" width="90" class="rounded">
+                                        <img src="{{ asset('storage/products/' . $item->attributes[0]) }}" onclick="ShowImg('{{ asset('storage/products/' . $item->attributes[0]) }}','{{$item->name}}')" alt="no-image" height="70" width="80" class="rounded zom">
                                     </span>
                                     @endif
                                 </td>
@@ -98,7 +93,7 @@
             </div>
         </div>
     </div>
-    @include('livewire.pos.form')
+
 </div>
 
 

@@ -10,7 +10,7 @@
 
     <link href="{{ asset('assets/css/elements/avatar.css') }}" rel="stylesheet" type="text/css" />
 
-    <link href="{{ asset('plugins/sweetalerts/sweetalert.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('plugins/sweetalerts/sweetalert.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('plugins/notification/snackbar/snackbar.min.css') }}" rel="stylesheet" type="text/css" />
 
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet" type="text/css" />
