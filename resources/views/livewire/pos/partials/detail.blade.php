@@ -32,7 +32,7 @@
                         </thead>
                         <tbody>
                             @foreach ($cart as $item)
-                            <tr class="{{$colorStock == $item->id ? 'bg-primary' : '' }}">
+                            <tr >
                                 <td class="text-center">
                                     <div class="n-check">
                                         {{$item->id}}
@@ -55,7 +55,7 @@
                                     <h6>{{$item->name}}</h6>
                                 </td>
                                 <td class="text-center">${{number_format($item->price,2)}}</td>
-                                <td>
+                                <td class="{{$colorStock == $item->id ? 'bg-primary' : '' }}">
                                     <input type="number" id="r{{$item->id}}" wire:change="updateQty({{$item->id}},$('#p' + {{$item->id}}).is(':checked'), $('#r' + {{$item->id}}).val())" style="font-size: 1rem!important" class="form-control text-center" value="{{$item->quantity}}">
                                 </td>
                                 <td class="text-center">
