@@ -16,10 +16,11 @@ use Illuminate\Support\Facades\Auth;
 
 class PosController extends Component
 {
-    public $cheked, $search, $estadoCheck, $producId, $tipoVenta, $client_id, $total, $itemsQuantity, $efectivo, $change, $valiente, $meri, $puntos;
+    public $colorStock, $cheked, $search, $estadoCheck, $producId, $tipoVenta, $client_id, $total, $itemsQuantity, $efectivo, $change, $valiente, $meri, $puntos;
 
     public function mount()
     {
+        $this->colorStock='';
         $this->tipoVenta = 'Elegir';
         $this->client_id = 'Elegir';
         $this->estadoCheck = 'false';
@@ -32,6 +33,7 @@ class PosController extends Component
     }
     public function render()
     {
+
         if (strlen($this->search) > 0)
             $data = Product::Where('name', 'like', '%' . $this->search . '%')->get();
         else
@@ -121,7 +123,8 @@ class PosController extends Component
 
         if ($exist) {
             if ($product->stock < ($cant + $exist->quantity)) {
-                $this->emit('no-stock', 'Stock insuficiente');
+                $this->stockcolores($productId);
+                $this->emit('no-stock', 'Stock insuficiente1');
                 return;
             }
         }
@@ -312,11 +315,34 @@ class PosController extends Component
             $this->SyncPermiso('false', $c->id);
         }
     }
+    public function stockcolores($productId)
+    {
+        $da = Product::find($productId);
+        $cart = Cart::get($productId);
+       // $cart=Cart::getContent()->sortBy('name');
+
+
+       $car=Cart::getContent()->sortBy('name');
+       foreach($car as $c){
+          // $da = Product::Where('name', $c->id)->get();
+           if($da->stock < $da->alerts){
+               $this->colorStock=$cart->id;
+                $datis=[
+                    'barcode'=>$cart->barcode,
+                    'id'=>$cart->id
+                ];
+           }else{
+               $this->colorStock='0';
+           }
+       }
+
+    }
 
     public function resetUI()
     {
         $this->name = '';
+
         $this->barcode = '';
-        $this->search = '';
     }
+
 }

@@ -18,7 +18,7 @@
 
                 @if ($total > 0)
                 <div class="table-responsive tblscroll" style="max-height: 650px; overflow:hidden">
-                    <table class="table table-bordered table-striped mt-3">
+                    <table class="table table-bordered  mt-3">
                         <thead class="text-white" style="background: #3B3F5C">
                             <tr>
                                 <th width="10%" class="table-th text-white">Mayoreo</th>
@@ -32,9 +32,10 @@
                         </thead>
                         <tbody>
                             @foreach ($cart as $item)
-                            <tr>
+                            <tr class="{{$colorStock == $item->id ? 'bg-primary' : '' }}">
                                 <td class="text-center">
                                     <div class="n-check">
+                                        {{$item->id}}
                                         <label class="new-control new-checkbox checkbox-primary">
                                             <input type="checkbox" wire:change="SyncPermiso($('#p' + {{$item->id
                                             }}).is(':checked'), '{{$item->id}}')" id="p{{ $item->id }}" value="{{$item->id}}" class="new-control-input" {{$cheked == 1 ? 'checked' : ''}}>
