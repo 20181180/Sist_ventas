@@ -9,6 +9,7 @@ use Livewire\Component;
 use App\Models\SaleDetails;
 use App\Models\Denomination;
 use App\Models\Cliente;
+use App\Models\Cotizaciones;
 use Darryldecode\Cart\Facades\CartFacade as Cart;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -16,11 +17,11 @@ use Illuminate\Support\Facades\Auth;
 
 class PosController extends Component
 {
-    public $colorStock, $cheked, $search, $estadoCheck, $producId, $tipoVenta, $client_id, $total, $itemsQuantity, $efectivo, $change, $valiente, $meri, $puntos;
+    public $colorStock, $cheked, $searchD, $search, $estadoCheck, $producId, $tipoVenta, $client_id, $total, $itemsQuantity, $efectivo, $change, $valiente, $meri, $puntos;
 
     public function mount()
     {
-        $this->colorStock='';
+        $this->colorStock = '';
         $this->tipoVenta = 'Elegir';
         $this->client_id = 'Elegir';
         $this->estadoCheck = 'false';
@@ -39,9 +40,18 @@ class PosController extends Component
         else
             $data = Product::orderBy('name', 'desc')->get();
 
+
+        if (strlen($this->searchD) > 0) {
+            $dataD = Cotizaciones::Where('clave_id', 'like', '%' . $this->searchD . '%')->get();
+        } else
+            $dataD = Cotizaciones::orderBy('name', 'desc');
+
+
+
         return view('livewire.pos.component', [
             'denominations' => Denomination::orderBy('value', 'desc')->get(),
             'products' => $data,
+            'cotiza' => $dataD,
             'clientes' => Cliente::orderBy('name', 'desc')->get(),
             'cart' => Cart::getContent()->sortBy('name'),
             'tipoventa' => $this->tipoVenta,
@@ -78,7 +88,7 @@ class PosController extends Component
     //este evento es pra escanear el codigo de barras
     public function ScanCode($barcode, $cant = 1)
     {
-        $product = Product::where('barcode', $barcode)->first();
+        $product = Product::where('barcode', $barcode)->orWhere('name', $barcode)->first();
 
         if ($product == null) {
             $this->emit('scan-notfound', 'El producto no esta registrado');
@@ -235,6 +245,7 @@ class PosController extends Component
                 'dinero' => $this->efectivo,
                 'cambio' => $this->change,
                 'user_id' => Auth()->user()->id,
+                'client_id' => $this->client_id,
             ]);
 
             if ($sale) {
@@ -259,6 +270,7 @@ class PosController extends Component
             $this->efectivo = 0;
             $this->change = 0;
             $this->puntos = 0;
+            $this->client_id = '';
             $this->total = Cart::getTotal();
             $this->itemsQuantity = Cart::getTotalQuantity();
             $this->emit('sale-ok', 'Venta procesado con Exito.');
@@ -319,30 +331,30 @@ class PosController extends Component
     {
         $da = Product::find($productId);
         $cart = Cart::get($productId);
-       // $cart=Cart::getContent()->sortBy('name');
+        // $cart=Cart::getContent()->sortBy('name');
 
 
-       $car=Cart::getContent()->sortBy('name');
-       foreach($car as $c){
-          // $da = Product::Where('name', $c->id)->get();
-           if($da->stock < $da->alerts){
-               $this->colorStock=$cart->id;
-                $datis=[
-                    'barcode'=>$cart->barcode,
-                    'id'=>$cart->id
+        $car = Cart::getContent()->sortBy('name');
+        foreach ($car as $c) {
+            // $da = Product::Where('name', $c->id)->get();
+            if ($da->stock < $da->alerts) {
+                $this->colorStock = $cart->id;
+                $datis = [
+                    'barcode' => $cart->barcode,
+                    'id' => $cart->id
                 ];
-           }else{
-               $this->colorStock='0';
-           }
-       }
-
+            } else {
+                $this->colorStock = '0';
+            }
+        }
     }
 
     public function resetUI()
     {
         $this->name = '';
-
+        $this->client_id = '';
         $this->barcode = '';
+        $this->search = '';
+        $this->searchD = '';
     }
-
 }

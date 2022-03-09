@@ -15,8 +15,9 @@
             @include('livewire.pos.partials.coins')
         </div>
         @include('livewire.pos.form')
-    </div>
 
+    </div>
+    @include('livewire.pos.formD')
 </div>
 
 <script src="{{ asset('js/onscan.js') }}"></script>

@@ -19,8 +19,6 @@ class CotizacionController extends Controller
     {
         $data = [];
 
-
-
         $data = Cart::getContent()->sortBy('name');
         $user = Auth::user()->name;
 

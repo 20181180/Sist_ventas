@@ -12,7 +12,8 @@
                     @else
                     <button wire:click.prevent="SyncDel()" type="button" class="btn btn-dark mbmobile  mr-5 {{count($cart) <1 ? 'disabled' : '' }} ">Revocar Todos</button>
                     @endif
-                    <button  class="tabmenu btn mbmobile text-white  mr-5" data-toggle="modal" data-target="#theModal" style="background: #2666CF">Buscar producto</button>
+                    <button class="tabmenu btn mbmobile text-white  mr-5" data-toggle="modal" data-target="#theModal" style="background: #2666CF">Buscar producto</button>
+                    <button class="tabmenu btn mbmobile text-white  mr-5" data-toggle="modal" data-target="#Modal2" style="background: #3B3F5C">Buscar Cotizacion</button>
                 </div>
 
 
@@ -32,7 +33,7 @@
                         </thead>
                         <tbody>
                             @foreach ($cart as $item)
-                            <tr >
+                            <tr>
                                 <td class="text-center">
                                     <div class="n-check">
                                         {{$item->id}}
@@ -76,7 +77,7 @@
                                     </button>
                                 </td>
                             </tr>
-<!--comentario-->
+                            <!--comentario-->
                             @endforeach
                         </tbody>
                     </table>
@@ -98,23 +99,16 @@
 </div>
 
 
+
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
 
-        window.livewire.on('product-added', msg => {
-            $('#theModal').modal('hide');
-        });
-        window.livewire.on('product-updated', msg => {
-            $('#theModal').modal('hide');
-        });
-        window.livewire.on('product-deleted', msg => {
-            //noty
-        });
         window.livewire.on('modal-show', msg => {
-            $('#theModal').modal('show');
+            $('#Modal2').modal('show');
         });
         window.livewire.on('modal-hide', msg => {
-            $('#theModal').modal('hide');
+            $('#theModal2').modal('hide');
         });
         window.livewire.on('hidden.bs.modal', msg => {
             $('.er').css('display', 'none');
