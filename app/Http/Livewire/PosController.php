@@ -40,23 +40,19 @@ class PosController extends Component
         else
             $data = Product::orderBy('name', 'desc')->get();
 
-<<<<<<< HEAD
+
 
         if (strlen($this->searchD) > 0) {
             $dataD = Cotizaciones::Where('clave_id', 'like', '%' . $this->searchD . '%')->get();
         } else
             $dataD = Cotizaciones::orderBy('name', 'desc');
 
-
-=======
-            foreach($cart as $c)
-            {
-                $product = Product::find($c->id);
-               if($c->quantity>=$product->stock){
-                    $c->marcado=1;
-               }
+        foreach ($cart as $c) {
+            $product = Product::find($c->id);
+            if ($c->quantity >= $product->stock) {
+                $c->marcado = 1;
             }
->>>>>>> fb59512362a07d2631e6be0188042115d4c21cc2
+        }
 
         return view('livewire.pos.component', [
             'denominations' => Denomination::orderBy('value', 'desc')->get(),
@@ -337,7 +333,7 @@ class PosController extends Component
             $this->SyncPermiso('false', $c->id);
         }
     }
-<<<<<<< HEAD
+
     public function stockcolores($productId)
     {
         $da = Product::find($productId);
@@ -359,9 +355,6 @@ class PosController extends Component
             }
         }
     }
-=======
-
->>>>>>> fb59512362a07d2631e6be0188042115d4c21cc2
 
     public function resetUI()
     {
