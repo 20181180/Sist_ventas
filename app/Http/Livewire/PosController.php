@@ -53,7 +53,7 @@ class PosController extends Component
                 $c->marcado = 1;
             }
         }
-        
+
         return view('livewire.pos.component', [
             'denominations' => Denomination::orderBy('value', 'desc')->get(),
             'products' => $data,

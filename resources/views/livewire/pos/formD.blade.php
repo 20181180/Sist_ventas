@@ -23,7 +23,6 @@
             </div>
 
             <div class="modal-body">
-
                 <div class="widget-content">
 
                     <div class="table-responsive">
@@ -32,21 +31,24 @@
                                 <tr>
                                     <th class="table-th text-white text-center">NOMBRE</th>
                                     <th class="table-th text-white">IMAGEN</th>
-
+                                    <th class="table-th text-white">CANTIDAD</th>
                                     <th class="table-th text-white text-center">AGREGAR</th>
                                 </tr>
                             </thead>
                             <tbody>
-
                                 @foreach ($cotiza as $product)
                                 <tr>
                                     <td>
                                         <h6 class="text">{{$product->name}}</h6>
                                     </td>
+                                    
                                     <td>
                                         <span>
-                                            <img src=" {{asset('storage/' . $product->imagen )}}" onclick="ShowImg('{{ asset('storage/' . $product->imagen) }}','{{$product->name}}')" height="70" width="80" class="rounded zom" alt="no-image">
+                                            <img src=" {{asset('storage/' . $product->imagen )}}" height="70" width="80" class="rounded zom" alt="no-image">
                                         </span>
+                                    </td>
+                                    <td>
+                                        <h6 class="text">{{$product->quantity}}</h6>
                                     </td>
 
                                     <td class="text-center">
