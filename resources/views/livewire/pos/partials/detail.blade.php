@@ -14,6 +14,7 @@
                     @endif
                     <button class="tabmenu btn mbmobile text-white  mr-5" data-toggle="modal" data-target="#theModal" style="background: #2666CF">Buscar producto</button>
                     <button class="tabmenu btn mbmobile text-white  mr-5" data-toggle="modal" data-target="#Modal2" style="background: #3B3F5C">Buscar Cotizacion</button>
+                    <input id="coti" type="text" wire:keydown.enter.prevent="$emit('cotizacion',$('#coti').val())"  placeholder="Buscar cotizacion" class="form-control">
                 </div>
 
 

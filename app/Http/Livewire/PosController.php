@@ -37,17 +37,15 @@ class PosController extends Component
         $cart = Cart::getContent()->sortBy('name');
         if (strlen($this->search) > 0)
             $data = Product::Where('name', 'like', '%' . $this->search . '%')->get();
+
         else
             $data = Product::orderBy('name', 'desc')->get();
 
 
-
-        if (strlen($this->searchD) > 0) {
-            $dataD = Cotizaciones::Where('clave_id', 'like', '%' . $this->searchD . '%')->get();
-        } else
-            $dataD = Cotizaciones::orderBy('name', 'desc');
+            $dataD=[];
 
         foreach ($cart as $c) {
+
             $product = Product::find($c->id);
             if ($c->quantity >= $product->stock) {
                 $c->marcado = 1;
@@ -78,14 +76,32 @@ class PosController extends Component
         $this->change = ($this->efectivo - $this->total);
     }
 
+
     protected $listeners = [
         'scan-code' => 'ScanCode',
         'removeItem' => 'removeItem',
         'clearCart' => 'clearCart',
         'saveSale' => 'saveSale',
         'ACashAmano' => 'ACashAmano',
+        'cotizacion' => 'cotizar',
     ];
+    public function cotizar($searchD){
+        if (strlen($searchD) > 0) {
+            $dataD = Cotizaciones::Where('clave_id', 'like', '%' . $searchD . '%')->get();
+            foreach($dataD as $d)
+            {
+                $product = Product::find($d->id_produc);
+               Cart::add($d->id_produc, $d->name, $d->price, $d->quantity, $d->total);
+            }
+            $this->total = Cart::getTotal();
+            $this->puntos = (Cart::getTotal()) / 100 * 10;
+            $this->itemsQuantity = Cart::getTotalQuantity();
+            $this->emit('scan-ok', 'Producto agregado');
 
+        } else
+            $dataD = Cotizaciones::orderBy('name', 'desc');
+
+    }
     public function ACashAmano($value)
     {
         $this->efectivo = ($value == 0 ? $this->total : $value);

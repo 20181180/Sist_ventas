@@ -24,7 +24,7 @@ class CotizacionController extends Controller
 
         $fecha = Carbon::now();
         $fechaV = $fecha->addDays(15);
-        $fechaV->toFormattedDateString(); 
+        $fechaV->toFormattedDateString();
 
 
         $clav_id = Str::random(10);
@@ -43,6 +43,7 @@ class CotizacionController extends Controller
                 'clave_id' => $clav_id,
                 'name' => $nom,
                 'expiration_date' => $fechaV,
+                'id_produc' => $id_var,
             ]);
         }
 
