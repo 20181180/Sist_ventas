@@ -11,6 +11,7 @@ use App\Models\Denomination;
 use App\Models\Cliente;
 use App\Models\Cotizaciones;
 use Darryldecode\Cart\Facades\CartFacade as Cart;
+use Dompdf\JavascriptEmbedder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 //anadi una prueva
@@ -87,12 +88,11 @@ class PosController extends Component
     ];
     public function cotizar($searchD)
     {
-
+        /*
         $dataD = Cotizaciones::Where('clave_id', $searchD)->get();
-
         foreach ($dataD as $d) {
-            // $product = Product::find($d->id_produc);
-            if ($d === null) {
+            // $product = Product ::find($d->id_produc);
+            if ($dataD === null) {
                 $this->emit('scan-notfound', 'El producto no esta');
             } else {
                 Cart::add($d->id_produc, $d->name, $d->price, $d->quantity, $d->total);
@@ -100,6 +100,22 @@ class PosController extends Component
                 $this->puntos = (Cart::getTotal()) / 100 * 10;
                 $this->itemsQuantity = Cart::getTotalQuantity();
                 $this->emit('scan-ok', 'Producto agregado');
+            }
+        }*/
+
+        $dataD = Cotizaciones::Where('clave_id', $searchD)->get();
+
+        if ($dataD == null) {
+            $this->emit('scan-notfound', 'Clave de cotizacion no valido.');
+        } else {
+            foreach ($dataD as $d) {
+                //  $cant = $d->quantity;
+                $product = Product::where('name', $d->name)->first();
+                Cart::add($product->id, $product->name, $product->price, $d->quantity, $product->image);
+                $this->total = Cart::getTotal();
+                $this->puntos = (Cart::getTotal()) / 100 * 10;
+                $this->itemsQuantity = Cart::getTotalQuantity();
+                $this->emit('scan-ok', 'Cotizacion Agregado..');
             }
         }
     }

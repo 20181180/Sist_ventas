@@ -13,8 +13,12 @@
                     <button wire:click.prevent="SyncDel()" type="button" class="btn btn-dark mbmobile  mr-5 {{count($cart) <1 ? 'disabled' : '' }} ">Revocar Todos</button>
                     @endif
                     <button class="tabmenu btn mbmobile text-white  mr-5" data-toggle="modal" data-target="#theModal" style="background: #2666CF">Buscar producto</button>
-                    <button class="tabmenu btn mbmobile text-white  mr-5" data-toggle="modal" data-target="#Modal2" style="background: #3B3F5C">Buscar Cotizacion</button>
-                    <input id="coti" type="text" wire:keydown.enter.prevent="$emit('cotizacion',$('#coti').val())"  placeholder="Buscar cotizacion" class="form-control">
+
+                    <div class="search-bar">
+                        <span class="text-center">INGRESA CLAVE DE COTIZACIÓN</span><br>
+                        <input id="coti" type="text" wire:keydown.enter.prevent="$emit('cotizacion',$('#coti').val())" placeholder="154ad..." class="form-control">
+                    </div>
+
                 </div>
 
 
@@ -86,22 +90,20 @@
                     </table>
                 </div>
                 @else
-                <h5 class="text-center text-muted">Agregar items a la venta</h5>
+                <br><br>
+                <h5 class="text-center text-muted">Agregar Productos a la venta</h5>
                 @endif
-
                 <div wire:loading.inline wire:target="saveSale">
+
                     <h4 class="text-danger text-center">
-                        Procesando venta, espere un momento...
+                        Procesando la venta, Espere un momento...
                     </h4>
                 </div>
 
             </div>
         </div>
     </div>
-
 </div>
-
-
 
 
 <script>
