@@ -54,8 +54,8 @@ return [
     |
     */
 
-    //'asset_url' => 'http://localhost:80/Sist_ventas/public',
-    'asset_url' => 'http://localhost:81/Sist_ventas/public',
+    'asset_url' => 'http://localhost:80/Sist_ventas/public',
+    //'asset_url' => 'http://localhost:81/Sist_ventas/public',
 
     /*
     |-------+-------------------------------------------------------------------
@@ -69,8 +69,8 @@ return [
     |
     */
 
-    //'app_url' => 'http://localhost:80/Sist_ventas/public',
-    'app_url' => 'http://localhost:81/Sist_ventas/public',
+    'app_url' => 'http://localhost:80/Sist_ventas/public',
+    //'app_url' => 'http://localhost:81/Sist_ventas/public',
 
     /*
     |--------------------------------------------------------------------------

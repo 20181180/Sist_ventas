@@ -9,6 +9,10 @@
             // $('#theModal').modal('hide');
             noty(Msg, 2)
          })
+         window.livewire.on('scan-no', Msg => {
+            // $('#theModal').modal('hide');
+            noty(Msg, 2)
+         })
          window.livewire.on('no-stock', Msg => {
             // $('#theModal').modal('hide');
             noty(Msg, 3)

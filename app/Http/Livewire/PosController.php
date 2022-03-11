@@ -42,7 +42,7 @@ class PosController extends Component
             $data = Product::orderBy('name', 'desc')->get();
 
 
-            $dataD=[];
+        $dataD = [];
 
         foreach ($cart as $c) {
 
@@ -85,22 +85,23 @@ class PosController extends Component
         'ACashAmano' => 'ACashAmano',
         'cotizacion' => 'cotizar',
     ];
-    public function cotizar($searchD){
-        if (strlen($searchD) > 0) {
-            $dataD = Cotizaciones::Where('clave_id', 'like', '%' . $searchD . '%')->get();
-            foreach($dataD as $d)
-            {
-                $product = Product::find($d->id_produc);
-               Cart::add($d->id_produc, $d->name, $d->price, $d->quantity, $d->total);
+    public function cotizar($searchD)
+    {
+
+        $dataD = Cotizaciones::Where('clave_id', $searchD)->get();
+
+        foreach ($dataD as $d) {
+            // $product = Product::find($d->id_produc);
+            if ($d === null) {
+                $this->emit('scan-notfound', 'El producto no esta');
+            } else {
+                Cart::add($d->id_produc, $d->name, $d->price, $d->quantity, $d->total);
+                $this->total = Cart::getTotal();
+                $this->puntos = (Cart::getTotal()) / 100 * 10;
+                $this->itemsQuantity = Cart::getTotalQuantity();
+                $this->emit('scan-ok', 'Producto agregado');
             }
-            $this->total = Cart::getTotal();
-            $this->puntos = (Cart::getTotal()) / 100 * 10;
-            $this->itemsQuantity = Cart::getTotalQuantity();
-            $this->emit('scan-ok', 'Producto agregado');
-
-        } else
-            $dataD = Cotizaciones::orderBy('name', 'desc');
-
+        }
     }
     public function ACashAmano($value)
     {
