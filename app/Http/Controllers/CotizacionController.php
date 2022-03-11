@@ -47,7 +47,7 @@ class CotizacionController extends Controller
             ]);
         }
 
-        $pdf = PDF::loadView('pdf.cotizacion', compact('data', 'total', 'items', 'user'));
+        $pdf = PDF::loadView('pdf.cotizacion', compact('data', 'total', 'items', 'user', 'clav_id', 'fechaV'));
         return $pdf->stream('salesReport.pdf');
         return $pdf->download('salesReport.pdf');
     }
