@@ -44,7 +44,7 @@
                                         {{$item->id}}
                                         <label class="new-control new-checkbox checkbox-primary">
                                             <input type="checkbox" wire:change="SyncPermiso($('#p' + {{$item->id
-                                            }}).is(':checked'), '{{$item->id}}')" id="p{{ $item->id }}" value="{{$item->id}}" class="new-control-input" {{$cheked == 1 ? 'checked' : ''}}>
+                                            }}).is(':checked'), '{{$item->id}}')" id="p{{ $item->id }}" value="{{$item->id}}" class="new-control-input" {{$item->checado == 1 ? 'checked' : ''}}>
                                             <span class="new-control-indicator"></span>
                                             <h6>M</h6>
                                         </label>

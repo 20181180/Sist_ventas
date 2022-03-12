@@ -14,6 +14,7 @@ use Darryldecode\Cart\Facades\CartFacade as Cart;
 use Dompdf\JavascriptEmbedder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 //anadi una prueva
 
 class PosController extends Component
@@ -44,12 +45,18 @@ class PosController extends Component
 
 
         $dataD = [];
+        foreach ($cart as $c) {
+
+        }
 
         foreach ($cart as $c) {
 
             $product = Product::find($c->id);
             if ($c->quantity >= $product->stock) {
                 $c->marcado = 1;
+            }
+            if($c->price == $product->price_mayoreo){
+                $c->checado = 1;
             }
         }
 
@@ -88,35 +95,34 @@ class PosController extends Component
     ];
     public function cotizar($searchD)
     {
-        /*
         $dataD = Cotizaciones::Where('clave_id', $searchD)->get();
-        foreach ($dataD as $d) {
-            // $product = Product ::find($d->id_produc);
-            if ($dataD === null) {
-                $this->emit('scan-notfound', 'El producto no esta');
-            } else {
-                Cart::add($d->id_produc, $d->name, $d->price, $d->quantity, $d->total);
-                $this->total = Cart::getTotal();
-                $this->puntos = (Cart::getTotal()) / 100 * 10;
-                $this->itemsQuantity = Cart::getTotalQuantity();
-                $this->emit('scan-ok', 'Producto agregado');
-            }
-        }*/
+        $vali=(count($dataD)==0);
+        $fecha = Carbon::now();
 
-        $dataD = Cotizaciones::Where('clave_id', $searchD)->get();
-
-        if ($dataD == null) {
+        if ($vali=='true'){
             $this->emit('scan-notfound', 'Clave de cotizacion no valido.');
+            return;
         } else {
-            foreach ($dataD as $d) {
-                //  $cant = $d->quantity;
-                $product = Product::where('name', $d->name)->first();
-                Cart::add($product->id, $product->name, $product->price, $d->quantity, $product->image);
-                $this->total = Cart::getTotal();
-                $this->puntos = (Cart::getTotal()) / 100 * 10;
-                $this->itemsQuantity = Cart::getTotalQuantity();
-                $this->emit('scan-ok', 'Cotizacion Agregado..');
+            $p = Cotizaciones::where('clave_id', $searchD)->first();
+            if($fecha >= $p->expiration_date){
+                $this->emit('scan-notfound', 'Su cotizacion a experido');
+                return;
             }
+
+            foreach ($dataD as $d) {
+                $product = Product::where('id', $d->id_produc)->first();
+                if($d->price==$product->price){
+                    Cart::add($product->id, $product->name, $product->price, $d->quantity, $product->image);
+                }else{
+                    Cart::add($product->id, $product->name, $product->price_mayoreo, $d->quantity, $product->image);
+                }
+
+            }
+            $this->total = Cart::getTotal();
+            $this->puntos = (Cart::getTotal()) / 100 * 10;
+            $this->itemsQuantity = Cart::getTotalQuantity();
+            $this->emit('scan-ok', 'Cotizacion Agregado..');
+
         }
     }
     public function ACashAmano($value)
@@ -127,6 +133,7 @@ class PosController extends Component
     //este evento es pra escanear el codigo de barras
     public function ScanCode($barcode, $cant = 1)
     {
+
         $product = Product::where('barcode', $barcode)->orWhere('name', $barcode)->first();
 
         if ($product == null) {
@@ -352,18 +359,20 @@ class PosController extends Component
     public function SyncAll()
     {
 
-        $this->cheked = 1;
+        $this->cheked = '1';
         $cart = Cart::getContent()->sortBy('name');
         foreach ($cart as $c) {
             $this->SyncPermiso('true', $c->id);
+            $c->checado=1;
         }
     }
     public function SyncDel()
     {
-        $this->cheked = 0;
+        $this->cheked = '0';
         $cart = Cart::getContent()->sortBy('name');
         foreach ($cart as $c) {
             $this->SyncPermiso('false', $c->id);
+            $c->checado=0;
         }
     }
 
