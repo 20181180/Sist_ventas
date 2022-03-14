@@ -19,8 +19,8 @@
                 <h5 class="mb-2">CLIENTES</h5>
                 <div class="form-group">
 
-                    <select wire:model='client_id' name="" class="form-control">
-                        <option value="Elegir" disabled>Elegir</option>
+                    <select wire:model='client_id' name="" class="form-control" required>
+                        <option value="0" disabled>Elegir</option>
                         @foreach ($clientes as $c)
                         <option value="{{$c->id}}">{{$c->name}}</option>
                         @endforeach

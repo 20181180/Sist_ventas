@@ -10,11 +10,11 @@
             <br>
             @include('commont.searchbox')
             <div class="modal-body">
-
                 <div class="widget-content">
 
                     <div class="table-responsive">
-                        <table class="table table-bordered table-striped  mt-1">
+
+                        <table class="table tblscroll table-bordered table-striped  mt-1">
                             <thead class="text-white" style="background: #2666CF">
                                 <tr>
                                     <th class="table-th text-white text-center">NOMBRE</th>

@@ -13,18 +13,18 @@
                     <button wire:click.prevent="SyncDel()" type="button" class="btn btn-dark mbmobile  mr-5 {{count($cart) <1 ? 'disabled' : '' }} ">Revocar Todos</button>
                     @endif
                     <button class="tabmenu btn mbmobile text-white  mr-5" data-toggle="modal" data-target="#theModal" style="background: #2666CF">Buscar producto</button>
-
+                    <button class="tabmenu btn mbmobile text-white  mr-5" data-toggle="modal" data-target="#Modal2" style="background: #F76E11">Canjear Meripuntos</button>
                     <div class="search-bar">
                         <span class="text-center">INGRESA CLAVE DE COTIZACIÓN</span><br>
                         <input id="coti" type="text" wire:keydown.enter.prevent="$emit('cotizacion',$('#coti').val())" placeholder="154ad..." class="form-control">
                     </div>
 
+
                 </div>
 
-
                 @if ($total > 0)
-                <div class="table-responsive tblscroll" style="max-height: 650px; overflow:hidden">
-                    <table class="table table-bordered  mt-3">
+                <div class="table-responsive tblscroll" style="max-height: auto; overflow:hidden">
+                    <table class="table table-bordered table-striped mt-3">
                         <thead class="text-white" style="background: #3B3F5C">
                             <tr>
                                 <th width="10%" class="table-th text-white">Mayoreo</th>

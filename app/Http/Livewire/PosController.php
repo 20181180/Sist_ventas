@@ -7,6 +7,7 @@ use App\Models\Sale;
 use App\Models\Product;
 use Livewire\Component;
 use App\Models\SaleDetails;
+use App\Models\Meripuntos;
 use App\Models\Denomination;
 use App\Models\Cliente;
 use App\Models\Cotizaciones;
@@ -19,13 +20,16 @@ use Carbon\Carbon;
 
 class PosController extends Component
 {
-    public $colorStock, $cheked, $searchD, $search, $estadoCheck, $producId, $tipoVenta, $client_id, $total, $itemsQuantity, $efectivo, $change, $valiente, $meri, $puntos;
+    public $colorStock, $category, $datosxd, $cheked, $searchD, $search, $estadoCheck, $producId, $tipoVenta, $client_id, $total, $itemsQuantity, $efectivo, $change, $valiente, $meri, $puntos;
+
 
     public function mount()
     {
         $this->colorStock = '';
         $this->tipoVenta = 'Elegir';
-        $this->client_id = 'Elegir';
+        $this->category = [];
+        $this->datosxd = [];
+        $this->client_id = 0;
         $this->estadoCheck = 'false';
         $this->cheked = '0';
         $this->efectivo = 0;
@@ -46,7 +50,6 @@ class PosController extends Component
 
         $dataD = [];
         foreach ($cart as $c) {
-
         }
 
         foreach ($cart as $c) {
@@ -55,7 +58,7 @@ class PosController extends Component
             if ($c->quantity >= $product->stock) {
                 $c->marcado = 1;
             }
-            if($c->price == $product->price_mayoreo){
+            if ($c->price == $product->price_mayoreo) {
                 $c->checado = 1;
             }
         }
@@ -84,7 +87,6 @@ class PosController extends Component
         $this->change = ($this->efectivo - $this->total);
     }
 
-
     protected $listeners = [
         'scan-code' => 'ScanCode',
         'removeItem' => 'removeItem',
@@ -96,33 +98,31 @@ class PosController extends Component
     public function cotizar($searchD)
     {
         $dataD = Cotizaciones::Where('clave_id', $searchD)->get();
-        $vali=(count($dataD)==0);
+        $vali = (count($dataD) == 0);
         $fecha = Carbon::now();
 
-        if ($vali=='true'){
+        if ($vali == 'true') {
             $this->emit('scan-notfound', 'Clave de cotizacion no valido.');
             return;
         } else {
             $p = Cotizaciones::where('clave_id', $searchD)->first();
-            if($fecha >= $p->expiration_date){
+            if ($fecha >= $p->expiration_date) {
                 $this->emit('scan-notfound', 'Su cotizacion a experido');
                 return;
             }
 
             foreach ($dataD as $d) {
                 $product = Product::where('id', $d->id_produc)->first();
-                if($d->price==$product->price){
+                if ($d->price == $product->price) {
                     Cart::add($product->id, $product->name, $product->price, $d->quantity, $product->image);
-                }else{
+                } else {
                     Cart::add($product->id, $product->name, $product->price_mayoreo, $d->quantity, $product->image);
                 }
-
             }
             $this->total = Cart::getTotal();
             $this->puntos = (Cart::getTotal()) / 100 * 10;
             $this->itemsQuantity = Cart::getTotalQuantity();
             $this->emit('scan-ok', 'Cotizacion Agregado..');
-
         }
     }
     public function ACashAmano($value)
@@ -264,6 +264,7 @@ class PosController extends Component
         $this->change = 0;
         $this->total = Cart::getTotal();
         $this->puntos = Cart::getTotal();
+        $this->client_id = 0;
         $this->itemsQuantity = Cart::getTotalQuantity();
         $this->emit('scan-ok', 'Carrito vaciado...');
     }
@@ -292,6 +293,7 @@ class PosController extends Component
                 'cambio' => $this->change,
                 'user_id' => Auth()->user()->id,
                 'client_id' => $this->client_id,
+
             ]);
 
             if ($sale) {
@@ -310,13 +312,35 @@ class PosController extends Component
                     $product->save();
                 }
             }
+            if ($sale) {
+
+                //$uwu = Meripuntos::find($this->client_id);
+
+                $xd = Meripuntos::Where('client_id', '=', $this->client_id)->get();
+
+                $xd2 = (count($xd) == 0);
+
+                if ($xd2 == 'true') {
+                    Meripuntos::create([
+                        'client_id' => $this->client_id,
+                        'meripuntos' => $this->puntos,
+                    ]);
+                } else {
+                    //$xd = Meripuntos::Where('client_id', '=', $this->client_id)->get();
+                    $category = Meripuntos::Where('client_id', '=', $this->client_id)->first();
+                    $p = $category->meripuntos + $this->puntos;
+                    $category->update([
+                        'meripuntos' => $p,
+                    ]);
+                }
+            }
 
             DB::commit();
             Cart::clear(); //limpiamos e inicializamos las varibles..
             $this->efectivo = 0;
             $this->change = 0;
             $this->puntos = 0;
-            $this->client_id = '';
+            $this->client_id = 0;
             $this->total = Cart::getTotal();
             $this->itemsQuantity = Cart::getTotalQuantity();
             $this->emit('sale-ok', 'Venta procesado con Exito.');
@@ -363,7 +387,7 @@ class PosController extends Component
         $cart = Cart::getContent()->sortBy('name');
         foreach ($cart as $c) {
             $this->SyncPermiso('true', $c->id);
-            $c->checado=1;
+            $c->checado = 1;
         }
     }
     public function SyncDel()
@@ -372,7 +396,7 @@ class PosController extends Component
         $cart = Cart::getContent()->sortBy('name');
         foreach ($cart as $c) {
             $this->SyncPermiso('false', $c->id);
-            $c->checado=0;
+            $c->checado = 0;
         }
     }
 
@@ -398,10 +422,19 @@ class PosController extends Component
         }
     }
 
+
+    public function Consultar()
+    {
+        $dataD = Meripuntos::Where('client_id', $this->client_id)->first();
+
+        $this->datosxd = Product::Where('price', '<=', $dataD->meripuntos)->get();
+    }
+
     public function resetUI()
     {
         $this->name = '';
-        $this->client_id = '';
+        $this->datosxd = [];
+        $this->client_id = 0;
         $this->barcode = '';
         $this->search = '';
         $this->searchD = '';

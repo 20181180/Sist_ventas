@@ -4,23 +4,38 @@
 
             <div class="modal-header bg-dark">
                 <h5 class="modal-title text-white text-center">
-                    <b class="text-center">BUSCAR COTIZACION</b>
+                    <b class="text-center">CANJERAR MERIPUNTOS</b>
                 </h5>
                 <h6 class="text-center text-warnig" wire:loading>POR FAVOR ESPERE...</h6>
             </div>
             <br>
-            <div class="row justify-content-between">
-                <div class="col-lg-4 col-md-4 col-sm-12">
-                    <div class="input-group mb-4">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text input-gp">
-                                <i class="fas fa-search"></i>
-                            </span>
+            <div class="widget-content">
+                <div class="row">
+                    <div class="col-sm-12 col-md-3">
+                        <div class="form-group">
+                            <label for="">Cliente *</label>
+                            <select wire:model='client_id' class="form-control">
+                                <option value="0" disabled>Elegir</option>
+                                @foreach ($clientes as $c)
+                                <option value="{{$c->id}}">{{$c->name}}</option>
+                                @endforeach
+                            </select>
+                            @error('client_id')<span class="text-danger er">{{$message}}</span>@enderror
                         </div>
-                        <input type="text" wire:model="searchD" placeholder="Busca algo aqui" class="form-control">
+                    </div>
+
+
+                    <div class="col-sm-12 col-md-3">
+                        @if($client_id >0)
+                        <button wire:click.prevent="Consultar" type="button" class="btn btn-dark"> Consultar</button>
+                        @endif
                     </div>
                 </div>
+
             </div>
+
+
+
 
             <div class="modal-body">
                 <div class="widget-content">
@@ -31,28 +46,29 @@
                                 <tr>
                                     <th class="table-th text-white text-center">NOMBRE</th>
                                     <th class="table-th text-white">IMAGEN</th>
-                                    <th class="table-th text-white">CANTIDAD</th>
+                                    <th class="table-th text-white">CIDIGO</th>
                                     <th class="table-th text-white text-center">AGREGAR</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($cotiza as $product)
+
+                                @foreach ($datosxd as $product)
                                 <tr>
                                     <td>
                                         <h6 class="text">{{$product->name}}</h6>
                                     </td>
-                                    
+
                                     <td>
                                         <span>
                                             <img src=" {{asset('storage/' . $product->imagen )}}" height="70" width="80" class="rounded zom" alt="no-image">
                                         </span>
                                     </td>
                                     <td>
-                                        <h6 class="text">{{$product->quantity}}</h6>
+                                        <h6 class="text">{{$product->barcode}}</h6>
                                     </td>
 
                                     <td class="text-center">
-                                        <a href="javascript:void(0);" type="text" wire:click.prevent="ScanCode({{$product->name}})" class="btn btn-dark mtmobile" title="Edit">
+                                        <a href="javascript:void(0);" type="text" wire:click.prevent="ScanCode({{$product->barcode}})" class="btn btn-dark mtmobile" title="Edit">
                                             <i class="fa fa-cart-plus"></i>
                                         </a>
                                     </td>

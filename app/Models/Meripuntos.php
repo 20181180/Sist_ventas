@@ -5,9 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Sale extends Model
+class Meripuntos extends Model
 {
     use HasFactory;
-
-    protected $fillable = ['total', 'items', 'dinero', 'cambio', 'estado', 'user_id', 'client_id'];
+    protected $fillable = ['meripuntos', 'client_id'];
 }
