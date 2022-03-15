@@ -12,7 +12,7 @@ use App\Models\Denomination;
 use App\Models\Cliente;
 use App\Models\Cotizaciones;
 use Darryldecode\Cart\Facades\CartFacade as Cart;
-use Dompdf\JavascriptEmbedder;
+//use Dompdf\JavascriptEmbedder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
@@ -20,8 +20,7 @@ use Carbon\Carbon;
 
 class PosController extends Component
 {
-    public $colorStock, $category, $datosxd, $cheked, $searchD, $search, $estadoCheck, $producId, $tipoVenta, $client_id, $total, $itemsQuantity, $efectivo, $change, $valiente, $meri, $puntos;
-
+    public $colorStock, $category, $datosxd, $datauwuxd, $cheked, $searchD, $search, $estadoCheck, $producId, $tipoVenta, $client_id, $total, $itemsQuantity, $efectivo, $change, $valiente, $meri, $puntos;
 
     public function mount()
     {
@@ -29,6 +28,7 @@ class PosController extends Component
         $this->tipoVenta = 'Elegir';
         $this->category = [];
         $this->datosxd = [];
+        $this->datauwuxd = [];
         $this->client_id = 0;
         $this->estadoCheck = 'false';
         $this->cheked = '0';
@@ -46,8 +46,6 @@ class PosController extends Component
 
         else
             $data = Product::orderBy('name', 'desc')->get();
-
-
         $dataD = [];
         foreach ($cart as $c) {
         }
@@ -94,6 +92,7 @@ class PosController extends Component
         'saveSale' => 'saveSale',
         'ACashAmano' => 'ACashAmano',
         'cotizacion' => 'cotizar',
+        'Canjear' => 'Meri',
     ];
     public function cotizar($searchD)
     {
@@ -317,9 +316,7 @@ class PosController extends Component
                 //$uwu = Meripuntos::find($this->client_id);
 
                 $xd = Meripuntos::Where('client_id', '=', $this->client_id)->get();
-
                 $xd2 = (count($xd) == 0);
-
                 if ($xd2 == 'true') {
                     Meripuntos::create([
                         'client_id' => $this->client_id,
@@ -355,7 +352,6 @@ class PosController extends Component
     {
         return Redirect::to("print:://$sale->id");
     }
-
 
     public function SyncPermiso($state, $id)
     {
@@ -425,15 +421,53 @@ class PosController extends Component
 
     public function Consultar()
     {
+
         $dataD = Meripuntos::Where('client_id', $this->client_id)->first();
 
         $this->datosxd = Product::Where('price', '<=', $dataD->meripuntos)->get();
+
+        // $this->datauwuxd = Meripuntos::Where('client_id', $this->client_id)->get();
+
+        //Cart::add($product->id, $product->name, $product->price, $cant, $product->image);
+        //$this->total = Cart::getTotal();
+        //$this->datauwuxd = (Cart::getTotal()) -  $this->total;
+        $this->puntos = $dataD->meripuntos;
     }
+
+    public function Meri($barcode, $cant = 1)
+    {
+
+        $product = Product::where('barcode', $barcode)->orWhere('name', $barcode)->first();
+
+        if ($product == null) {
+            $this->emit('scan-notfound', 'El producto no esta registrado');
+        } else {
+            if ($this->InCart($product->id)) {
+
+                $this->increaseQty($product->id, $this->estadoCheck);
+                return;
+            }
+            if ($product->stock < 1) {
+
+                $this->emit('no-stock', 'Stock insuficiente :/');
+                return;
+            }
+
+            Cart::add($product->id, $product->name, $product->price, $cant, $product->image);
+            $this->total = Cart::getTotal();
+            $this->puntos = $this->puntos - $this->total;
+            $this->itemsQuantity = Cart::getTotalQuantity();
+            $this->emit('scan-ok', 'Producto agregado');
+        }
+    }
+
+
 
     public function resetUI()
     {
         $this->name = '';
         $this->datosxd = [];
+        $this->datauwuxd = [];
         $this->client_id = 0;
         $this->barcode = '';
         $this->search = '';

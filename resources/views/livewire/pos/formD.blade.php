@@ -23,20 +23,19 @@
                             @error('client_id')<span class="text-danger er">{{$message}}</span>@enderror
                         </div>
                     </div>
-
-
-                    <div class="col-sm-12 col-md-3">
+                    <div class="col-sm-12 col-md-5">
                         @if($client_id >0)
                         <button wire:click.prevent="Consultar" type="button" class="btn btn-dark"> Consultar</button>
                         @endif
                     </div>
                 </div>
-
             </div>
+            <!-- @foreach ($datauwuxd as $product)
+            <h6 class="text-center">
+                Meripuntos: $ {{$product->meripuntos}}
+            </h6>
 
-
-
-
+            @endforeach -->
             <div class="modal-body">
                 <div class="widget-content">
 
@@ -46,11 +45,21 @@
                                 <tr>
                                     <th class="table-th text-white text-center">NOMBRE</th>
                                     <th class="table-th text-white">IMAGEN</th>
-                                    <th class="table-th text-white">CIDIGO</th>
+                                    <th class="table-th text-white">CODIGO</th>
                                     <th class="table-th text-white text-center">AGREGAR</th>
                                 </tr>
                             </thead>
                             <tbody>
+
+                                @if(count($datosxd) == 0) <tr>
+                                    <td colspan="5">
+                                        <h6 class="text-center">
+                                            No Hay Productos..
+                                        </h6>
+                                    </td>
+                                </tr>
+                                @endif
+
 
                                 @foreach ($datosxd as $product)
                                 <tr>
@@ -68,11 +77,12 @@
                                     </td>
 
                                     <td class="text-center">
-                                        <a href="javascript:void(0);" type="text" wire:click.prevent="ScanCode({{$product->barcode}})" class="btn btn-dark mtmobile" title="Edit">
+                                        <a href="javascript:void(0);" type="text" wire:click.prevent="$emit('Canjear',{{$product->barcode}})" class="btn btn-dark mtmobile" title="Edit">
                                             <i class="fa fa-cart-plus"></i>
                                         </a>
                                     </td>
                                 </tr>
+
                                 @endforeach
                             </tbody>
                         </table>
