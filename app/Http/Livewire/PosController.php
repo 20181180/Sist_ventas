@@ -424,14 +424,14 @@ class PosController extends Component
 
         $dataD = Meripuntos::Where('client_id', $this->client_id)->first();
 
-        $this->datosxd = Product::Where('price', '<=', $dataD->meripuntos)->get();
+        if ($dataD != null) {
+            $this->datosxd = Product::Where('price', '<=', $dataD->meripuntos)->get();
+            $this->puntos = $dataD->meripuntos;
+        } else {
+            $this->emit('sale-error', 'Por el momento no cuenta con Meripuntos, Gracias.');
+            return;
+        }
 
-        // $this->datauwuxd = Meripuntos::Where('client_id', $this->client_id)->get();
-
-        //Cart::add($product->id, $product->name, $product->price, $cant, $product->image);
-        //$this->total = Cart::getTotal();
-        //$this->datauwuxd = (Cart::getTotal()) -  $this->total;
-        $this->puntos = $dataD->meripuntos;
     }
 
     public function Meri($barcode, $cant = 1)
@@ -472,5 +472,6 @@ class PosController extends Component
         $this->barcode = '';
         $this->search = '';
         $this->searchD = '';
+        $this->puntos = 0;
     }
 }
