@@ -77,6 +77,9 @@
                                 <a class="btn btn-dark btn-block {{count($cart) <1 ? 'disabled' : '' }} " href="{{ url('cotizacion/pdf' . '/' . $total . '/'
                                  . $itemsQuantity) }}" target="_black">Generar cotizacion</a>
                             </div>
+                            <div class="col-sm-12 col-md-12 col-lg-12 mt-4">
+                                <a style="background: #F76E11" class="btn btn-dark btn-block {{count($cart) <1 ? 'disabled' : '' }} " wire:click.prevent="saveMeri">Canjer Puntos</a>
+                            </div>
                         </div>
                     </div>
                 </div>

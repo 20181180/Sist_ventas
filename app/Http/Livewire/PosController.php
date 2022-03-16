@@ -299,7 +299,7 @@ class PosController extends Component
     public function saveSale()
     {
         if ($this->total <= 0) {
-            $this->emit('sale-error', 'Agrega prodctos...');
+            $this->emit('sale-error', 'Agrega productos...');
             return;
         }
         if ($this->efectivo <= 0) {
@@ -498,6 +498,35 @@ class PosController extends Component
             $this->emit('scan-ok', 'Producto agregado');
         }
     }
+    public function saveMeri()
+    {
+        //transaccion a la bd para guardar la venta en detalles venta
+        DB::beginTransaction();
+        try {
+
+
+            $mer = Meripuntos::Where('client_id', '=', $this->client_id)->first();
+            $p =  $this->puntos;
+            $mer->update([
+                'meripuntos' => $p,
+            ]);
+
+            DB::commit();
+            Cart::clear(); //limpiamos e inicializamos las varibles..
+            $this->efectivo = 0;
+            $this->change = 0;
+            $this->puntos = 0;
+            $this->client_id = 0;
+            $this->total = Cart::getTotal();
+            $this->itemsQuantity = Cart::getTotalQuantity();
+            $this->emit('sale-ok', 'Canjeos procesado con Exito.');
+            //  $this->emit('print-ticket', $sale->id);
+        } catch (Exception $e) {
+            DB::rollBack();
+            $this->emit('sale-error', $e->getMessage());
+        }
+    }
+
 
 
 
