@@ -196,6 +196,34 @@ class PosController extends Component
         $this->emit('scan-ok', $title);
     }
 
+    public function incre_meri($productId, $state, $cant = 1)
+    {
+        $title = '';
+        $product = Product::find($productId);
+        $exist = Cart::get($productId);
+        if ($exist)
+            $title = 'Cantidad actualizada';
+        else
+            $title = 'Producto agregado';
+
+        if ($exist) {
+            if ($product->stock < ($cant + $exist->quantity)) {
+
+                $this->emit('no-stock', 'Stock insuficiente1');
+                return;
+            }
+        }
+
+
+        Cart::add($product->id, $product->name, $product->price, $cant, $product->image);
+
+        $this->total = Cart::getTotal();
+        $this->puntos = $this->puntos - $this->total;
+        $this->itemsQuantity = Cart::getTotalQuantity();
+
+        $this->emit('scan-ok', $title);
+    }
+
     //reemplaza el registro del carrito
     public function updateQty($productId, $state, $cant = 1)
     {
@@ -431,22 +459,32 @@ class PosController extends Component
             $this->emit('sale-error', 'Por el momento no cuenta con Meripuntos, Gracias.');
             return;
         }
-
     }
 
     public function Meri($barcode, $cant = 1)
     {
 
-        $product = Product::where('barcode', $barcode)->orWhere('name', $barcode)->first();
+        $product = Product::where('barcode', $barcode)->first();
 
         if ($product == null) {
             $this->emit('scan-notfound', 'El producto no esta registrado');
         } else {
-            if ($this->InCart($product->id)) {
+            if ($this->puntos <= 1) {
 
-                $this->increaseQty($product->id, $this->estadoCheck);
+                $this->emit('no-stock', 'Ya no cuenta con puntos :/');
                 return;
             }
+            if ($product->price > $this->puntos) {
+
+                $this->emit('no-stock', 'puntos insuficiente :/');
+                return;
+            }
+            if ($this->InCart($product->id)) {
+
+                $this->incre_meri($product->id, $this->estadoCheck);
+                return;
+            }
+
             if ($product->stock < 1) {
 
                 $this->emit('no-stock', 'Stock insuficiente :/');
@@ -472,6 +510,5 @@ class PosController extends Component
         $this->barcode = '';
         $this->search = '';
         $this->searchD = '';
-        $this->puntos = 0;
     }
 }

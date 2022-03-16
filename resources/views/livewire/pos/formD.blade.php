@@ -36,6 +36,9 @@
             </h6>
 
             @endforeach -->
+            <div>
+                <h5 class="text-muted mt-3"> MERIPUNTOS:{{$puntos}}</h5>
+            </div>
             <div class="modal-body">
                 <div class="widget-content">
 
