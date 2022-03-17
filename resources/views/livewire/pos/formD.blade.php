@@ -23,6 +23,7 @@
                             @error('client_id')<span class="text-danger er">{{$message}}</span>@enderror
                         </div>
                     </div>
+
                     <div class="col-sm-12 col-md-5">
                         @if($client_id >0)
                         <button wire:click.prevent="Consultar" type="button" class="btn btn-dark"> Consultar</button>
@@ -30,12 +31,7 @@
                     </div>
                 </div>
             </div>
-            <!-- @foreach ($datauwuxd as $product)
-            <h6 class="text-center">
-                Meripuntos: $ {{$product->meripuntos}}
-            </h6>
 
-            @endforeach -->
             <div>
                 <h5 class="text-muted mt-3"> MERIPUNTOS:{{$puntos}}</h5>
             </div>
@@ -80,6 +76,9 @@
                                     </td>
 
                                     <td class="text-center">
+                                        <a href="javascript:void(0);" type="text" wire:click.prevent="decreaseMeri({{$product->id}})" class="btn btn-dark mtmobile" title="Edit">
+                                            <i class="fas fa-minus"></i>
+                                        </a>
                                         <a href="javascript:void(0);" type="text" wire:click.prevent="$emit('Canjear',{{$product->barcode}})" class="btn btn-dark mtmobile" title="Edit">
                                             <i class="fa fa-cart-plus"></i>
                                         </a>

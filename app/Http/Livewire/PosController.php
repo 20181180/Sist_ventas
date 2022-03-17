@@ -462,8 +462,9 @@ class PosController extends Component
             $this->datosxd = Product::Where('price', '<=', $dataD->meripuntos)->get();
             $this->puntos = $dataD->meripuntos;
             $this->puntos1 = $dataD->meripuntos;
-        } else {
-            $this->emit('sale-error', 'Por el momento no cuenta con Meripuntos, Gracias.');
+        }
+        if ($dataD->meripuntos < 1) {
+            $this->emit('sale-error', 'No cuenta con Meripuntos, Siga Participando jaja xd.');
             return;
         }
     }
@@ -476,14 +477,10 @@ class PosController extends Component
         if ($product == null) {
             $this->emit('scan-notfound', 'El producto no esta registrado');
         } else {
-            if ($this->puntos < 0) {
 
-                $this->emit('no-stock', 'Ya no cuenta con puntos :/');
-                return;
-            }
             if ($product->price > $this->puntos) {
 
-                $this->emit('no-stock', 'puntos insuficiente :/');
+                $this->emit('no-stock', 'Ya valio, Ya no cuentas con los puntos suficientes :-/');
                 return;
             }
             if ($this->InCart($product->id)) {
@@ -513,14 +510,11 @@ class PosController extends Component
         //transaccion a la bd para guardar la venta en detalles venta
         DB::beginTransaction();
         try {
-
-
             $mer = Meripuntos::Where('client_id', '=', $this->client_id)->first();
             $p =  $this->puntos;
             $mer->update([
                 'meripuntos' => $p,
             ]);
-
             DB::commit();
             Cart::clear(); //limpiamos e inicializamos las varibles..
             $this->efectivo = 0;
@@ -537,15 +531,29 @@ class PosController extends Component
         }
     }
 
+    public function decreaseMeri($productId)
+    {
+        $item = Cart::get($productId);
+        Cart::remove($productId);
 
+        $newQty = ($item->quantity) - 1;
 
+        if ($newQty > 0)
+            Cart::add($item->id, $item->name, $item->price, $newQty, $item->attributes[0]);
+
+        $this->total = Cart::getTotal();
+        $this->p =  $this->puntos1 - $this->total;
+        $this->puntos = $this->p;
+        $this->itemsQuantity = Cart::getTotalQuantity();
+        $this->emit('scan-ok', 'Cantidad actualizada');
+    }
 
     public function resetUI()
     {
         $this->name = '';
         $this->datosxd = [];
         $this->datauwuxd = [];
-        $this->client_id = 0;
+        // $this->client_id = 0;
         $this->barcode = '';
         $this->search = '';
         $this->searchD = '';
