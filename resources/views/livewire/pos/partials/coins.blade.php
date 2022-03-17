@@ -78,7 +78,7 @@
                                  . $itemsQuantity) }}" target="_black">Generar cotizacion</a>
                             </div>
                             <div class="col-sm-12 col-md-12 col-lg-12 mt-4">
-                                <a style="background: #F76E11" class="btn btn-dark btn-block {{count($cart) <1 ? 'disabled' : '' }} " wire:click.prevent="saveMeri">Canjer Puntos</a>
+                                <a style="background: #F76E11" class="btn btn-dark btn-block {{$client_id <1 ? 'disabled' : '' }} " wire:click.prevent="saveMeri">Canjear Puntos</a>
                             </div>
                         </div>
                     </div>

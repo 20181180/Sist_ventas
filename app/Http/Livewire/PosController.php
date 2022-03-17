@@ -20,7 +20,7 @@ use Carbon\Carbon;
 
 class PosController extends Component
 {
-    public $colorStock, $category, $datosxd, $datauwuxd, $cheked, $searchD, $search, $estadoCheck, $producId, $tipoVenta, $client_id, $total, $itemsQuantity, $efectivo, $change, $valiente, $meri, $puntos;
+    public $colorStock, $puntos1, $category, $datosxd, $datauwuxd, $cheked, $searchD, $search, $estadoCheck, $producId, $tipoVenta, $client_id, $total, $itemsQuantity, $efectivo, $change, $valiente, $meri, $puntos;
 
     public function mount()
     {
@@ -34,6 +34,7 @@ class PosController extends Component
         $this->cheked = '0';
         $this->efectivo = 0;
         $this->change = 0;
+        $this->puntos1 = 0;
         $this->total = Cart::getTotal();
         $this->puntos = Cart::getTotal();
         $this->itemsQuantity = Cart::getTotalQuantity();
@@ -196,7 +197,7 @@ class PosController extends Component
         $this->emit('scan-ok', $title);
     }
 
-    public function incre_meri($productId, $state, $cant = 1)
+    public function incre_meri($productId, $cant = 1)
     {
         $title = '';
         $product = Product::find($productId);
@@ -207,6 +208,11 @@ class PosController extends Component
             $title = 'Producto agregado';
 
         if ($exist) {
+            if ($this->puntos < $product->price) {
+
+                $this->emit('no-stock', 'puntos insuficiente :|');
+                return;
+            }
             if ($product->stock < ($cant + $exist->quantity)) {
 
                 $this->emit('no-stock', 'Stock insuficiente1');
@@ -218,7 +224,8 @@ class PosController extends Component
         Cart::add($product->id, $product->name, $product->price, $cant, $product->image);
 
         $this->total = Cart::getTotal();
-        $this->puntos = $this->puntos - $this->total;
+        $this->p =  $this->puntos1 - $this->total;
+        $this->puntos = $this->p;
         $this->itemsQuantity = Cart::getTotalQuantity();
 
         $this->emit('scan-ok', $title);
@@ -449,12 +456,12 @@ class PosController extends Component
 
     public function Consultar()
     {
-
         $dataD = Meripuntos::Where('client_id', $this->client_id)->first();
 
         if ($dataD != null) {
             $this->datosxd = Product::Where('price', '<=', $dataD->meripuntos)->get();
             $this->puntos = $dataD->meripuntos;
+            $this->puntos1 = $dataD->meripuntos;
         } else {
             $this->emit('sale-error', 'Por el momento no cuenta con Meripuntos, Gracias.');
             return;
@@ -469,7 +476,7 @@ class PosController extends Component
         if ($product == null) {
             $this->emit('scan-notfound', 'El producto no esta registrado');
         } else {
-            if ($this->puntos <= 1) {
+            if ($this->puntos < 0) {
 
                 $this->emit('no-stock', 'Ya no cuenta con puntos :/');
                 return;
@@ -481,7 +488,7 @@ class PosController extends Component
             }
             if ($this->InCart($product->id)) {
 
-                $this->incre_meri($product->id, $this->estadoCheck);
+                $this->incre_meri($product->id);
                 return;
             }
 
@@ -490,10 +497,13 @@ class PosController extends Component
                 $this->emit('no-stock', 'Stock insuficiente :/');
                 return;
             }
+            if ($product->price < $this->puntos) {
+                Cart::add($product->id, $product->name, $product->price, $cant, $product->image);
+            }
 
-            Cart::add($product->id, $product->name, $product->price, $cant, $product->image);
             $this->total = Cart::getTotal();
-            $this->puntos = $this->puntos - $this->total;
+            $this->p =  $this->puntos1 - $this->total;
+            $this->puntos = $this->p;
             $this->itemsQuantity = Cart::getTotalQuantity();
             $this->emit('scan-ok', 'Producto agregado');
         }
@@ -519,7 +529,7 @@ class PosController extends Component
             $this->client_id = 0;
             $this->total = Cart::getTotal();
             $this->itemsQuantity = Cart::getTotalQuantity();
-            $this->emit('sale-ok', 'Canjeos procesado con Exito.');
+            $this->emit('sale-ok', 'Canjeos procesado con ¡Exito!.');
             //  $this->emit('print-ticket', $sale->id);
         } catch (Exception $e) {
             DB::rollBack();
