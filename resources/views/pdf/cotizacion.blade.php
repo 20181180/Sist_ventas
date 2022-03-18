@@ -71,7 +71,7 @@
             <tfoot>
                 <tr>
                     <td class="text-center">
-                        <span><b>TOTALES</b></span>
+                        <span><b>TOTAL</b></span>
                     </td>
                     <td class="text-center">
 

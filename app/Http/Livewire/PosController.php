@@ -16,6 +16,7 @@ use Darryldecode\Cart\Facades\CartFacade as Cart;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use Barryvdh\DomPDF\Facade as PDF;
 //anadi una prueva
 
 class PosController extends Component
@@ -346,6 +347,8 @@ class PosController extends Component
                     $product->save();
                 }
             }
+            $this->printTicket($this->itemsQuantity, $this->total);
+
             if ($sale) {
 
                 //$uwu = Meripuntos::find($this->client_id);
@@ -366,7 +369,6 @@ class PosController extends Component
                     ]);
                 }
             }
-
             DB::commit();
             Cart::clear(); //limpiamos e inicializamos las varibles..
             $this->efectivo = 0;
@@ -376,16 +378,38 @@ class PosController extends Component
             $this->total = Cart::getTotal();
             $this->itemsQuantity = Cart::getTotalQuantity();
             $this->emit('sale-ok', 'Venta procesado con Exito.');
-            $this->emit('print-ticket', $sale->id);
+            // $this->emit('print-ticket', $this->itemsQuantity, $this->total);
+
         } catch (Exception $e) {
             DB::rollBack();
             $this->emit('sale-error', $e->getMessage());
         }
     }
 
-    public function printTicket($sale)
+    public function printTicket($total, $items)
     {
-        return Redirect::to("print:://$sale->id");
+        $data = [];
+
+        $data = Cart::getContent()->sortBy('name');
+        // DD($data);
+        $user = Auth::user()->name;
+
+        $fecha = Carbon::now();
+        $fechaV = $fecha->addDays(15);
+        $fechaV->toFormattedDateString();
+        $clav_id = "ncjdcnk5";
+
+        $pdf = PDF::loadView('pdf.cotizacion', compact('data', 'total', 'items', 'user', 'clav_id', 'fechaV'));
+        // return Redirect::to('cotizacion/pdf/{total}/{items}');
+        //DD($pdf);
+        //return view('livewire.pos.component');
+        // $this->emit('print-ticket', $total, $items);
+        return $pdf->stream('salesReport.pdf');
+        return $pdf->download('salesReport.pdf');
+        // le estaba pasando las variables desde este controlador, estoy usando la vista que ya 
+        // tenemos a modo de prueba, ya revise que si le pasa los parametros con el dd($pdf)
+
+        //window .open('cotizacion/pdf/{total}/{items}');
     }
 
     public function SyncPermiso($state, $id)
@@ -452,7 +476,6 @@ class PosController extends Component
             }
         }
     }
-
 
     public function Consultar()
     {

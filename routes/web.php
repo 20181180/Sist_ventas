@@ -73,6 +73,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('report/excel/{user}/{type}', [ExportController::class, 'reporteExcel']);
 
     Route::get('cotizacion/pdf/{total}/{items}', [CotizacionController::class, 'reportPDF']);
+    // Route::get('cotizacion/pdf/{total}/{items}', [PosController::class, 'printTicket']);
+});
+Route::get('pdf/reportventa/', function () {
+    return view('reportventa');
 });
 
 Route::get('proxd', ProvedoresController::class);
