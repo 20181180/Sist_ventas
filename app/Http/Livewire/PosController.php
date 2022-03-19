@@ -21,10 +21,11 @@ use Barryvdh\DomPDF\Facade as PDF;
 
 class PosController extends Component
 {
-    public $colorStock, $puntos1, $category, $datosxd, $datauwuxd, $cheked, $searchD, $search, $estadoCheck, $producId, $tipoVenta, $client_id, $total, $itemsQuantity, $efectivo, $change, $valiente, $meri, $puntos;
+    public $cangeo, $colorStock, $puntos1, $category, $datosxd, $datauwuxd, $cheked, $searchD, $search, $estadoCheck, $producId, $tipoVenta, $client_id, $total, $itemsQuantity, $efectivo, $change, $valiente, $meri, $puntos;
 
     public function mount()
     {
+        $cangeo = 0;
         $this->colorStock = '';
         $this->tipoVenta = 'Elegir';
         $this->category = [];
@@ -406,7 +407,7 @@ class PosController extends Component
         // $this->emit('print-ticket', $total, $items);
         return $pdf->stream('salesReport.pdf');
         return $pdf->download('salesReport.pdf');
-        // le estaba pasando las variables desde este controlador, estoy usando la vista que ya 
+        // le estaba pasando las variables desde este controlador, estoy usando la vista que ya
         // tenemos a modo de prueba, ya revise que si le pasa los parametros con el dd($pdf)
 
         //window .open('cotizacion/pdf/{total}/{items}');
@@ -479,6 +480,7 @@ class PosController extends Component
 
     public function Consultar()
     {
+       $this->cangeo=1;
         $dataD = Meripuntos::Where('client_id', $this->client_id)->first();
 
         if ($dataD != null) {

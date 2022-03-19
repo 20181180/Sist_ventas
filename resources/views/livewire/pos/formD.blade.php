@@ -4,7 +4,7 @@
 
             <div class="modal-header bg-dark">
                 <h5 class="modal-title text-white text-center">
-                    <b class="text-center">CANJERAR MERIPUNTOS</b>
+                    <b class="text-center">CANJEAR MERIPUNTOS</b>
                 </h5>
                 <h6 class="text-center text-warnig" wire:loading>POR FAVOR ESPERE...</h6>
             </div>

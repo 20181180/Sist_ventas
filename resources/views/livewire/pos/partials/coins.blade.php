@@ -74,7 +74,7 @@
                                 @endif
                             </div>
                             <div class="col-sm-12 col-md-12 col-lg-12 mt-4">
-                                <a class="btn btn-dark btn-block {{count($cart) <1 ? 'disabled' : '' }} " href="{{ url('cotizacion/pdf' . '/' . $total . '/'
+                                <a class="btn btn-dark btn-block {{count($cart) <1 ? 'disabled' : '' }} {{$cangeo == 1 ? 'disabled' : '' }}" href="{{ url('cotizacion/pdf' . '/' . $total . '/'
                                  . $itemsQuantity) }}" target="_black">Generar cotizacion</a>
                             </div>
                             <div class="col-sm-12 col-md-12 col-lg-12 mt-4">

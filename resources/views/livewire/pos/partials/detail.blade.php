@@ -12,8 +12,8 @@
                     @else
                     <button wire:click.prevent="SyncDel()" type="button" class="btn btn-dark mbmobile  mr-5 {{count($cart) <1 ? 'disabled' : '' }} ">Revocar Todos</button>
                     @endif
-                    <button class="tabmenu btn mbmobile text-white  mr-5" data-toggle="modal" data-target="#theModal" style="background: #2666CF">Buscar producto</button>
-                    <button class="tabmenu btn mbmobile text-white  mr-5" data-toggle="modal" data-target="#Modal2" style="background: #F76E11">Canjear Meripuntos</button>
+                    <button class=" btn  text-white {{$cangeo == 1 ? 'disabled' : '' }} mr-5"  data-target="#theModal" style="background: #2666CF">Buscar producto</button>
+                    <button class="tabmenu btn mbmobile text-white   mr-5" data-toggle="modal" data-target="#Modal2" style="background: #F76E11">Canjear Meripuntos</button>
                     <div class="search-bar">
                         <span class="text-center">INGRESA CLAVE DE COTIZACIÓN</span><br>
                         <input id="coti" type="text" wire:keydown.enter.prevent="$emit('cotizacion',$('#coti').val())" placeholder="154ad..." class="form-control">
@@ -79,7 +79,7 @@
                                         <i class="fas fa-minus"> </i>
                                     </button>
                                     <button id="p{{$item->id}}" wire:click.prevent="increaseQty({{$item->id}},$('#p' + {{$item->id
-                                    }}).is(':checked'))" class="btn btn-dark mbmobile">
+                                    }}).is(':checked'))" {{$cangeo == 1 ? 'disabled' : '' }} class="btn btn-dark mbmobile">
                                         <i class="fa fa-cart-plus"></i>
                                     </button>
                                 </td>
