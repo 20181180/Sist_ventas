@@ -25,7 +25,7 @@ class PosController extends Component
 
     public function mount()
     {
-        $cangeo = 0;
+        $this->cangeo = 0;
         $this->colorStock = '';
         $this->tipoVenta = 'Elegir';
         $this->category = [];
@@ -301,6 +301,7 @@ class PosController extends Component
         $this->total = Cart::getTotal();
         $this->puntos = Cart::getTotal();
         $this->client_id = 0;
+        $this->cangeo = 0;
         $this->itemsQuantity = Cart::getTotalQuantity();
         $this->emit('scan-ok', 'Carrito vaciado...');
     }
@@ -551,7 +552,7 @@ class PosController extends Component
             $this->change = 0;
             $this->puntos = 0;
             $this->client_id = 0;
-            //   $this->cheked = 0;
+            $this->cangeo = 0;
             $this->total = Cart::getTotal();
             $this->itemsQuantity = Cart::getTotalQuantity();
             $this->emit('sale-ok', 'Canjeos procesado con ¡Exito!.');
