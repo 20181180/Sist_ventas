@@ -480,8 +480,13 @@ class PosController extends Component
 
     public function Consultar()
     {
-       $this->cangeo=1;
+        $this->cangeo = 1;
         $dataD = Meripuntos::Where('client_id', $this->client_id)->first();
+
+        if (empty($dataD)) {
+            $this->emit('sale-error', 'Para poder obtener puntos, Favor de comprar  .');
+            return;
+        }
 
         if ($dataD != null) {
             $this->datosxd = Product::Where('price', '<=', $dataD->meripuntos)->get();
@@ -546,6 +551,7 @@ class PosController extends Component
             $this->change = 0;
             $this->puntos = 0;
             $this->client_id = 0;
+            //   $this->cheked = 0;
             $this->total = Cart::getTotal();
             $this->itemsQuantity = Cart::getTotalQuantity();
             $this->emit('sale-ok', 'Canjeos procesado con ¡Exito!.');

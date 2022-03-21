@@ -12,10 +12,10 @@
             <div class="widget-content">
                 <div class="row">
                     <div class="col-sm-12 col-md-3">
+                        <h6 class="text">CLIENTES</h6>
                         <div class="form-group">
-                            <label for="">Cliente *</label>
                             <select wire:model='client_id' class="form-control">
-                                <option value="0" disabled>Elegir</option>
+                                <option value="0" disabled>Elegir cliente</option>
                                 @foreach ($clientes as $c)
                                 <option value="{{$c->id}}">{{$c->name}}</option>
                                 @endforeach
@@ -23,29 +23,29 @@
                             @error('client_id')<span class="text-danger er">{{$message}}</span>@enderror
                         </div>
                     </div>
-
-                    <div class="col-sm-12 col-md-5">
+                    <div class="col-sm-12 col-md-5 p-4">
                         @if($client_id >0)
-                        <button wire:click.prevent="Consultar" type="button" class="btn btn-dark"> Consultar</button>
+                        <button wire:click.prevent="Consultar" style="background: #F78812;color:#fff" type="button" class="btn"> CONSULTAR </button>
                         @endif
+                    </div>
+                    <div class="col-sm">
+                        <h5 class="text mt-3"> MERIPUNTOS:$ {{$puntos}}</h5>
                     </div>
                 </div>
             </div>
 
-            <div>
-                <h5 class="text-muted mt-3"> MERIPUNTOS:{{$puntos}}</h5>
-            </div>
+
             <div class="modal-body">
                 <div class="widget-content">
 
                     <div class="table-responsive">
                         <table class="table table-bordered table-striped  mt-1">
-                            <thead class="text-white" style="background: #2666CF">
+                            <thead class="text-white" style="background: #F58634">
                                 <tr>
                                     <th class="table-th text-white text-center">NOMBRE</th>
                                     <th class="table-th text-white">IMAGEN</th>
                                     <th class="table-th text-white">CODIGO</th>
-                                    <th class="table-th text-white text-center">AGREGAR</th>
+                                    <th class="table-th text-white text-center">ACCION</th>
                                 </tr>
                             </thead>
                             <tbody>
