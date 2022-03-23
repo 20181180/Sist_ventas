@@ -16,6 +16,7 @@ class ProductsController extends Component
     public $name, $barcode, $cost, $price, $price_m, $stock, $alerts, $categoryid, $search, $image, $selected_id, $pageTitle, $componentName;
     private $pagination = 10;
 
+
     public function paginationView()
     {
         return 'vendor.livewire.bootstrap';
@@ -25,6 +26,7 @@ class ProductsController extends Component
         $this->pageTitle = 'Listado';
         $this->componentName = 'Productos';
         $this->categoryid = 'Elegir';
+       // $this->price = $this->cost * 2;
     }
     public function render()
     {

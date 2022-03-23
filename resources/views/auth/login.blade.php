@@ -14,7 +14,6 @@
     <style>
         .body-bg {
             background-color: #ECECEC;
-
         }
     </style>
 </head>

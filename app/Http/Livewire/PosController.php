@@ -37,6 +37,7 @@ class PosController extends Component
         $this->efectivo = 0;
         $this->change = 0;
         $this->puntos1 = 0;
+        $this->meri = 0;
         $this->total = Cart::getTotal();
         $this->puntos = Cart::getTotal();
         $this->itemsQuantity = Cart::getTotalQuantity();
@@ -229,7 +230,6 @@ class PosController extends Component
         $this->p =  $this->puntos1 - $this->total;
         $this->puntos = $this->p;
         $this->itemsQuantity = Cart::getTotalQuantity();
-
         $this->emit('scan-ok', $title);
     }
 
@@ -289,6 +289,7 @@ class PosController extends Component
 
         $this->total = Cart::getTotal();
         $this->puntos = (Cart::getTotal()) / 100 * 10;
+
         $this->itemsQuantity = Cart::getTotalQuantity();
         $this->emit('scan-ok', 'Cantidad actualizada');
     }
@@ -490,9 +491,10 @@ class PosController extends Component
         }
 
         if ($dataD != null) {
-            $this->datosxd = Product::Where('price', '<=', $dataD->meripuntos)->get();
-            $this->puntos = $dataD->meripuntos;
-            $this->puntos1 = $dataD->meripuntos;
+            $this->puntos = 0.1 * $dataD->meripuntos;
+            $this->datosxd = Product::Where('price', '<=', $this->puntos)->get();
+            //$this->puntos = $dataD->meripuntos;
+            $this->puntos1 = $this->puntos;
         }
         if ($dataD->meripuntos < 1) {
             $this->emit('sale-error', 'No cuenta con Meripuntos, Siga Participando jaja xd.');
@@ -533,7 +535,7 @@ class PosController extends Component
             $this->p =  $this->puntos1 - $this->total;
             $this->puntos = $this->p;
             $this->itemsQuantity = Cart::getTotalQuantity();
-            $this->emit('scan-ok', 'Producto agregado');
+            $this->emit('scan-ok', 'Producto agregado.');
         }
     }
     public function saveMeri()
@@ -542,7 +544,7 @@ class PosController extends Component
         DB::beginTransaction();
         try {
             $mer = Meripuntos::Where('client_id', '=', $this->client_id)->first();
-            $p =  $this->puntos;
+            $p =  $this->puntos * 10;
             $mer->update([
                 'meripuntos' => $p,
             ]);
@@ -567,7 +569,6 @@ class PosController extends Component
     {
         $item = Cart::get($productId);
         Cart::remove($productId);
-
         $newQty = ($item->quantity) - 1;
 
         if ($newQty > 0)
@@ -585,7 +586,6 @@ class PosController extends Component
         $this->name = '';
         $this->datosxd = [];
         $this->datauwuxd = [];
-        // $this->client_id = 0;
         $this->barcode = '';
         $this->search = '';
         $this->searchD = '';
