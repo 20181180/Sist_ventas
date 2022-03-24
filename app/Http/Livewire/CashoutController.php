@@ -25,9 +25,16 @@ class CashoutController extends Component
     }
     public function render()
     {
+        //  $this->defe();
         return view('livewire.cashout.component', [
             'users' => User::orderBy('name', 'asc')->get()
         ])->extends('layouts.theme.app')->section('content');
+    }
+
+    public function defecto()
+    {
+        $this->fromDate = Carbon::now()->format('y-m-d') . ' 00:00:00';
+        $this->toDate = Carbon::now()->format('y-m-d') . ' 00:00:00';
     }
     public function Consultar()
     {

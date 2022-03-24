@@ -218,7 +218,7 @@ class PosController extends Component
             }
             if ($product->stock < ($cant + $exist->quantity)) {
 
-                $this->emit('no-stock', 'Stock insuficiente1');
+                $this->emit('no-stock', 'Stock insuficiente');
                 return;
             }
         }
@@ -319,6 +319,10 @@ class PosController extends Component
         }
         if ($this->total > $this->efectivo) {
             $this->emit('sale-error', 'el efetivo de venta debe de ser mayor o igual al toal resultado');
+            return;
+        }
+        if (empty($this->client_id)) {
+            $this->emit('sale-error', 'Favor de agregar un cliente.');
             return;
         }
         //transaccion a la bd para guardar la venta en detalles venta

@@ -26,10 +26,12 @@ class ProductsController extends Component
         $this->pageTitle = 'Listado';
         $this->componentName = 'Productos';
         $this->categoryid = 'Elegir';
-       // $this->price = $this->cost * 2;
+        $this->price = 0;
+        // $this->cost = 0;
     }
     public function render()
     {
+        $this->price_wholesale_retail();
         if (strlen($this->search) > 0)
             $products = Product::join('categories as c', 'c.id', 'products.category_id')
                 ->select('products.*', 'c.name as category')
@@ -53,6 +55,17 @@ class ProductsController extends Component
             ->section('content');
     }
 
+    public function price_wholesale_retail()
+    {
+        #le falta pasarle la operacion real a este metodo pero ya jala
+        if (empty($this->cost)) {
+            $this->price = 0;
+            $this->price_m = 0;
+        } else {
+            $this->price = $this->cost + 2;
+            $this->price_m = $this->cost + 1;
+        }
+    }
 
     public function Store()
     {
@@ -120,7 +133,7 @@ class ProductsController extends Component
         $this->categoryid = $product->category_id;
         $this->image = $product->null;
 
-        $this->emit('modal-show', 'sow modal xd');
+        $this->emit('modal-show', 'Editar Producto');
     }
 
     //metod of update ;-)
@@ -183,7 +196,7 @@ class ProductsController extends Component
         }
 
         $this->resetUI();
-        $this->emit('product-added', 'Producto Registrado xd');
+        $this->emit('product-added', 'Producto Registrado.');
     }
 
 

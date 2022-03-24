@@ -22,7 +22,7 @@
                     <div class="col-sm-12 col-md-3">
                         <div class="form-group">
                             <label>Fecha Inicial *</label>
-                            <input type="date" wire:model.lazy="fromDate" class="form-control">
+                            <input type="date" wire:model="fromDate" value="<?php echo date("Y-m-d"); ?>" class="form-control">
                             @error('fromDate')<span class="text-danger er">{{$message}}</span>@enderror
                         </div>
                     </div>
@@ -30,7 +30,7 @@
                     <div class="col-sm-12 col-md-3">
                         <div class="form-group">
                             <label>Fecha Final *</label>
-                            <input type="date" wire:model.lazy="toDate" class="form-control">
+                            <input type="date" wire:model="toDate" class="form-control">
                             @error('toDate')<span class="text-danger er">{{$message}}</span>@enderror
                         </div>
                     </div>
