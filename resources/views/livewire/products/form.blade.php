@@ -83,7 +83,22 @@
         </div>
     </div>
 
+    <div class="col-sm-12 col-md-4">
+        <div class="form-group">
+            <label>Proveedor *</label>
+            <select wire:model='prove_id' name="" class="form-control">
+                <option value="0" disabled>Elegir</option>
+                @foreach ($prove as $pro)
+                <option value="{{$pro->id}}">{{$pro->name}}</option>
+                @endforeach
+            </select>
+            @error('prove_id')<span class="text-danger er">{{$message}}</span>@enderror
+        </div>
+    </div>
+
+
     <div class="col-sm-12 col-md-8">
+        <label>Cargar imagen *</label>
         <div class="form-group custom-file">
             <input type="file" required class="custom-file-input form-control" wire:model="image" accept="image/x-png, image/git, image/jpeg">
             <label class="custom-file-label"> Imagen {{$image}}</label>

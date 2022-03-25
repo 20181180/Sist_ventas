@@ -22,6 +22,7 @@ class CreateSalesTable extends Migration
             $table->enum('estado', ['Pagado', 'Pediente', 'Cancelado'])->default('Pagado');
             $table->enum('tipoVenta', ['unitario', 'mayoreo', 'menudeo'])->default('unitario');
             //lave forranea de la tabla usuario con la tabla ventas
+            $table->string('tipo_pago');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             //xdxd

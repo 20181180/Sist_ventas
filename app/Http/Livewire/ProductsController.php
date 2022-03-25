@@ -7,13 +7,14 @@ use App\Models\Product;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
+use App\Models\Company;
 
 class ProductsController extends Component
 {
     use WithPagination;
     use WithFileUploads;
 
-    public $name, $barcode, $cost, $price, $price_m, $stock, $alerts, $categoryid, $search, $image, $selected_id, $pageTitle, $componentName;
+    public $name, $barcode, $prove_id, $cost, $price, $price_m, $stock, $alerts, $categoryid, $search, $image, $selected_id, $pageTitle, $componentName;
     private $pagination = 10;
 
 
@@ -27,6 +28,7 @@ class ProductsController extends Component
         $this->componentName = 'Productos';
         $this->categoryid = 'Elegir';
         $this->price = 0;
+        $this->prove_id = 0;
         // $this->cost = 0;
     }
     public function render()
@@ -49,7 +51,8 @@ class ProductsController extends Component
 
         return view('livewire.products.component', [
             'products' => $products,
-            'categories' => Category::orderBy('name', 'asc')->get()
+            'categories' => Category::orderBy('name', 'asc')->get(),
+            'prove' => Company::orderBy('name', 'asc')->get()
         ])
             ->extends('layouts.theme.app')
             ->section('content');
@@ -77,6 +80,7 @@ class ProductsController extends Component
             'alerts' => 'required',
             'barcode' => 'required',
             'categoryid' => 'required|not_in:Elegir',
+            'prove_id' => 'required|not_in:Elegir',
 
         ];
 
@@ -91,6 +95,7 @@ class ProductsController extends Component
             'barcode.required' => 'Ingrese un codigo',
             'categoryid.required' => 'Campo obligatorio',
             'categoryid.not_in' => 'Eliga una opcion valido',
+            'prove_id.not_in' => 'Eliga una opcion valido',
         ];
 
         $this->validate($rules, $messages);
@@ -105,6 +110,7 @@ class ProductsController extends Component
             'stock' => $this->stock,
             'alerts' => $this->alerts,
             'category_id' => $this->categoryid,
+            'provedor_id' => $this->prove_id,
         ]);
 
         //  $customFileName;
@@ -131,6 +137,7 @@ class ProductsController extends Component
         $this->stock = $product->stock;
         $this->alerts = $product->alerts;
         $this->categoryid = $product->category_id;
+        $this->prove_id = $product->provedor_id;
         $this->image = $product->null;
 
         $this->emit('modal-show', 'Editar Producto');
@@ -147,6 +154,7 @@ class ProductsController extends Component
             'alerts' => 'required',
             'barcode' => 'required',
             'categoryid' => 'required|not_in:Elegir',
+            'prove_id' => 'required|not_in:Elegir',
 
         ];
 
@@ -161,6 +169,7 @@ class ProductsController extends Component
             'barcode.required' => 'Ingrese un codigo',
             'categoryid.required' => 'Campo obligatorio',
             'categoryid.not_in' => 'Eliga una opcion valido',
+            'prove_id.not_in' => 'Eliga una opcion valido',
         ];
 
         $this->validate($rules, $messages);
@@ -177,6 +186,7 @@ class ProductsController extends Component
             'stock' => $this->stock,
             'alerts' => $this->alerts,
             'category_id' => $this->categoryid,
+            'provedor_id' => $this->prove_id,
         ]);
 
         //  $customFileName;
@@ -209,6 +219,7 @@ class ProductsController extends Component
         $this->stock = '';
         $this->alerts = '';
         $this->category_id = 'Elegir';
+        $this->prove_id = 0;
         $this->image = 'null';
         $this->selected_id = 0;
     }

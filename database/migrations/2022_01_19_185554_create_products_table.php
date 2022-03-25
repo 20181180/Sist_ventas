@@ -23,9 +23,10 @@ class CreateProductsTable extends Migration
             $table->string('stock');
             $table->string('alerts');
             $table->string('image', 100)->nullable();
-
             $table->unsignedBigInteger('category_id');
             $table->foreign('category_id')->references('id')->on('categories');
+            $table->unsignedBigInteger('provedor_id');
+            $table->foreign('provedor_id')->references('id')->on('companies');
             $table->timestamps();
         });
     }
