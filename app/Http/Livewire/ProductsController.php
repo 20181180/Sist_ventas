@@ -62,8 +62,8 @@ class ProductsController extends Component
             $this->price = 0;
             $this->price_m = 0;
         } else {
-            $this->price = $this->cost + 2;
-            $this->price_m = $this->cost + 1;
+            $this->price = $this->cost /(1-0.3);
+            $this->price_m = $this->cost /(1-0.2);
         }
     }
 
