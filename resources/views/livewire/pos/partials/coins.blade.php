@@ -34,8 +34,8 @@
 
                     <select wire:model='tipopago' name="" class="form-control" required>
                         <option value="0" disabled>Tipo de pago</option>
-                        <option value="1">Tarjeta de credito</option>
-                        <option value="2">A Credito</option>
+                        <option value="Tarjeta de credito">Tarjeta de credito</option>
+                        <option value="A Credito">A Credito</option>
                     </select>
                     @error('client_id')<span class="text-danger er">{{$message}}</span>@enderror
                 </div>

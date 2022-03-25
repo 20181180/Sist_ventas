@@ -334,6 +334,7 @@ class PosController extends Component
                 'items' => $this->itemsQuantity,
                 'dinero' => $this->efectivo,
                 'cambio' => $this->change,
+                'tipo_pago' => $this->tipopago,
                 'user_id' => Auth()->user()->id,
                 'client_id' => $this->client_id,
 
