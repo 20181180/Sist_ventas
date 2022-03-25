@@ -21,7 +21,7 @@ use Barryvdh\DomPDF\Facade as PDF;
 
 class PosController extends Component
 {
-    public $cangeo, $colorStock, $puntos1, $category, $datosxd, $datauwuxd, $cheked, $searchD, $search, $estadoCheck, $producId, $tipoVenta, $client_id, $total, $itemsQuantity, $efectivo, $change, $valiente, $meri, $puntos;
+    public $cangeo, $colorStock, $puntos1, $tipopago, $category, $datosxd, $datauwuxd, $cheked, $searchD, $search, $estadoCheck, $producId, $tipoVenta, $client_id, $total, $itemsQuantity, $efectivo, $change, $valiente, $meri, $puntos;
 
     public function mount()
     {
@@ -30,6 +30,7 @@ class PosController extends Component
         $this->tipoVenta = 'Elegir';
         $this->category = [];
         $this->datosxd = [];
+        $this->tipopago = 0;
         $this->datauwuxd = [];
         $this->client_id = 0;
         $this->estadoCheck = 'false';

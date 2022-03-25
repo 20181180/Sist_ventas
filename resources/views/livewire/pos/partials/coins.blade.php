@@ -16,7 +16,7 @@
             </div>
 
             <div class="mt-3">
-                <h5 class="mb-2">CLIENTES</h5>
+                <h6 class="mb-2">CLIENTES</h6>
                 <div class="form-group">
 
                     <select wire:model='client_id' name="" class="form-control" required>
@@ -24,6 +24,18 @@
                         @foreach ($clientes as $c)
                         <option value="{{$c->id}}">{{$c->name}}</option>
                         @endforeach
+                    </select>
+                    @error('client_id')<span class="text-danger er">{{$message}}</span>@enderror
+                </div>
+            </div>
+            <div class="mt-3">
+                <h6 class="mb-2">TIPO DE PAGO</h6>
+                <div class="form-group">
+
+                    <select wire:model='tipopago' name="" class="form-control" required>
+                        <option value="0" disabled>Tipo de pago</option>
+                        <option value="1">Tarjeta de credito</option>
+                        <option value="2">A Credito</option>
                     </select>
                     @error('client_id')<span class="text-danger er">{{$message}}</span>@enderror
                 </div>

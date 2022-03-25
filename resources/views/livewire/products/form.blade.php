@@ -33,7 +33,7 @@
     <div class="col-sm-12 col-md-4">
         <div class="form-group">
             <label>Precio Menudeo *</label>
-            <input type="number" wire:model.lazy="price" value=" {{$price}} " class="form-control" disabled>
+            <input type="number" wire:model.lazy="price" value="{{number_format($price,2)}} " class="form-control" disabled>
             @error('price')
             <span class="text-danger er">{{$message}}</span>
             @enderror
