@@ -118,5 +118,8 @@
         window.livewire.on('hidden.bs.modal', msg => {
             $('.er').css('display', 'none');
         });
+        livewire.on('cotizacion', action => {
+            $('#coti').val('');
+        });
     })
 </script>

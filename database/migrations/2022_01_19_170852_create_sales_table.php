@@ -26,8 +26,8 @@ class CreateSalesTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             //xdxd
-            $table->unsignedBigInteger('client_id');
-            $table->foreign('client_id')->references('id')->on('clientes');
+            // $table->unsignedBigInteger('client_id');
+            // $table->foreign('client_id')->references('id')->on('clientes');
 
             $table->timestamps();
         });

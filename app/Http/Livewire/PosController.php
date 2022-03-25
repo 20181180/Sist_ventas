@@ -326,6 +326,10 @@ class PosController extends Component
             $this->emit('sale-error', 'Favor de agregar un cliente.');
             return;
         }
+        if (empty($this->tipopago)) {
+            $this->emit('sale-error', 'Favor de agrega un tipo de pago.');
+            return;
+        }
         //transaccion a la bd para guardar la venta en detalles venta
         DB::beginTransaction();
         try {
