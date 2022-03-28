@@ -57,11 +57,11 @@
                                 </td>
 
                                 <td class="text-center">
-                                    <a href="javascript:void(0);" wire:click="Edit({{$c->id}})" class="btn btn-dark mtmobile" title="Edit">
+                                    <a href="javascript:void(0);" wire:click="Edit({{$c->client_id}})" class="btn btn-dark mtmobile" title="Edit">
                                         <i class="fas fa-edit"></i>
                                     </a>
 
-                                    <a href="javascript:void(0);" onclick="Confirm('{{$c->id}}')" class="btn btn-dark" title="Delete">
+                                    <a href="javascript:void(0);" onclick="Confirm('{{$c->client_id}}')" class="btn btn-dark" title="Delete">
                                         <i class="fas fa-trash"></i>
                                     </a>
                                 </td>

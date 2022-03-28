@@ -43,14 +43,22 @@ class ClientesController extends Component
             ->section('content');
     }
 
-    public function Edit($id)
+    public function Edit(Cliente $id)
     {
-        $clien = Cliente::find($id, ['id', 'name', 'address', 'phone', 'email']);
-        $this->name = $clien->name;
-        $this->direc = $clien->address;
-        $this->selected_id = $clien->id;
-        $this->tel = $clien->phone;
-        $this->correo = $clien->email;
+
+        $d = Cliente::join('meripuntos as m', 'm.client_id', 'clientes.id')
+            ->select('*',)
+            ->where('clientes.id', '=', $id->id)
+            ->first();
+
+            $this->name = $d->name;
+            $this->direc = $d->address;
+            $this->selected_id = $d->client_id;
+            $this->tel = $d->phone;
+            $this->correo = $d->email;
+            $this->saldo = $d->saldo;
+            $this->limite = $d->limite;
+
         //nos permite mostrar el modal con el elemento.
         $this->emit('show-modal', 'Informacion del cliente');
     }
@@ -103,11 +111,14 @@ class ClientesController extends Component
 
     public function Update()
     {
+
         $rules = [
             'name' => "required|unique:companies,name,{$this->selected_id}",
             'direc' => 'required',
             'tel' => 'required|max:10',
             'correo' => 'required|email',
+            'saldo' => 'required',
+            'limite' => 'required',
         ];
         $messages = [
             'name.required' => 'El nombre es obligatorio',
@@ -116,9 +127,13 @@ class ClientesController extends Component
             'tel.max' => 'Numero a digitos',
             'correo.required' => 'El campo correo es obligatorio',
             'correo.email' => 'Ingrese un correo valido',
+            'saldo.required' => 'El campo saldo es requerido',
+            'limite.required' => 'El campo limite es requerido',
         ];
 
         $this->validate($rules, $messages);
+
+
 
         $clien = Cliente::find($this->selected_id);
         $clien->update([
@@ -126,6 +141,11 @@ class ClientesController extends Component
             'address' => $this->direc,
             'phone' => $this->tel,
             'email' => $this->correo,
+        ]);
+        $meri = Meripuntos::where('client_id', '=' ,$this->selected_id)->first();
+        $meri->update([
+            'saldo' => $this->saldo,
+            'limite' => $this->limite,
         ]);
 
         $this->resetUI();
