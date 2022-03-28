@@ -24,6 +24,9 @@
                                 <th class="table-th text-center text-white">DIRECCION</th>
                                 <th class="table-th text-center text-white">TELEFONO</th>
                                 <th class="table-th text-center text-white">CORREO ELECTRONICO</th>
+                                <th class="table-th text-center text-white">SALDO</th>
+                                <th class="table-th text-center text-white">LIMITE</th>
+                                <th class="table-th text-center text-white">MERIPUNTOS</th>
                                 <th class="table-th text-center text-white">ACTIONS</th>
                             </tr>
                         </thead>
@@ -42,6 +45,15 @@
                                 </td>
                                 <td>
                                     <h6 class="text-center">{{$c->email}}</h6>
+                                </td>
+                                <td>
+                                    <h6 class="text-center">{{$c->saldo}}</h6>
+                                </td>
+                                <td>
+                                    <h6 class="text-center">{{$c->limite}}</h6>
+                                </td>
+                                <td>
+                                    <h6 class="text-center">{{$c->meripuntos}}</h6>
                                 </td>
 
                                 <td class="text-center">

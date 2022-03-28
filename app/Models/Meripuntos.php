@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class Meripuntos extends Model
 {
     use HasFactory;
-    protected $fillable = ['meripuntos', 'client_id'];
+    protected $fillable = ['saldo','limite','meripuntos', 'client_id'];
 }

@@ -5,12 +5,13 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Cliente;
+use App\Models\Meripuntos;
 
 class ClientesController extends Component
 {
-    public $search, $name, $direc, $tel, $correo, $selected_id, $pageTitle, $componentName;
+    public $search, $name, $direc, $tel, $correo, $selected_id, $pageTitle, $componentName, $saldo, $limite;
 
-    private $pagination = 4;
+    private $pagination = 10;
 
     public function mount()
     {
@@ -20,10 +21,22 @@ class ClientesController extends Component
 
     public function render()
     {
+
         if (strlen($this->search) > 0)
-            $data = Cliente::Where('name', 'like', '%' . $this->search . '%')->paginate($this->pagination);
-        else
-            $data = Cliente::orderBy('id', 'desc')->paginate($this->pagination);
+        {
+            // $data = Cliente::Where('name', 'like', '%' . $this->search . '%')->paginate($this->pagination);
+           // $data = Meripuntos::join('clientes as c', 'c.id', 'meripuntos.client_id')
+            $data = Cliente::join('meripuntos as m', 'm.client_id', 'clientes.id')
+            ->select('*',)
+            ->where('clientes.name', 'like', '%' . $this->search . '%')
+            ->paginate($this->pagination);
+
+        }else{
+            $data = Cliente::join('meripuntos as m', 'm.client_id', 'clientes.id')
+            ->select('*',)->paginate($this->pagination);
+           // $data = Cliente::orderBy('id', 'desc')->paginate($this->pagination);
+        }
+
 
         return view('livewire.clients.clientes', ['cliente' => $data])
             ->extends('layouts.theme.app')
@@ -49,6 +62,8 @@ class ClientesController extends Component
             'direc' => 'required',
             'tel' => 'required|max:10',
             'correo' => 'required|email',
+            'saldo' => 'required',
+            'limite' => 'required',
         ];
 
         $messages = [
@@ -58,6 +73,8 @@ class ClientesController extends Component
             'tel.max' => 'Numero a digitos',
             'correo.required' => 'El campo correo es obligatorio',
             'correo.email' => 'Ingrese un correo valido',
+            'saldo.required' => 'El campo saldo es requerido',
+            'limite.required' => 'El campo limite es requerido',
         ];
 
         $this->validate($rules, $messages);
@@ -68,6 +85,17 @@ class ClientesController extends Component
             'phone' => $this->tel,
             'email' => $this->correo,
         ]);
+
+        $cliente = Cliente::select('id')->orderBy('id', 'desc')->first();
+
+
+            $cuenta = Meripuntos::create([
+                'saldo' => $this->saldo,
+                'limite' => $this->limite,
+                'meripuntos' => '0',
+                'client_id' => $cliente->id,
+            ]);
+
 
         $this->resetUI();
         $this->emit('pro-added', 'Cliente Registrado con Exito.');
@@ -129,3 +157,4 @@ class ClientesController extends Component
         $this->selected_id = 0;
     }
 }
+
