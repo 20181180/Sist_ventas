@@ -26,7 +26,7 @@ class ProductsController extends Component
     {
         $this->pageTitle = 'Listado';
         $this->componentName = 'Productos';
-        $this->categoryid = 'Elegir';
+        $this->categoryid = 0;
         $this->price = 0;
         $this->prove_id = 0;
         // $this->cost = 0;
@@ -218,7 +218,7 @@ class ProductsController extends Component
         $this->price = '';
         $this->stock = '';
         $this->alerts = '';
-        $this->category_id = 'Elegir';
+        $this->categoryid = 0;
         $this->prove_id = 0;
         $this->image = 'null';
         $this->selected_id = 0;

@@ -111,7 +111,7 @@ class PosController extends Component
         } else {
             $p = Cotizaciones::where('clave_id', $searchD)->first();
             if ($fecha >= $p->expiration_date) {
-                $this->emit('scan-notfound', 'Su cotizacion a experido');
+                $this->emit('scan-notfound', 'La cotizacion a expirado');
                 return;
             }
 
@@ -184,7 +184,7 @@ class PosController extends Component
         if ($exist) {
             if ($product->stock < ($cant + $exist->quantity)) {
 
-                $this->emit('no-stock', 'Stock insuficiente1');
+                $this->emit('no-stock', 'Stock insuficiente');
                 return;
             }
         }
@@ -326,10 +326,10 @@ class PosController extends Component
             $this->emit('sale-error', 'Favor de agregar un cliente.');
             return;
         }
-        if (empty($this->tipopago)) {
-            $this->emit('sale-error', 'Favor de agrega un tipo de pago.');
-            return;
-        }
+        // if (empty($this->tipopago)) {
+        //     $this->emit('sale-error', 'Favor de agrega un tipo de pago.');
+        //     return;
+        // }
         //transaccion a la bd para guardar la venta en detalles venta
         DB::beginTransaction();
         try {
@@ -496,7 +496,7 @@ class PosController extends Component
         $dataD = Meripuntos::Where('client_id', $this->client_id)->first();
 
         if (empty($dataD)) {
-            $this->emit('sale-error', 'Para poder obtener puntos, Favor de comprar  .');
+            $this->emit('sale-error', 'Para poder obtener puntos, Favor de comprar.');
             return;
         }
 
@@ -507,7 +507,7 @@ class PosController extends Component
             $this->puntos1 = $this->puntos;
         }
         if ($dataD->meripuntos < 1) {
-            $this->emit('sale-error', 'No cuenta con Meripuntos, Siga Participando jaja xd.');
+            $this->emit('sale-error', 'No cuenta con Meripuntos, Siga Participando.');
             return;
         }
     }
@@ -523,7 +523,7 @@ class PosController extends Component
 
             if ($product->price > $this->puntos) {
 
-                $this->emit('no-stock', 'Ya valio, Ya no cuentas con los puntos suficientes :-/');
+                $this->emit('no-stock', 'Ya no cuentas con los puntos suficientes :!');
                 return;
             }
             if ($this->InCart($product->id)) {
@@ -567,7 +567,7 @@ class PosController extends Component
             $this->cangeo = 0;
             $this->total = Cart::getTotal();
             $this->itemsQuantity = Cart::getTotalQuantity();
-            $this->emit('sale-ok', 'Canjeos procesado con ¡Exito!.');
+            $this->emit('sale-ok', 'Se Procesado el Canjeo con ¡Exito!.');
             //  $this->emit('print-ticket', $sale->id);
         } catch (Exception $e) {
             DB::rollBack();

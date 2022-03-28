@@ -74,7 +74,7 @@
         <div class="form-group">
             <label>Categoria *</label>
             <select wire:model='categoryid' name="" class="form-control">
-                <option value="Elegir" disabled>Elegir</option>
+                <option value="0" disabled>Elegir</option>
                 @foreach ($categories as $category)
                 <option value="{{$category->id}}">{{$category->name}}</option>
                 @endforeach
@@ -89,7 +89,7 @@
             <select wire:model='prove_id' name="" class="form-control">
                 <option value="0" disabled>Elegir</option>
                 @foreach ($prove as $pro)
-                <option value="{{$pro->id}}">{{$pro->name}}</option>
+                <option value="{{$pro->id}}">{{$pro->taxpayer_id}}</option>
                 @endforeach
             </select>
             @error('prove_id')<span class="text-danger er">{{$message}}</span>@enderror

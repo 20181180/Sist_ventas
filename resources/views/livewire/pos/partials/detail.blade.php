@@ -18,8 +18,6 @@
                         <span class="text-center">INGRESA CLAVE DE COTIZACIÓN</span><br>
                         <input id="coti" type="text" wire:keydown.enter.prevent="$emit('cotizacion',$('#coti').val())" placeholder="154ad..." class="form-control">
                     </div>
-
-
                 </div>
 
                 @if ($total > 0)

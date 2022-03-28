@@ -33,9 +33,10 @@
                 <div class="form-group">
 
                     <select wire:model='tipopago' name="" class="form-control" required>
-                        <option value="0" disabled>Tipo de pago</option>
-                        <option value="Tarjeta de credito">Tarjeta de credito</option>
-                        <option value="A Credito">A Credito</option>
+
+                        <option value="0">Pago en efectivo</option>
+                        <option value="1">A Credito</option>
+                        <option value="2">Tarjeta de credito</option>
                     </select>
                     @error('client_id')<span class="text-danger er">{{$message}}</span>@enderror
                 </div>
@@ -44,6 +45,7 @@
             <div class="connect-sorting-content mt-4">
                 <div class="card simple-title-task ui-sortable-handle">
                     <div class="card-body">
+                        @if($tipopago==0)
                         <div class="input-group input-group-md mb-3">
 
                             <div class="input-group-prepend">
@@ -59,7 +61,6 @@
                                 <span wire:click="$set('efectivo', 0)" class="input-group-text" style="background: #3B3F5C;color:white">
                                     <i class="fas fa-backspace fa-2x"></i>
                                 </span>
-
                             </div>
                         </div>
 
@@ -70,20 +71,67 @@
                         <h4 class="text-muted">Cambio: $0.00</h4>
 
                         @endif
+                        @elseif($tipopago==1)
+                        <div class="input-group input-group-md mb-3">
+
+                            <div class="input-group-prepend">
+                                <button wire:click.prevent="ACashAmano({{$efectivo}})" class="btn btn-dark btn-block den">Abonar $:</button>
+                            </div>
+
+                            <input type="number" id="cash" wire:model="efectivo" placeholder="$0.00" class="form-control text-center" value="{{$efectivo}}">
+
+
+                            <div class="input-group-append">
+                                <span wire:click="$set('efectivo', 0)" class="input-group-text" style="background: #3B3F5C;color:white">
+                                    <i class="fas fa-backspace fa-2x"></i>
+                                </span>
+
+                            </div>
+                        </div>
+                        @if ($efectivo > 0)
+                        <h4 class="text-muted">Resta: ${{number_format($change,2)}}</h4>
+                        <!-- <div class="row justify-content-between">
+
+                            <div class="col-sm-12 col-md-12 col-lg-6">
+
+                                <button wire:click.prevent="saveSale" class="btn btn-dark btn-block">
+                                    GUARDAR </button>
+
+                            </div>
+
+                        </div> -->
+                        @else
+                        <h4 class="text-muted">Resta: $</h4>
+
+                        @endif
+                        <!-- este es el de tarjeta de credito -->
+
+                        @endif
+                        <!-- aqui termnina tarjeta credito -->
+
                         <div class="row justify-content-between">
                             <div class="col-sm-12 col-md-12 col-lg-6">
 
                                 @if ($total> 0)
                                 <button onclick="Confirm('','clearCart','¿SEGURO DE ELIMINAR EL CARRITO?')" class="btn btn-dark mtmobile">
-                                    CANCELAR C
+                                    CANCELAR
                                 </button>
                                 @endif
                             </div>
                             <div class="col-sm-12 col-md-12 col-lg-6">
-                                @if ($efectivo >= $total && $total > 0)
+                                @if ($tipopago==0 && $efectivo >= $total && $total > 0)
                                 <button wire:click.prevent="saveSale" class="btn btn-dark btn-md btn-block">
                                     GUARDAR </button>
                                 @endif
+                                @if ($tipopago==1&&$efectivo >0)
+                                <button wire:click.prevent="" class="btn btn-dark btn-md btn-block">
+                                    Pago a Credito </button>
+                                @endif
+                                @if ($tipopago==2&&$total>0)
+                                <button wire:click.prevent="" class="btn btn-dark btn-md btn-block">
+                                    Pago Tarjeta </button>
+                                @endif
+
                             </div>
                             <div class="col-sm-12 col-md-12 col-lg-12 mt-4">
                                 <a class="btn btn-dark btn-block {{count($cart) <1 ? 'disabled' : '' }} {{$cangeo == 1 ? 'disabled' : '' }}" href="{{ url('cotizacion/pdf' . '/' . $total . '/'
