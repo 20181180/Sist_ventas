@@ -75,7 +75,7 @@
                         <div class="input-group input-group-md mb-3">
 
                             <div class="input-group-prepend">
-                                <button wire:click.prevent="ACashAmano({{$efectivo}})" class="btn btn-dark btn-block den">Abonar $:</button>
+                                <button wire:click.prevent="Abonar({{$efectivo}})" class="btn btn-dark btn-block den">Abonar $:</button>
                             </div>
 
                             <input type="number" id="cash" wire:model="efectivo" placeholder="$0.00" class="form-control text-center" value="{{$efectivo}}">
@@ -124,11 +124,11 @@
                                     GUARDAR </button>
                                 @endif
                                 @if ($tipopago==1&&$efectivo >0)
-                                <button wire:click.prevent="" class="btn btn-dark btn-md btn-block">
+                                <button wire:click.prevent="saveSale" class="btn btn-dark btn-md btn-block">
                                     Pago a Credito </button>
                                 @endif
                                 @if ($tipopago==2&&$total>0)
-                                <button wire:click.prevent="" class="btn btn-dark btn-md btn-block">
+                                <button wire:click.prevent="saveSale" class="btn btn-dark btn-md btn-block">
                                     Pago Tarjeta </button>
                                 @endif
 

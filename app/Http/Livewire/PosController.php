@@ -134,6 +134,12 @@ class PosController extends Component
         $this->efectivo = ($value == 0 ? $this->total : $value);
         $this->change = ($this->efectivo - $this->total);
     }
+
+    public function Abonar($value)
+    {
+        $this->efectivo = ($value == 0 ? $this->total : $value);
+        $this->change = ($this->total - $this->efectivo);
+    }
     //este evento es pra escanear el codigo de barras
     public function ScanCode($barcode, $cant = 1)
     {
@@ -318,10 +324,7 @@ class PosController extends Component
             $this->emit('sale-error', 'Ingrese el efetivo...');
             return;
         }
-        if ($this->total > $this->efectivo) {
-            $this->emit('sale-error', 'el efetivo de venta debe de ser mayor o igual al toal resultado');
-            return;
-        }
+
         if (empty($this->client_id)) {
             $this->emit('sale-error', 'Favor de agregar un cliente.');
             return;
@@ -333,54 +336,66 @@ class PosController extends Component
         //transaccion a la bd para guardar la venta en detalles venta
         DB::beginTransaction();
         try {
-            $sale = Sale::create([
-                'total' => $this->total,
-                'items' => $this->itemsQuantity,
-                'dinero' => $this->efectivo,
-                'cambio' => $this->change,
-                'tipo_pago' => $this->tipopago,
-                'user_id' => Auth()->user()->id,
-                'client_id' => $this->client_id,
 
-            ]);
-
-            if ($sale) {
-                $items = Cart::getContent();
-                foreach ($items as $item) {
-                    SaleDetails::create([
-                        'price' => $item->price,
-                        'quantity' => $item->quantity,
-                        'product_id' => $item->id,
-                        'sale_id' => $sale->id,
-                    ]);
-
-                    $product = Product::find($item->id);
-                    //$product->stock =-$item->quantity;
-                    $product->stock = $product->stock - $item->quantity;
-                    $product->save();
+            if ($this->tipopago == 0) {
+                if ($this->total > $this->efectivo) {
+                    $this->emit('sale-error', 'el efetivo de venta debe de ser mayor o igual al total resultado');
+                    return;
                 }
-            }
-            $this->printTicket($this->itemsQuantity, $this->total);
+                $sale = Sale::create([
+                    'total' => $this->total,
+                    'items' => $this->itemsQuantity,
+                    'dinero' => $this->efectivo,
+                    'cambio' => $this->change,
+                    'tipo_pago' => $this->tipopago,
+                    'user_id' => Auth()->user()->id,
+                    'client_id' => $this->client_id,
 
-            if ($sale) {
+                ]);
 
-                //$uwu = Meripuntos::find($this->client_id);
+                if ($sale) {
+                    $items = Cart::getContent();
+                    foreach ($items as $item) {
+                        SaleDetails::create([
+                            'price' => $item->price,
+                            'quantity' => $item->quantity,
+                            'product_id' => $item->id,
+                            'sale_id' => $sale->id,
+                        ]);
 
-                $xd = Meripuntos::Where('client_id', '=', $this->client_id)->get();
-                $xd2 = (count($xd) == 0);
-                if ($xd2 == 'true') {
-                    Meripuntos::create([
-                        'client_id' => $this->client_id,
-                        'meripuntos' => $this->puntos,
-                    ]);
-                } else {
-                    //$xd = Meripuntos::Where('client_id', '=', $this->client_id)->get();
-                    $category = Meripuntos::Where('client_id', '=', $this->client_id)->first();
-                    $p = $category->meripuntos + $this->puntos;
-                    $category->update([
-                        'meripuntos' => $p,
-                    ]);
+                        $product = Product::find($item->id);
+                        //$product->stock =-$item->quantity;
+                        $product->stock = $product->stock - $item->quantity;
+                        $product->save();
+                    }
                 }
+                $this->printTicket($this->itemsQuantity, $this->total);
+
+                if ($sale) {
+                    $xd = Meripuntos::Where('client_id', '=', $this->client_id)->get();
+                    $xd2 = (count($xd) == 0);
+                    if ($xd2 == 'true') {
+                        Meripuntos::create([
+                            'client_id' => $this->client_id,
+                            'meripuntos' => $this->puntos,
+                        ]);
+                    } else {
+                        //$xd = Meripuntos::Where('client_id', '=', $this->client_id)->get();
+                        $category = Meripuntos::Where('client_id', '=', $this->client_id)->first();
+                        $p = $category->meripuntos + $this->puntos;
+                        $category->update([
+                            'meripuntos' => $p,
+                        ]);
+                    }
+                }
+            } elseif ($this->tipopago == 1) {
+                $category = Meripuntos::Where('client_id', '=', $this->client_id)->first();
+                $sald = $category->saldo + (Cart::getTotal() - $this->efectivo);
+                $ab = $category->abono + $this->efectivo;
+                $category->update([
+                    'saldo' => $sald,
+                    'abono' => $ab,
+                ]);
             }
             DB::commit();
             Cart::clear(); //limpiamos e inicializamos las varibles..
@@ -388,11 +403,11 @@ class PosController extends Component
             $this->change = 0;
             $this->puntos = 0;
             $this->client_id = 0;
+            $this->tipopago = 0;
             $this->total = Cart::getTotal();
             $this->itemsQuantity = Cart::getTotalQuantity();
             $this->emit('sale-ok', 'Venta procesado con Exito.');
             // $this->emit('print-ticket', $this->itemsQuantity, $this->total);
-
         } catch (Exception $e) {
             DB::rollBack();
             $this->emit('sale-error', $e->getMessage());
