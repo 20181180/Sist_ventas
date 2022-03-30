@@ -20,7 +20,7 @@
                 <div class="form-group">
 
                     <select wire:model='client_id' name="" class="form-control" required>
-                        <option value="0" disabled>Elegir</option>
+                        <option>Alumno</option>
                         @foreach ($clientes as $c)
                         <option value="{{$c->id}}">{{$c->name}}</option>
                         @endforeach

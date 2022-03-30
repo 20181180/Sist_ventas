@@ -10,14 +10,18 @@
                         <div class="form-group">
                             <label for="">Usuario *</label>
                             <select class="form-control" wire:model="userid">
-                                <option value="0" disabled>Elegir</option>
+
                                 @foreach($users as $u)
+                                <option value="0"></option>
                                 <option value="{{$u->id}}"> {{$u->name}} </option>
                                 @endforeach
                             </select>
                             @error('userid')<span class="text-danger er">{{$message}}</span>@enderror
                         </div>
+                        <button wire:click.prevent="venta_dia" type="button" class="btn btn-dark"> CONSULTAR VENTAS DEL DIA</button>
                     </div>
+
+
 
                     <div class="col-sm-12 col-md-3">
                         <div class="form-group">
@@ -35,8 +39,10 @@
                         </div>
                     </div>
 
+
+
                     <div class="col-sm-12 col-md-3">
-                        @if($userid >0 && $fromDate !=null && $toDate !=null)
+                        @if($userid >0 && $fromDate !=null && $toDate !=null && $x==1)
                         <button wire:click.prevent="Consultar" type="button" class="btn btn-dark"> Consultar</button>
                         @endif
 

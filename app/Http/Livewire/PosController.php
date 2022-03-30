@@ -66,6 +66,8 @@ class PosController extends Component
             }
         }
 
+        $this->check_meripoints();
+
         return view('livewire.pos.component', [
             'denominations' => Denomination::orderBy('value', 'desc')->get(),
             'products' => $data,
@@ -396,6 +398,17 @@ class PosController extends Component
                     'saldo' => $sald,
                     'abono' => $ab,
                 ]);
+                $sale = Sale::create([
+                    'total' => $this->total,
+                    'items' => $this->itemsQuantity,
+                    'dinero' => $this->efectivo,
+                    'cambio' => 0,
+                    'tipo_pago' => $this->tipopago,
+                    'estado' => "Pediente",
+                    'user_id' => Auth()->user()->id,
+                    'client_id' => $this->client_id,
+
+                ]);
             }
             DB::commit();
             Cart::clear(); //limpiamos e inicializamos las varibles..
@@ -515,16 +528,22 @@ class PosController extends Component
             return;
         }
 
+
         if ($dataD != null) {
             $this->puntos = 0.1 * $dataD->meripuntos;
-            $this->datosxd = Product::Where('price', '<=', $this->puntos)->get();
-            //$this->puntos = $dataD->meripuntos;
-            $this->puntos1 = $this->puntos;
+            $this->check_meripoints();
         }
         if ($dataD->meripuntos < 1) {
             $this->emit('sale-error', 'No cuenta con Meripuntos, Siga Participando.');
             return;
         }
+    }
+
+    public function check_meripoints()
+    {
+        $this->datosxd = Product::Where('price', '<=', $this->puntos)->get();
+
+        $this->puntos1 = $this->puntos;
     }
 
     public function Meri($barcode, $cant = 1)

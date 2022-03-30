@@ -2,23 +2,25 @@
 
 namespace App\Http\Livewire;
 
-use Livewire\Component;
-use App\Models\User;
-use App\Models\Sale;
-use App\Models\SaleDetails;
 use Carbon\Carbon;
+use App\Models\Sale;
+use App\Models\User;
+use Livewire\Component;
+use App\Models\SaleDetails;
+use Illuminate\Support\Facades\Auth;
 
 
 class CashoutController extends Component
 {
-    public $fromDate, $toDate, $userid, $total, $items, $sales, $details;
+    public $fromDate, $x, $toDate, $userid, $total, $items, $sales, $details;
 
     public function mount()
     {
         $this->fromDate = null;
         $this->toDate = null;
-        $this->userid = 0;
+        $this->userid = Auth::user()->id;
         $this->total = 0;
+        $this->x = 1;
         //$this->items = [];
         $this->sales = [];
         $this->details = [];
@@ -38,6 +40,7 @@ class CashoutController extends Component
     }
     public function Consultar()
     {
+        $this->x = 1;
         //en esta parte definimos el formato de la fecha y la hora para posteriomente utilizarlo en la consulta.
         $fi = Carbon::parse($this->fromDate)->format('y-m-d') . ' 00:00:00';
         $ff = Carbon::parse($this->toDate)->format('y-m-d') . ' 23:59:59';
@@ -47,6 +50,22 @@ class CashoutController extends Component
             ->where('user_id', $this->userid)->get();
         $this->total = $this->sales ? $this->sales->sum('total') : 0;
         $this->items = $this->sales ? $this->sales->sum('items') : 0;
+    }
+    public function venta_dia()
+    {
+        $this->x = 0;
+        //en esta parte definimos el formato de la fecha y la hora para posteriomente utilizarlo en la consulta.
+        $this->fromDate = Carbon::now();
+        $this->toDate = Carbon::now();
+        $fi = Carbon::parse($this->fromDate)->format('y-m-d') . ' 00:00:00';
+        $ff = Carbon::parse($this->toDate)->format('y-m-d') . ' 23:59:59';
+
+        $this->sales = Sale::WhereBetween('created_at', [$fi, $ff])
+            ->where('estado', 'Pagado')
+            ->where('user_id', $this->userid)->get();
+        $this->total = $this->sales ? $this->sales->sum('total') : 0;
+        $this->items = $this->sales ? $this->sales->sum('items') : 0;
+        //$this->x = 1;
     }
 
     public function viewDeatails(Sale $sale)
