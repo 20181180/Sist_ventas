@@ -90,6 +90,7 @@
                 @else
                 <br><br>
                 <h5 class="text-center text-muted">Agregar Productos a la venta</h5>
+                <img class="table-responsive" src="storage/hola2.png" alt="">
                 @endif
                 <div wire:loading.inline wire:target="saveSale">
 
