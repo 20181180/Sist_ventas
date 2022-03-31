@@ -7,7 +7,6 @@
                 <ul class="tabs tab-pills">
 
                     <li><a href="javascript:void(0);" class="tabmenu bg-dark" data-toggle="modal" data-target="#theModal">Agregar</a></li>
-
                 </ul>
             </div>
 
@@ -60,9 +59,14 @@
                                     <a href="javascript:void(0);" wire:click="Edit({{$c->client_id}})" class="btn btn-dark mtmobile" title="Edit">
                                         <i class="fas fa-edit"></i>
                                     </a>
-
+                                    <!-- 
                                     <a href="javascript:void(0);" onclick="Confirm('{{$c->client_id}}')" class="btn btn-dark" title="Delete">
                                         <i class="fas fa-trash"></i>
+                                    </a> -->
+
+                                    <a href="javascript:void(0);" wire:click="Pay({{$c->client_id}})" class="btn mtmobile" style="background-color: #21BF73;color:white" title="Pay">
+                                        ABONAR
+                                        <i class="fas fa-light fa-piggy-bank" style="font-size:22px;"></i>
                                     </a>
                                 </td>
 
@@ -77,7 +81,7 @@
     </div>
     @include('livewire.clients.form')
 </div>
-
+@include('livewire.clients.pay')
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         window.livewire.on('show-modal', msg => {
@@ -92,6 +96,17 @@
             $('#theModal').modal('hide');
             noty(msg)
         });
+        window.livewire.on('abono-client', msg => {
+            $('#Modal2').modal('show');
+        });
+
+        window.livewire.on('Abono-uwu', msg => {
+            $('#Modal2').modal('hide');
+        });
+        window.livewire.on('sale-error', Msg => {
+            $('#Modal2').modal('hide');
+            noty(Msg)
+        })
 
     });
 

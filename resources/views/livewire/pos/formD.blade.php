@@ -15,7 +15,7 @@
                         <h6 class="text">CLIENTES</h6>
                         <div class="form-group">
                             <select wire:model='client_id' class="form-control">
-                                <option value="0" disabled>Elegir cliente</option>
+                                <option value="" disabled>Elegir cliente</option>
                                 @foreach ($clientes as $c)
                                 <option value="{{$c->id}}">{{$c->name}}</option>
                                 @endforeach
@@ -29,7 +29,8 @@
                         @endif
                     </div>
                     <div class="col-sm">
-                        <h5 class="text mt-3"> MERIPUNTOS:$ {{$puntos}}</h5>
+                        <h5 class="text mt-3"> MERIPUNTOS:$ {{$puntos*10}}</h5>
+
                     </div>
                 </div>
             </div>
@@ -84,7 +85,7 @@
                                     </td>
 
                                     <td class="text-center">
-                                        <input type="number" id="r{{$product->id}}" wire:change="" style="width:28%;height: 35px;" class="rounded" value="{{$product->quantity}}">
+                                        <input type="number" id="r{{$product->id}}" wire:change="updateMery({{$product->id}},$('#p' + {{$product->id}}).is(':checked'), $('#r' + {{$product->id}}).val())" style="width:28%;height: 35px;" class="rounded" value="{{$product->quantity}}">
                                         <a href="javascript:void(0);" type="text" wire:click.prevent="decreaseMeri({{$product->id}})" class="btn btn-dark mtmobile" title="Edit">
                                             <i class="fas fa-minus"></i>
                                         </a>

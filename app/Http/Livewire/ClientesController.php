@@ -9,7 +9,7 @@ use App\Models\Meripuntos;
 
 class ClientesController extends Component
 {
-    public $search, $name, $direc, $tel, $correo, $selected_id, $pageTitle, $componentName, $saldo, $limite;
+    public $search, $name, $debt, $efectivo, $tipopago, $direc, $tel, $correo, $selected_id, $pageTitle, $componentName, $saldo, $limite;
 
     private $pagination = 10;
 
@@ -17,24 +17,25 @@ class ClientesController extends Component
     {
         $this->pageTitle = 'Listado';
         $this->componentName = 'Clientes';
+        $this->tipopago = 0;
+        $this->debt = 0;
+        $this->efectivo = 0;
     }
 
     public function render()
     {
 
-        if (strlen($this->search) > 0)
-        {
+        if (strlen($this->search) > 0) {
             // $data = Cliente::Where('name', 'like', '%' . $this->search . '%')->paginate($this->pagination);
-           // $data = Meripuntos::join('clientes as c', 'c.id', 'meripuntos.client_id')
+            // $data = Meripuntos::join('clientes as c', 'c.id', 'meripuntos.client_id')
             $data = Cliente::join('meripuntos as m', 'm.client_id', 'clientes.id')
-            ->select('*',)
-            ->where('clientes.name', 'like', '%' . $this->search . '%')
-            ->paginate($this->pagination);
-
-        }else{
+                ->select('*',)
+                ->where('clientes.name', 'like', '%' . $this->search . '%')
+                ->paginate($this->pagination);
+        } else {
             $data = Cliente::join('meripuntos as m', 'm.client_id', 'clientes.id')
-            ->select('*',)->paginate($this->pagination);
-           // $data = Cliente::orderBy('id', 'desc')->paginate($this->pagination);
+                ->select('*',)->paginate($this->pagination);
+            // $data = Cliente::orderBy('id', 'desc')->paginate($this->pagination);
         }
 
 
@@ -51,16 +52,34 @@ class ClientesController extends Component
             ->where('clientes.id', '=', $id->id)
             ->first();
 
-            $this->name = $d->name;
-            $this->direc = $d->address;
-            $this->selected_id = $d->client_id;
-            $this->tel = $d->phone;
-            $this->correo = $d->email;
-            $this->saldo = $d->saldo;
-            $this->limite = $d->limite;
+        $this->name = $d->name;
+        $this->direc = $d->address;
+        $this->selected_id = $d->client_id;
+        $this->tel = $d->phone;
+        $this->correo = $d->email;
+        $this->saldo = $d->saldo;
+        $this->limite = $d->limite;
 
         //nos permite mostrar el modal con el elemento.
-        $this->emit('show-modal', 'Informacion del cliente');
+        $this->emit('show-modal', 'infomacion del cliente');
+    }
+    public function Pay(Cliente $id)
+    {
+
+        $d = Cliente::join('meripuntos as m', 'm.client_id', 'clientes.id')
+            ->select('*',)
+            ->where('clientes.id', '=', $id->id)
+            ->first();
+
+        $this->name = $d->name;
+        $this->direc = $d->address;
+        $this->selected_id = $d->client_id;
+
+        $this->saldo = $d->saldo;
+      //  $this->debt = $d->saldo;
+
+        //nos permite mostrar el modal con el elemento.
+        $this->emit('abono-client', 'Abono del cliente');
     }
 
     public function Store()
@@ -97,12 +116,12 @@ class ClientesController extends Component
         $cliente = Cliente::select('id')->orderBy('id', 'desc')->first();
 
 
-            $cuenta = Meripuntos::create([
-                'saldo' => $this->saldo,
-                'limite' => $this->limite,
-                'meripuntos' => '0',
-                'client_id' => $cliente->id,
-            ]);
+        $cuenta = Meripuntos::create([
+            'saldo' => $this->saldo,
+            'limite' => $this->limite,
+            'meripuntos' => '0',
+            'client_id' => $cliente->id,
+        ]);
 
 
         $this->resetUI();
@@ -142,7 +161,7 @@ class ClientesController extends Component
             'phone' => $this->tel,
             'email' => $this->correo,
         ]);
-        $meri = Meripuntos::where('client_id', '=' ,$this->selected_id)->first();
+        $meri = Meripuntos::where('client_id', '=', $this->selected_id)->first();
         $meri->update([
             'saldo' => $this->saldo,
             'limite' => $this->limite,
@@ -150,6 +169,39 @@ class ClientesController extends Component
 
         $this->resetUI();
         $this->emit('item-updated', 'Datos Actualizados');
+    }
+
+
+    public function goPay()
+    {
+        $category = Meripuntos::Where('client_id', '=', $this->selected_id)->first();
+
+        if ($category->saldo > 0) {
+            if ($this->tipopago == 1) {
+                // $category = Meripuntos::Where('client_id', '=', $this->selected_id)->first();
+                $sald = $category->saldo - $this->efectivo;
+                $ab = $category->abono + $this->efectivo;
+                $category->update([
+                    'saldo' => $sald,
+                    'abono' => $ab,
+                ]);
+            } else {
+                //  $category = Meripuntos::Where('client_id', '=', $this->selected_id)->first();
+                $sald = 0;
+                $ab = $category->abono + $category->saldo;
+                $category->update([
+                    'saldo' => $sald,
+                    'abono' => $ab,
+                ]);
+            }
+            $this->resetUI();
+            $this->emit('Abono-uwu', 'Abono Procesado');
+        } else {
+            //$this->emit('Abono-uwu', 'Lo sentimos no se puede completar el proceso :/');
+            $this->resetUI();
+            $this->emit('sale-error', 'Lo sentimos no se puede completar el proceso :/');
+            return;
+        }
     }
 
 
@@ -175,6 +227,7 @@ class ClientesController extends Component
         $this->correo = '';
         $this->search = '';
         $this->selected_id = 0;
+        $this->efectivo = 0;
+        $this->tipopago = 0;
     }
 }
-

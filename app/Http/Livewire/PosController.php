@@ -32,7 +32,7 @@ class PosController extends Component
         $this->datosxd = [];
         $this->tipopago = 0;
         $this->datauwuxd = [];
-        $this->client_id = 0;
+        $this->client_id = 5;
         $this->estadoCheck = 'false';
         $this->cheked = '0';
         $this->efectivo = 0;
@@ -310,8 +310,10 @@ class PosController extends Component
         $this->change = 0;
         $this->total = Cart::getTotal();
         $this->puntos = Cart::getTotal();
-        $this->client_id = 0;
+        //     $this->client_id = 0;
+        $this->tipopago = 0;
         $this->cangeo = 0;
+        $this->client_id = 5;
         $this->itemsQuantity = Cart::getTotalQuantity();
         $this->emit('scan-ok', 'Carrito vaciado...');
     }
@@ -409,13 +411,30 @@ class PosController extends Component
                     'client_id' => $this->client_id,
 
                 ]);
+                if ($sale) {
+                    $items = Cart::getContent();
+                    foreach ($items as $item) {
+                        SaleDetails::create([
+                            'price' => $item->price,
+                            'quantity' => $item->quantity,
+                            'product_id' => $item->id,
+                            'sale_id' => $sale->id,
+                        ]);
+
+                        $product = Product::find($item->id);
+                        //$product->stock =-$item->quantity;
+                        $product->stock = $product->stock - $item->quantity;
+                        $product->save();
+                    }
+                }
             }
             DB::commit();
             Cart::clear(); //limpiamos e inicializamos las varibles..
             $this->efectivo = 0;
             $this->change = 0;
             $this->puntos = 0;
-            $this->client_id = 0;
+            //$this->client_id = 0;
+            $this->client_id = 5;
             $this->tipopago = 0;
             $this->total = Cart::getTotal();
             $this->itemsQuantity = Cart::getTotalQuantity();
@@ -532,6 +551,7 @@ class PosController extends Component
         if ($dataD != null) {
             $this->puntos = 0.1 * $dataD->meripuntos;
             $this->check_meripoints();
+            $this->puntos1 = $this->puntos;
         }
         if ($dataD->meripuntos < 1) {
             $this->emit('sale-error', 'No cuenta con Meripuntos, Siga Participando.');
@@ -541,9 +561,8 @@ class PosController extends Component
 
     public function check_meripoints()
     {
+        #consulta los productos conforme a los puntos xd
         $this->datosxd = Product::Where('price', '<=', $this->puntos)->get();
-
-        $this->puntos1 = $this->puntos;
     }
 
     public function Meri($barcode, $cant = 1)
@@ -578,6 +597,7 @@ class PosController extends Component
             $this->total = Cart::getTotal();
             $this->p =  $this->puntos1 - $this->total;
             $this->puntos = $this->p;
+            $this->tipopago = 3;
             $this->itemsQuantity = Cart::getTotalQuantity();
             $this->emit('scan-ok', 'Producto agregado.');
         }
@@ -592,13 +612,43 @@ class PosController extends Component
             $mer->update([
                 'meripuntos' => $p,
             ]);
+
+            $sale = Sale::create([
+                'total' => $this->total,
+                'items' => $this->itemsQuantity,
+                'dinero' => $this->efectivo,
+                'cambio' => 0,
+                'tipo_pago' => $this->tipopago,
+                'user_id' => Auth()->user()->id,
+                'client_id' => $this->client_id,
+                'estado' => "Meripuntos",
+
+            ]);
+            if ($sale) {
+                $items = Cart::getContent();
+                foreach ($items as $item) {
+                    SaleDetails::create([
+                        'price' => $item->price,
+                        'quantity' => $item->quantity,
+                        'product_id' => $item->id,
+                        'sale_id' => $sale->id,
+                    ]);
+
+                    $product = Product::find($item->id);
+                    //$product->stock =-$item->quantity;
+                    $product->stock = $product->stock - $item->quantity;
+                    $product->save();
+                }
+            }
+
             DB::commit();
             Cart::clear(); //limpiamos e inicializamos las varibles..
             $this->efectivo = 0;
             $this->change = 0;
             $this->puntos = 0;
-            $this->client_id = 0;
+            $this->client_id = 5;
             $this->cangeo = 0;
+            $this->tipopago = 0;
             $this->total = Cart::getTotal();
             $this->itemsQuantity = Cart::getTotalQuantity();
             $this->emit('sale-ok', 'Se Procesado el Canjeo con ¡Exito!.');
@@ -623,6 +673,50 @@ class PosController extends Component
         $this->puntos = $this->p;
         $this->itemsQuantity = Cart::getTotalQuantity();
         $this->emit('scan-ok', 'Cantidad actualizada');
+    }
+
+    public function updateMery($productId, $state, $cant = 1)
+    {
+        $title = '';
+        $product = Product::find($productId);
+        $exist = Cart::get($productId);
+        if ($exist)
+            $title = 'Cantidad actualizada';
+        else
+            $title = 'Producto agregado';
+        if ($exist) {
+            if ($product->stock < $cant) {
+                $this->emit('no-stock', 'Stock insuficiente');
+                return;
+            }
+        }
+
+        $this->remover($productId);
+
+        if ($cant > 0) {
+            if ($state == 'true') {
+                Cart::add($product->id, $product->name, $product->price_mayoreo, $cant, $product->image);
+            } else {
+
+                Cart::add($product->id, $product->name, $product->price, $cant, $product->image);
+            }
+            $this->total = Cart::getTotal();
+            $this->p =  $this->puntos1 - $this->total;
+            $this->puntos = $this->p;
+            $this->itemsQuantity = Cart::getTotalQuantity();
+            $this->emit('scan-ok', $title);
+        }
+    }
+
+    public function remover($productId)
+    {
+        Cart::remove($productId);
+
+        $this->total = Cart::getTotal();
+        $this->p =  $this->puntos1 - $this->total;
+        $this->puntos = $this->p;
+        $this->itemsQuantity = Cart::getTotalQuantity();
+        $this->emit('scan-ok', 'Producto eliminado');
     }
 
     public function resetUI()

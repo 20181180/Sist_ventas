@@ -20,7 +20,7 @@
                 <div class="form-group">
 
                     <select wire:model='client_id' name="" class="form-control" required>
-                        <option>Alumno</option>
+
                         @foreach ($clientes as $c)
                         <option value="{{$c->id}}">{{$c->name}}</option>
                         @endforeach
@@ -37,6 +37,7 @@
                         <option value="0">Pago en efectivo</option>
                         <option value="1">A Credito</option>
                         <option value="2">Tarjeta de credito</option>
+                        <option value="3">Meripuntos</option>
                     </select>
                     @error('client_id')<span class="text-danger er">{{$message}}</span>@enderror
                 </div>
@@ -138,7 +139,7 @@
                                  . $itemsQuantity) }}" target="_black">Generar cotizacion</a>
                             </div>
                             <div class="col-sm-12 col-md-12 col-lg-12 mt-4">
-                                <a style="background: #F76E11" class="btn btn-dark btn-block {{$client_id <1 ? 'disabled' : '' }} " wire:click.prevent="saveMeri">Canjear Puntos</a>
+                                <a style="background: #F76E11" class="btn btn-dark btn-block {{$client_id ==5 ? 'disabled' : '' }} " wire:click.prevent="saveMeri">Canjear Puntos</a>
                             </div>
                         </div>
                     </div>
