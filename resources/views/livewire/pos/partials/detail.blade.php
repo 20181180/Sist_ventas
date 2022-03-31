@@ -95,7 +95,7 @@
                 <div wire:loading.inline wire:target="saveSale">
 
                     <h4 class="text-danger text-center">
-                        Procesando la venta, Espere un momento...
+                        Procesando la venta, Espere un momento por favor...
                     </h4>
                 </div>
 

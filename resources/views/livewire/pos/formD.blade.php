@@ -45,13 +45,15 @@
                                     <th class="table-th text-white text-center">NOMBRE</th>
                                     <th class="table-th text-white">IMAGEN</th>
                                     <th class="table-th text-white">CODIGO</th>
+                                    <th class="table-th text-white">PRECIO</th>
+                                    <th class="table-th text-white">PUNTOS</th>
                                     <th class="table-th text-white text-center">ACCION</th>
                                 </tr>
                             </thead>
                             <tbody>
 
                                 @if(count($datosxd) == 0) <tr>
-                                    <td colspan="5">
+                                    <td colspan="6">
                                         <h6 class="text-center">
                                             No Hay Productos..
                                         </h6>
@@ -74,8 +76,15 @@
                                     <td>
                                         <h6 class="text">{{$product->barcode}}</h6>
                                     </td>
+                                    <td>
+                                        <h6 class="text">{{$product->price}}</h6>
+                                    </td>
+                                    <td>
+                                        <h6 class="text">{{$product->price*10}}</h6>
+                                    </td>
 
                                     <td class="text-center">
+                                        <input type="number" id="r{{$product->id}}" wire:change="" style="width:28%;height: 35px;" class="rounded" value="{{$product->quantity}}">
                                         <a href="javascript:void(0);" type="text" wire:click.prevent="decreaseMeri({{$product->id}})" class="btn btn-dark mtmobile" title="Edit">
                                             <i class="fas fa-minus"></i>
                                         </a>
