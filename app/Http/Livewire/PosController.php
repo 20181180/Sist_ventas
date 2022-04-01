@@ -678,12 +678,24 @@ class PosController extends Component
     public function updateMery($productId, $state, $cant = 1)
     {
         $title = '';
+        //$meriP = Meripuntos::find($id);
+        $meriP = Meripuntos::where('client_id', '=', $this->client_id)->first();
         $product = Product::find($productId);
         $exist = Cart::get($productId);
-        if ($exist)
-            $title = 'Cantidad actualizada';
-        else
-            $title = 'Producto agregado';
+        $merivalor=($product->price*10) * $cant;
+        if($merivalor <= $meriP->meripuntos)
+        {
+            if ($exist)
+                $title = 'Cantidad actualizada';
+            else
+                $title = 'Producto agregado';
+        }
+        else{
+            $this->emit('no-stock', 'Meripuntos insuficiente');
+            return;
+        }
+
+
         if ($exist) {
             if ($product->stock < $cant) {
                 $this->emit('no-stock', 'Stock insuficiente');
