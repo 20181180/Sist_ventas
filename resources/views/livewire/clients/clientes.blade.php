@@ -46,20 +46,20 @@
                                     <h6 class="text-center">{{$c->email}}</h6>
                                 </td>
                                 <td>
-                                    <h6 class="text-center">{{$c->saldo}}</h6>
+                                    <h6 class="text-center">$ {{$c->saldo}}</h6>
                                 </td>
                                 <td>
-                                    <h6 class="text-center">{{$c->limite}}</h6>
+                                    <h6 class="text-center">$ {{$c->limite}}</h6>
                                 </td>
                                 <td>
-                                    <h6 class="text-center">{{$c->meripuntos}}</h6>
+                                    <h6 class="text-center">M {{$c->meripuntos}}</h6>
                                 </td>
 
                                 <td class="text-center">
                                     <a href="javascript:void(0);" wire:click="Edit({{$c->client_id}})" class="btn btn-dark mtmobile" title="Edit">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    <!-- 
+                                    <!--
                                     <a href="javascript:void(0);" onclick="Confirm('{{$c->client_id}}')" class="btn btn-dark" title="Delete">
                                         <i class="fas fa-trash"></i>
                                     </a> -->

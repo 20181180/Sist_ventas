@@ -1,6 +1,6 @@
 @include('commont.modalHead')
 <div class="row">
-    <div class="col-sm-12 col-md-6">
+    <div class="col-sm-12 col-md-12">
         <label>NOMBRE DEL CLIENTES*</label>
         <div class="input-group">
             <input type="text" wire:model.lazy="name" class="form-control" placeholder="ej:Norma Hernandez" maxlength="25">
@@ -38,18 +38,10 @@
         @enderror
     </div>
     <div class="col-sm-12 col-md-6">
-        <label>SALDO *</label>
-        <div class="input-group">
-            <input type="number" wire:model.lazy="saldo" class="form-control" placeholder="$ 0.00 *" maxlength="25">
-        </div>
-        @error('saldo')
-        <span class="text-danger er">{{$message}}</span>
-        @enderror
-    </div>
-    <div class="col-sm-12 col-md-6">
         <label>LIMITE *</label>
         <div class="input-group">
-            <input type="number" wire:model.lazy="limite" class="form-control" placeholder="$ 0.00 *" maxlength="25">
+            <span class="input-group-text">$</span>
+            <input type="number" wire:model.lazy="limite" class="form-control" placeholder="0.00 *" maxlength="25">
         </div>
         @error('limite')
         <span class="text-danger er">{{$message}}</span>

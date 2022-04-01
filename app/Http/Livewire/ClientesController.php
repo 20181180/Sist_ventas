@@ -26,8 +26,6 @@ class ClientesController extends Component
     {
 
         if (strlen($this->search) > 0) {
-            // $data = Cliente::Where('name', 'like', '%' . $this->search . '%')->paginate($this->pagination);
-            // $data = Meripuntos::join('clientes as c', 'c.id', 'meripuntos.client_id')
             $data = Cliente::join('meripuntos as m', 'm.client_id', 'clientes.id')
                 ->select('*',)
                 ->where('clientes.name', 'like', '%' . $this->search . '%')
@@ -35,7 +33,6 @@ class ClientesController extends Component
         } else {
             $data = Cliente::join('meripuntos as m', 'm.client_id', 'clientes.id')
                 ->select('*',)->paginate($this->pagination);
-            // $data = Cliente::orderBy('id', 'desc')->paginate($this->pagination);
         }
 
 
@@ -89,7 +86,6 @@ class ClientesController extends Component
             'direc' => 'required',
             'tel' => 'required|max:10',
             'correo' => 'required|email',
-            'saldo' => 'required',
             'limite' => 'required',
         ];
 
@@ -100,7 +96,6 @@ class ClientesController extends Component
             'tel.max' => 'Numero a digitos',
             'correo.required' => 'El campo correo es obligatorio',
             'correo.email' => 'Ingrese un correo valido',
-            'saldo.required' => 'El campo saldo es requerido',
             'limite.required' => 'El campo limite es requerido',
         ];
 
@@ -117,7 +112,8 @@ class ClientesController extends Component
 
 
         $cuenta = Meripuntos::create([
-            'saldo' => $this->saldo,
+            'saldo' => '0',
+            'abono' => '0',
             'limite' => $this->limite,
             'meripuntos' => '0',
             'client_id' => $cliente->id,
@@ -136,7 +132,6 @@ class ClientesController extends Component
             'direc' => 'required',
             'tel' => 'required|max:10',
             'correo' => 'required|email',
-            'saldo' => 'required',
             'limite' => 'required',
         ];
         $messages = [
@@ -146,7 +141,6 @@ class ClientesController extends Component
             'tel.max' => 'Numero a digitos',
             'correo.required' => 'El campo correo es obligatorio',
             'correo.email' => 'Ingrese un correo valido',
-            'saldo.required' => 'El campo saldo es requerido',
             'limite.required' => 'El campo limite es requerido',
         ];
 
