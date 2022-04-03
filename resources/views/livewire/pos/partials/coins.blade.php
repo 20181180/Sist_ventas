@@ -168,8 +168,8 @@
         livewire.on('print-ticket', ($total, $items) => {
             // $('#theModal').modal('hide');
 
-            window.open('uwu/pdf/{total}/{items}');
-
+            window.open('uwu/pdf' + '/' + $total + '/' + $items);
+            //  url('cotizacion/pdf' . '/' . $total . '/'. $itemsQuantity)
 
         })
     })
