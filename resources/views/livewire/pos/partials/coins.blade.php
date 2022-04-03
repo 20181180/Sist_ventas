@@ -121,7 +121,7 @@
                             </div>
                             <div class="col-sm-12 col-md-12 col-lg-6">
                                 @if ($tipopago==0 && $efectivo >= $total && $total > 0)
-                                <button wire:click.prevent="saveSale" class="btn btn-dark btn-md btn-block">
+                                <button wire:click.prevent="saveSale" wire:click="" class="btn btn-dark btn-md btn-block">
                                     GUARDAR </button>
                                 @endif
                                 @if ($tipopago==1&&$efectivo >0)
@@ -148,4 +148,29 @@
         </div>
     </div>
 </div>
-<!--comentario-->
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+        window.livewire.on('modal-show', msg => {
+            $('#Modal2').modal('show');
+        });
+        window.livewire.on('modal-hide', msg => {
+            $('#theModal2').modal('hide');
+        });
+        window.livewire.on('hidden.bs.modal', msg => {
+            $('.er').css('display', 'none');
+        });
+        livewire.on('cotizacion', action => {
+            $('#coti').val('');
+        });
+        livewire.on('print-ticket', ($total, $items) => {
+            // $('#theModal').modal('hide');
+
+            window.open('uwu/pdf/{total}/{items}');
+
+
+        })
+    })
+</script>

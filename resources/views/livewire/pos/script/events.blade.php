@@ -27,10 +27,10 @@
       //    window.open("print://" + saleId, '_blank');
 
       // })
-      window.livewire.on('print-ticket', ($total, $items) => {
-         // $('#theModal').modal('hide');
-         window.open('cotizacion/pdf/{total}/{items}');
+      // window.livewire.on('print-ticket', ($total, $items) => {
+      //    // $('#theModal').modal('hide');
+      //    window.open('cotizacion/pdf/{total}/{items}');
 
-      })
+      // })
    })
 </script>

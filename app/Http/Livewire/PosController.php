@@ -356,7 +356,14 @@ class PosController extends Component
                     'client_id' => $this->client_id,
 
                 ]);
-
+                // $total = $this->total;
+                // $itemsQuantity = $this->itemsQuantity;
+                // return redirect()->action('cotizacion/pdf' . '/' . $total . '/' . $itemsQuantity);
+                $total = $this->total;
+                $items = $this->itemsQuantity;
+                //  dd($items);
+                //$this->printTicket($items, $total);
+                $this->emit('print-ticket', $items, $total);
                 if ($sale) {
                     $items = Cart::getContent();
                     foreach ($items as $item) {
@@ -373,8 +380,12 @@ class PosController extends Component
                         $product->save();
                     }
                 }
-                $this->printTicket($this->itemsQuantity, $this->total);
+                // $this->printTicket($this->itemsQuantity, $this->total);
 
+
+                //  Route::get('cotizacion/pdf/{total}/{items}', [CotizacionController::class, 'reportPDF']);
+                //href="{{ url('cotizacion/pdf' . '/' . $total . '/' . $itemsQuantity) }}" 
+                //return redirect()->route('pdf.cotizacion');
                 if ($sale) {
                     $xd = Meripuntos::Where('client_id', '=', $this->client_id)->get();
                     $xd2 = (count($xd) == 0);
@@ -439,37 +450,31 @@ class PosController extends Component
             $this->total = Cart::getTotal();
             $this->itemsQuantity = Cart::getTotalQuantity();
             $this->emit('sale-ok', 'Venta procesado con Exito.');
-            // $this->emit('print-ticket', $this->itemsQuantity, $this->total);
         } catch (Exception $e) {
             DB::rollBack();
             $this->emit('sale-error', $e->getMessage());
         }
     }
 
+
+
     public function printTicket($total, $items)
     {
+
         $data = [];
 
         $data = Cart::getContent()->sortBy('name');
-        // DD($data);
+        //DD($data);
         $user = Auth::user()->name;
 
         $fecha = Carbon::now();
         $fechaV = $fecha->addDays(15);
         $fechaV->toFormattedDateString();
         $clav_id = "ncjdcnk5";
+        $pdf = PDF::loadView('pdf.uwu', compact('data', 'total', 'items', 'user', 'clav_id'));
 
-        $pdf = PDF::loadView('pdf.cotizacion', compact('data', 'total', 'items', 'user', 'clav_id', 'fechaV'));
-        // return Redirect::to('cotizacion/pdf/{total}/{items}');
-        //DD($pdf);
-        //return view('livewire.pos.component');
-        // $this->emit('print-ticket', $total, $items);
         return $pdf->stream('salesReport.pdf');
         return $pdf->download('salesReport.pdf');
-        // le estaba pasando las variables desde este controlador, estoy usando la vista que ya
-        // tenemos a modo de prueba, ya revise que si le pasa los parametros con el dd($pdf)
-
-        //window .open('cotizacion/pdf/{total}/{items}');
     }
 
     public function SyncPermiso($state, $id)
@@ -682,15 +687,13 @@ class PosController extends Component
         $meriP = Meripuntos::where('client_id', '=', $this->client_id)->first();
         $product = Product::find($productId);
         $exist = Cart::get($productId);
-        $merivalor=($product->price*10) * $cant;
-        if($merivalor <= $meriP->meripuntos)
-        {
+        $merivalor = ($product->price * 10) * $cant;
+        if ($merivalor <= $meriP->meripuntos) {
             if ($exist)
                 $title = 'Cantidad actualizada';
             else
                 $title = 'Producto agregado';
-        }
-        else{
+        } else {
             $this->emit('no-stock', 'Meripuntos insuficiente');
             return;
         }
