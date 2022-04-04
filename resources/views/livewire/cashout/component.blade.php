@@ -59,7 +59,7 @@
                     <div class="connect-sorting bg-dark">
                         <h5 class="text-white">Pagos efectivo:$ {{$ef}} </h5>
                         <br>
-                        <h5 class="text-white">Tarjeta de credito:$0 </h5>
+                        <h5 class="text-white">Tarjeta de credito:$ {{$trj}} </h5>
                         <br>
                         <h5 class="text-white">Articulos: {{$items}} </h5>
 
@@ -75,7 +75,7 @@
                     <br>
                     <div class="connect-sorting" style="background: #0C7B93;">
 
-                        <h5 class="text-white">Ventas Totales:$ {{number_format($total,2)}} </h5>
+                        <h5 class="text-white">Subtotal venta:$ {{number_format($total,2)}} </h5>
                         <br>
                         <h5 class="text-white">Totales Netos:$ {{$nt}} </h5>
                     </div>

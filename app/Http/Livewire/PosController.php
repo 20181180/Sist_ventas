@@ -324,10 +324,7 @@ class PosController extends Component
             $this->emit('sale-error', 'Agrega productos...');
             return;
         }
-        if ($this->efectivo <= 0) {
-            $this->emit('sale-error', 'Ingrese el efetivo...');
-            return;
-        }
+
 
         if (empty($this->client_id)) {
             $this->emit('sale-error', 'Favor de agregar un cliente.');
@@ -342,6 +339,10 @@ class PosController extends Component
         try {
 
             if ($this->tipopago == 0) {
+                if ($this->efectivo <= 0) {
+                    $this->emit('sale-error', 'Ingrese el efetivo...');
+                    return;
+                }
                 if ($this->total > $this->efectivo) {
                     $this->emit('sale-error', 'el efetivo de venta debe de ser mayor o igual al total resultado');
                     return;
@@ -397,6 +398,10 @@ class PosController extends Component
                     }
                 }
             } elseif ($this->tipopago == 1) {
+                if ($this->efectivo <= 0) {
+                    $this->emit('sale-error', 'Ingrese el efetivo...');
+                    return;
+                }
                 $category = Meripuntos::Where('client_id', '=', $this->client_id)->first();
                 $sald = $category->saldo + (Cart::getTotal() - $this->efectivo);
                 $ab = $category->abono + $this->efectivo;
@@ -429,6 +434,58 @@ class PosController extends Component
                         //$product->stock =-$item->quantity;
                         $product->stock = $product->stock - $item->quantity;
                         $product->save();
+                    }
+                }
+            } elseif ($this->tipopago == 2) {
+
+                $sale = Sale::create([
+                    'total' => $this->total = Cart::getTotal(),
+                    'items' => $this->itemsQuantity,
+                    'dinero' => $this->efectivo,
+                    'cambio' => $this->change,
+                    'tipo_pago' => $this->tipopago,
+                    'user_id' => Auth()->user()->id,
+                    'client_id' => $this->client_id,
+
+                ]);
+
+                $total =   $this->total = Cart::getTotal();
+                $items = $this->itemsQuantity;
+
+                $this->emit('print-ticket', $items, $total);
+
+                if ($sale) {
+                    $items = Cart::getContent();
+                    foreach ($items as $item) {
+                        SaleDetails::create([
+                            'price' => $item->price,
+                            'quantity' => $item->quantity,
+                            'product_id' => $item->id,
+                            'sale_id' => $sale->id,
+                        ]);
+
+                        $product = Product::find($item->id);
+                        //$product->stock =-$item->quantity;
+                        $product->stock = $product->stock - $item->quantity;
+                        $product->save();
+                    }
+                }
+
+                if ($sale) {
+                    $xd = Meripuntos::Where('client_id', '=', $this->client_id)->get();
+                    $xd2 = (count($xd) == 0);
+                    if ($xd2 == 'true') {
+                        Meripuntos::create([
+                            'client_id' => $this->client_id,
+                            'meripuntos' => $this->puntos,
+                        ]);
+                    } else {
+                        //$xd = Meripuntos::Where('client_id', '=', $this->client_id)->get();
+                        $category = Meripuntos::Where('client_id', '=', $this->client_id)->first();
+                        $p = $category->meripuntos + $this->puntos;
+                        $category->update([
+                            'meripuntos' => $p,
+                        ]);
                     }
                 }
             }
