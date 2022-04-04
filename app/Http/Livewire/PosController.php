@@ -433,7 +433,7 @@ class PosController extends Component
                 }
             }
             DB::commit();
-            Cart::clear(); //limpiamos e inicializamos las varibles..
+            //  Cart::clear(); //limpiamos e inicializamos las varibles..
             $this->efectivo = 0;
             $this->change = 0;
             $this->puntos = 0;
@@ -461,6 +461,8 @@ class PosController extends Component
         $pdf = PDF::loadView('pdf.uwu', compact('data', 'total', 'items', 'user'));
         return $pdf->stream('salesReport.pdf');
         return $pdf->download('salesReport.pdf');
+
+        Cart::clear(); //limpiamos e inicializamos las varibles..
     }
 
     public function SyncPermiso($state, $id)

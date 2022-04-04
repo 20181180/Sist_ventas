@@ -61,7 +61,7 @@
                 <tr>
                     <td align="center">{{$item->id}}</td>
                     <td align="center">{{$item->name}}</td>
-                    <td align="center">{{$item->price}}</td>
+                    <td align="center">$ {{$item->price}}</td>
                     <td align="center">{{$item->quantity}}</td>
                     <td align="center"><img src="{{ asset('storage/products/' . $item->attributes[0]) }}" alt="imagen de productos" height="50" width="50" class="rounded"></td>
 

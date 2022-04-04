@@ -57,8 +57,27 @@
             <div class="row mt-5">
                 <div class="col-sm-12 col-md-4 mbmobile">
                     <div class="connect-sorting bg-dark">
-                        <h5 class="text-white">Ventas Totales: {{number_format($total,2)}} </h5>
+                        <h5 class="text-white">Pagos efectivo:$ {{$ef}} </h5>
+                        <br>
+                        <h5 class="text-white">Tarjeta de credito:$0 </h5>
+                        <br>
                         <h5 class="text-white">Articulos: {{$items}} </h5>
+
+
+                    </div>
+                    <br>
+                    <div class="connect-sorting" style="background: #4E9F3D;">
+                        <h5 class="text-white">Abonos:$ {{$abonos}} </h5>
+                        <br>
+                        <h5 class="text-white">canjeos:$ {{$m}} </h5>
+
+                    </div>
+                    <br>
+                    <div class="connect-sorting" style="background: #0C7B93;">
+
+                        <h5 class="text-white">Ventas Totales:$ {{number_format($total,2)}} </h5>
+                        <br>
+                        <h5 class="text-white">Totales Netos:$ {{$nt}} </h5>
                     </div>
                 </div>
 
@@ -71,12 +90,13 @@
                                     <th class="table-th text-center text-white">Total*</th>
                                     <th class="table-th text-center text-white"> Cant_Art*</th>
                                     <th class="table-th text-center text-white">Fecha*</th>
+                                    <th class="table-th text-center text-white">Tipo*</th>
                                     <th class="table-th text-center text-white"></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @if($total<=0) <tr>
-                                    <td colspan="5">
+                                    <td colspan="6">
                                         <h6 class="text-center">
                                             No Hay Ventas Para La Fecha Seleccionada
                                         </h6>
@@ -97,6 +117,9 @@
                                         </td>
                                         <td class="text-center">
                                             <h6> {{$row->created_at}} </h6>
+                                        </td>
+                                        <td class="text-center">
+                                            <h6>{{$row->estado}} </h6>
                                         </td>
                                         <td class="text-center">
                                             <button wire:click.prevent="viewDeatails({{$row}})" class="btn btn-dark btn-sm"> Detalles <i class="fast fa-list"></i> </button>
