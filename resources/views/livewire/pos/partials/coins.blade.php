@@ -165,10 +165,10 @@
         livewire.on('cotizacion', action => {
             $('#coti').val('');
         });
-        livewire.on('print-ticket', ($total, $items) => {
+        livewire.on('print-ticket', ($idventa,$total, $items) => {
             // $('#theModal').modal('hide');
 
-            window.open('uwu/pdf' + '/' + $total + '/' + $items);
+            window.open('uwu/pdf' + '/' + $idventa + '/' + $total + '/' + $items);
             //  url('cotizacion/pdf' . '/' . $total . '/'. $itemsQuantity)
 
         })

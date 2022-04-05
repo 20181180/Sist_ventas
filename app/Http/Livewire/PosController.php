@@ -358,10 +358,12 @@ class PosController extends Component
 
                 ]);
 
-                $total = $this->total;
+                /*$total = $this->total;
                 $items = $this->itemsQuantity;
+                $venta = Sale::select('id')->orderBy('id', 'desc')->first();
+                dd($venta);
 
-                $this->emit('print-ticket', $items, $total);
+                $this->emit('print-ticket', $items, $total);*/
 
                 if ($sale) {
                     $items = Cart::getContent();
@@ -490,6 +492,11 @@ class PosController extends Component
                 }
             }
             DB::commit();
+            $total = $this->total;
+            $items = $this->itemsQuantity;
+            $idventa = Sale::select('id')->orderBy('id', 'desc')->first();
+
+            $this->emit('print-ticket',$idventa->id, $items, $total);
             //  Cart::clear(); //limpiamos e inicializamos las varibles..
             $this->efectivo = 0;
             $this->change = 0;
@@ -504,15 +511,24 @@ class PosController extends Component
             DB::rollBack();
             $this->emit('sale-error', $e->getMessage());
         }
+
     }
 
 
 
-    public function printTicket($total, $items)
+    public function printTicket($idventa,$total, $items)
     {
         $data = [];
         $data = Cart::getContent()->sortBy('name');
-        //DD($data);
+        /*$data = Sale::join('sale_details as d', 'd.sale_id' , 'sales.id')
+        ->select('*',)
+        ->where('sales.id', $idventa)
+        ->get();*/
+        $data = SaleDetails::join('products as p', 'p.id' , 'sale_details.product_id')
+        ->select('sale_details.id','p.name','sale_details.price','sale_details.quantity')
+        ->where('sale_details.sale_id', $idventa)
+        ->get();
+
         $user = Auth::user()->name;
         $fecha = Carbon::now();
         $pdf = PDF::loadView('pdf.uwu', compact('data', 'total', 'items', 'user'));
