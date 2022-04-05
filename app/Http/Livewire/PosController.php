@@ -497,7 +497,7 @@ class PosController extends Component
             $idventa = Sale::select('id')->orderBy('id', 'desc')->first();
 
             $this->emit('print-ticket',$idventa->id, $items, $total);
-            //  Cart::clear(); //limpiamos e inicializamos las varibles..
+             Cart::clear(); //limpiamos e inicializamos las varibles..
             $this->efectivo = 0;
             $this->change = 0;
             $this->puntos = 0;
