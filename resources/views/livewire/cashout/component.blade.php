@@ -37,17 +37,23 @@
                             <input type="date" wire:model="toDate" class="form-control">
                             @error('toDate')<span class="text-danger er">{{$message}}</span>@enderror
                         </div>
+
+                        <div class="form-group">
+                            <label for="">Tipo venta*</label>
+                            <select class="form-control" wire:model="tipo_v">
+                                <option value="0">General</option>
+                                <option value="1">Pagados</option>
+                                <option value="2">Credito</option>
+                                <option value="3">Canjeos</option>
+                            </select>
+                        </div>
+
                     </div>
 
-
-
                     <div class="col-sm-12 col-md-3">
-                        @if($userid >0 && $fromDate !=null && $toDate !=null && $x==1)
-                        <button wire:click.prevent="Consultar" type="button" class="btn btn-dark"> Consultar</button>
-                        @endif
 
-                        @if($total >0 )
-                        <button wire:click.prevent="Print()" type="button" class="btn btn-dark">Imprirmir</button>
+                        @if($userid >0 && $fromDate !=null && $toDate !=null)
+                        <button wire:click.prevent="Consultar" type="button" class="btn btn-dark"> Consultar</button>
                         @endif
                     </div>
                 </div>
@@ -79,6 +85,10 @@
                         <br>
                         <h5 class="text-white">Totales Netos:$ {{$nt}} </h5>
                     </div>
+                    <br>
+
+                    <button wire:click.prevent="Print()" type="button" class="btn btn-dark btn-block {{count($sales) <1 ? 'disabled' : ''}}">Imprirmir</button>
+
                 </div>
 
                 <div class="col-sm-12 col-md-8">
@@ -90,12 +100,12 @@
                                     <th class="table-th text-center text-white">Total*</th>
                                     <th class="table-th text-center text-white"> Cant_Art*</th>
                                     <th class="table-th text-center text-white">Fecha*</th>
-                                    <th class="table-th text-center text-white">Tipo*</th>
+                                    <th class="table-th text-center text-white">Estado Pag*</th>
                                     <th class="table-th text-center text-white"></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @if($total<=0) <tr>
+                                @if(empty($sales)) <tr>
                                     <td colspan="6">
                                         <h6 class="text-center">
                                             No Hay Ventas Para La Fecha Seleccionada
