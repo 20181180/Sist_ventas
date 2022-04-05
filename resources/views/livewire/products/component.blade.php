@@ -29,7 +29,7 @@
 							@foreach ($products as $product)
 
 
-							<tr>
+							<tr class="{{$product->stock <= $product->alerts ? 'table-primary' : ''}}">
 								<td>
 									<h6>{{$product->name}}</h6>
 								</td>
