@@ -59,10 +59,10 @@
                                     <a href="javascript:void(0);" wire:click="Edit({{$c->client_id}})" class="btn btn-dark mtmobile" title="Edit">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    <!--
+
                                     <a href="javascript:void(0);" onclick="Confirm('{{$c->client_id}}')" class="btn btn-dark" title="Delete">
                                         <i class="fas fa-trash"></i>
-                                    </a> -->
+                                    </a>
 
                                     <a href="javascript:void(0);" wire:click="Pay({{$c->client_id}})" class="btn mtmobile" style="background-color: #21BF73;color:white" title="Pay">
                                         ABONAR
@@ -107,6 +107,10 @@
             $('#Modal2').modal('hide');
             noty(Msg)
         })
+        window.livewire.on('item-deleted', Msg => {
+            $('#Modal2').modal('hide');
+            noty(Msg)
+        })
 
     });
 
@@ -114,7 +118,7 @@
 
         swal({
             title: 'CONFIRMAR',
-            text: '¿CONFIRMAS ELIMINAR EL REGISTRO?',
+            text: '¿CONFIRMAS INACTIVAR EL REGISTRO?',
             type: 'warning',
             showCancelButton: true,
             cancelButtonText: 'Cerrar',

@@ -29,9 +29,11 @@ class ClientesController extends Component
             $data = Cliente::join('meripuntos as m', 'm.client_id', 'clientes.id')
                 ->select('*',)
                 ->where('clientes.name', 'like', '%' . $this->search . '%')
+                ->where('clientes.estado', 'activo')
                 ->paginate($this->pagination);
         } else {
             $data = Cliente::join('meripuntos as m', 'm.client_id', 'clientes.id')
+                ->where('clientes.estado', 'activo')
                 ->select('*',)->paginate($this->pagination);
         }
 
@@ -205,11 +207,28 @@ class ClientesController extends Component
 
     public function Destroy(Cliente $clien)
     {
-        //$category = Category::find($id);
 
-        $clien->delete();
-        $this->resetUI();
-        $this->emit('item-deleted', 'Cliente Eliminada');
+
+        $d = Cliente::join('meripuntos as m', 'm.client_id', 'clientes.id')
+            ->select('m.saldo',)
+            ->where('clientes.id', '=', $clien->id)
+            ->first();
+
+        $estado = 'inactivo';
+        if($d->saldo > 0)
+        {
+        $this->emit('item-deleted', 'No puede inactivarse: el cliente tiene deudas');
+        return;
+        }else{
+            $clien->update([
+                'estado' => $estado,
+            ]);
+
+            $this->resetUI();
+            $this->emit('item-deleted', 'Cliente inactivado');
+            return;
+        }
+
     }
 
 

@@ -10,9 +10,9 @@
                         <div class="form-group">
                             <label for="">Usuario *</label>
                             <select class="form-control" wire:model="userid">
-
+                                <option value="0">Elegir</option>
                                 @foreach($users as $u)
-                                <option value="0"></option>
+
                                 <option value="{{$u->id}}"> {{$u->name}} </option>
                                 @endforeach
                             </select>
