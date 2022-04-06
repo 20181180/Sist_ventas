@@ -16,7 +16,7 @@
             </div>
 
             <div class="mt-3">
-                <h6 class="mb-2">CLIENTES</h6>
+                <h6 class="mb-2">CLIENTES <span class="text-danger er"> <a href="">Registrar Nuevo</a></span></h6>
                 <div class="form-group">
 
                     <select wire:model='client_id' name="" class="form-control" required>
@@ -165,7 +165,7 @@
         livewire.on('cotizacion', action => {
             $('#coti').val('');
         });
-        livewire.on('print-ticket', ($idventa,$total, $items) => {
+        livewire.on('print-ticket', ($idventa, $total, $items) => {
             // $('#theModal').modal('hide');
 
             window.open('uwu/pdf' + '/' + $idventa + '/' + $total + '/' + $items);

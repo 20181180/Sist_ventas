@@ -48,8 +48,8 @@
                 <tr>
                     <th width="10%">FOLIO</th>
                     <th width="12%">NOMBRE</th>
-                    <th width="10%">PRECIO</th>
                     <th width="12%">CANTIDAD</th>
+                    <th width="10%">SUBTOTAL</th>
                     <th width="12%">IMAGEN</th>
 
                 </tr>
@@ -59,8 +59,9 @@
                 <tr>
                     <td align="center">{{$item->id}}</td>
                     <td align="center">{{$item->name}}</td>
-                    <td align="center">{{$item->price}}</td>
+
                     <td align="center">{{$item->quantity}}</td>
+                    <td align="center">$ {{$item->price}}</td>
                     <td align="center"><img src="{{ asset('storage/products/' . $item->attributes[0]) }}" alt="imagen de productos" height="50" width="50" class="rounded"></td>
 
 
@@ -71,17 +72,18 @@
             <tfoot>
                 <tr>
                     <td class="text-center">
-                        <span><b>TOTAL</b></span>
-                    </td>
-                    <td class="text-center">
 
                     </td>
                     <td class="text-center">
-                        <span><strong>${{$total}}</strong></span>
+                        <span><b>TOTAL=</b></span>
                     </td>
                     <td class="text-center">
-                        {{$items}}
+                        {{$items}} Articulos
                     </td>
+                    <td class="text-center">
+                        <span><strong>$ {{$total}} MXN</strong></span>
+                    </td>
+
                     <td class="text-center">
 
                     </td>

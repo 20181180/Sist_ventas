@@ -72,7 +72,7 @@
 
     <div class="col-sm-12 col-md-4">
         <div class="form-group">
-            <label>Categoria *</label>
+            <label>Categoria *</label> <span class="text-danger er"> <a href="">Crear Nuevo</a></span>
             <select wire:model='categoryid' name="" class="form-control">
                 <option value="0" disabled>Elegir</option>
                 @foreach ($categories as $category)
@@ -85,7 +85,7 @@
 
     <div class="col-sm-12 col-md-4">
         <div class="form-group">
-            <label>Proveedor *</label>
+            <label>Proveedor *</label> <span class="text-danger er"> <a href="#">No existe? Registralo</a></span>
             <select wire:model='prove_id' name="" class="form-control">
                 <option value="0" disabled>Elegir</option>
                 @foreach ($prove as $pro)
@@ -94,6 +94,7 @@
             </select>
             @error('prove_id')<span class="text-danger er">{{$message}}</span>@enderror
         </div>
+
     </div>
 
 

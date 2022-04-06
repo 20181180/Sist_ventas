@@ -132,9 +132,6 @@ class ProductsController extends Component
         }
 
 
-
-
-
         $this->resetUI();
         $this->emit('product-added', 'Producto Registrado');
     }
