@@ -85,6 +85,11 @@
 
 		window.livewire.on('product-added', msg => {
 			$('#theModal').modal('hide');
+			noty(msg)
+		});
+		window.livewire.on('product-no', msg => {
+			$('#theModal').modal('hide');
+			noty(msg)
 		});
 		window.livewire.on('product-updated', msg => {
 			$('#theModal').modal('hide');

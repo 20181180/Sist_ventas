@@ -113,16 +113,30 @@ class ProductsController extends Component
             'provedor_id' => $this->prove_id,
         ]);
 
+
         //  $customFileName;
         if ($this->image) {
-            $customFileName = uniqid() . '_.' . $this->image->extension();
-            $this->image->storeAs('public/products', $customFileName);
-            $product->image = $customFileName;
-            $product->save();
+
+            $ex = '.' . $this->image->extension();
+            // dd($ex);
+            if ($ex == '.jpg' || $ex == '.png') {
+                $customFileName = uniqid() . '_.' . $this->image->extension();
+                $this->image->storeAs('public/products', $customFileName);
+                $product->image = $customFileName;
+                $product->save();
+            } elseif ($ex != 'jpg' || $ex != 'png') {
+                // $this->resetUI();
+                $this->emit('product-no', 'verifique el formato de la imagen, por el momento se a sustituido por un imagen por defecto');
+                return;
+            }
         }
 
+
+
+
+
         $this->resetUI();
-        $this->emit('product-added', 'Producto Registrado xd');
+        $this->emit('product-added', 'Producto Registrado');
     }
 
 
