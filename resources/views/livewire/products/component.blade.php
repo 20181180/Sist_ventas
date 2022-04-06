@@ -5,7 +5,7 @@
 			<div class="widget-heading">
 				<h4 class="card-title"><b>{{$componentName}} | {{$pageTitle}}</b></h4>
 				<ul class="tabs tab-pills">
-					<li><a href="javascript:void(0);" class="tabmenu " style="background-color: #2666CF;" data-toggle="modal" data-target="#theModal">Agregar</a></li>
+					<li><a href="javascript:void(0);" title="Registrar Productos" class="tabmenu " style="background-color: #2666CF;" data-toggle="modal" data-target="#theModal"><i class="fa fa-plus-circle" aria-hidden="true" style="font-size:22px;"></i>Agregar</a></li>
 				</ul>
 			</div>
 			@include('commont.searchbox')
@@ -64,6 +64,10 @@
 										<i class="fas fa-trash"></i>
 									</a>
 
+									<a href="javascript:void(0);" wire:click.prevent="Stock_New({{$product->id}})" class="btn" style="background-color: #9EDE73;color:white" title="Ingresar mas productos">
+										<i class="fa fa-cubes" aria-hidden="true"></i>
+									</a>
+
 								</td>
 
 							</tr>
@@ -79,7 +83,7 @@
 	</div>
 	@include('livewire.products.form')
 </div>
-
+@include('livewire.products.add_stock')
 <script>
 	document.addEventListener('DOMContentLoaded', function() {
 
@@ -106,6 +110,23 @@
 		window.livewire.on('hidden.bs.modal', msg => {
 			$('.er').css('display', 'none');
 		});
+		window.livewire.on('add_stock', msg => {
+			$('#Modal2').modal('show');
+			noty(msg)
+		});
+
+		window.livewire.on('Abono-uwu', msg => {
+			$('#Modal2').modal('hide');
+		});
+		window.livewire.on('sale-error', Msg => {
+			$('#Modal2').modal('hide');
+			noty(Msg)
+		})
+
+		window.livewire.on('stok_sucess', Msg => {
+			$('#Modal2').modal('hide');
+			noty(Msg)
+		})
 	})
 
 	function Confirm(id) {

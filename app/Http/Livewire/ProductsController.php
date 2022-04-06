@@ -14,7 +14,7 @@ class ProductsController extends Component
     use WithPagination;
     use WithFileUploads;
 
-    public $name, $barcode, $prove_id, $cost, $price, $price_m, $stock, $alerts, $categoryid, $search, $image, $selected_id, $pageTitle, $componentName;
+    public $name, $barcode, $stock_ing, $prove_id, $cost, $price, $price_m, $stock, $alerts, $categoryid, $search, $image, $selected_id, $pageTitle, $componentName;
     private $pagination = 10;
 
 
@@ -29,6 +29,7 @@ class ProductsController extends Component
         $this->categoryid = 0;
         $this->price = 0;
         $this->prove_id = 0;
+        $this->stock_ing = '';
         // $this->cost = 0;
     }
     public function render()
@@ -154,6 +155,39 @@ class ProductsController extends Component
         $this->emit('modal-show', 'Editar Producto');
     }
 
+    public function Stock_New(Product $product)
+    {
+        $this->selected_id = $product->id;
+        $this->name = $product->name;
+        $this->stock = $product->stock;
+        $this->emit('add_stock', 'Agregar Producto');
+    }
+
+    public function goUpdate()
+    {
+        $rules = [
+            'stock_ing' => 'required',
+        ];
+
+        $messages = [
+            'stock_ing.required' => 'Campo Obligatorio..',
+        ];
+
+        $this->validate($rules, $messages);
+
+        //metdo de crear el producto}
+
+        $product = Product::find($this->selected_id);
+        $h = $product->stock + $this->stock_ing;
+        //  dd($h);
+        $product->update([
+            'stock' => $h,
+        ]);
+
+        $this->resetUI();
+        $this->emit('stok_sucess', 'Stock Actualizado.');
+    }
+
     //metod of update ;-)
     public function Update()
     {
@@ -233,6 +267,7 @@ class ProductsController extends Component
         $this->prove_id = 0;
         $this->image = 'null';
         $this->selected_id = 0;
+        $this->stock_ing = '';
     }
 
     protected $listeners = ['deleteRow' => 'Destroy'];
