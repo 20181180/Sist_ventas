@@ -111,6 +111,10 @@
             $('#Modal2').modal('hide');
             noty(Msg)
         })
+        window.livewire.on('modal-estadocliente', msg => {
+            $('#ModalEstado').modal('show');
+            noty(Msg)
+        });
 
     });
 

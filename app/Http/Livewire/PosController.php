@@ -68,11 +68,16 @@ class PosController extends Component
 
         $this->check_meripoints();
 
+        $client = Cliente::join('meripuntos as m', 'm.client_id', 'clientes.id')
+                ->select('*',)
+                ->where('clientes.estado', 'activo')->get();
+
+
         return view('livewire.pos.component', [
             'denominations' => Denomination::orderBy('value', 'desc')->get(),
             'products' => $data,
             'cotiza' => $dataD,
-            'clientes' => Cliente::orderBy('name', 'desc')->get(),
+            'clientes' => $client,
             'cart' => $cart,
             'tipoventa' => $this->tipoVenta,
 

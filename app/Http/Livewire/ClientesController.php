@@ -103,27 +103,50 @@ class ClientesController extends Component
 
         $this->validate($rules, $messages);
 
-        $clien = Cliente::create([
-            'name' => $this->name,
-            'address' => $this->direc,
-            'phone' => $this->tel,
-            'email' => $this->correo,
-        ]);
+        $consul= Cliente::where('email', $this->correo)->first();
 
-        $cliente = Cliente::select('id')->orderBy('id', 'desc')->first();
+        if($consul == null){
+            $clien = Cliente::create([
+                'name' => $this->name,
+                'address' => $this->direc,
+                'phone' => $this->tel,
+                'email' => $this->correo,
+            ]);
 
-
-        $cuenta = Meripuntos::create([
-            'saldo' => '0',
-            'abono' => '0',
-            'limite' => $this->limite,
-            'meripuntos' => '0',
-            'client_id' => $cliente->id,
-        ]);
+            $cliente = Cliente::select('id')->orderBy('id', 'desc')->first();
 
 
-        $this->resetUI();
-        $this->emit('pro-added', 'Cliente Registrado con Exito.');
+            $cuenta = Meripuntos::create([
+                'saldo' => '0',
+                'abono' => '0',
+                'limite' => $this->limite,
+                'meripuntos' => '0',
+                'client_id' => $cliente->id,
+            ]);
+            $this->emit('pro-added', 'Cliente Registrado con Exito.');
+            $this->resetUI();
+        }else{
+            $d = Cliente::join('meripuntos as m', 'm.client_id', 'clientes.id')
+            ->select('*',)
+            ->where('clientes.id', '=', $consul->id)
+            ->first();
+
+            $this->name = $d->name;
+            $this->direc = $d->address;
+            $this->selected_id = $d->client_id;
+            $this->tel = $d->phone;
+            $this->correo = $d->email;
+            $this->saldo = $d->saldo;
+            $this->limite = $d->limite;
+
+        // ******quiero abrir este modal******////
+        /*************************** */
+        $this->emit('modal-estadocliente', 'infomacion del clientedk');
+
+        }
+
+        //$this->resetUI();
+        //$this->emit('pro-added', 'Cliente Registrado con Exito.');
     }
 
     public function Update()
