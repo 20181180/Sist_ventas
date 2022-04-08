@@ -25,58 +25,30 @@
                     </div>
 
                     <div class="col-sm-12 col-md-6">
-                        <label>DIRECCION *</label>
+                        <label>CORREO *</label>
                         <div class="input-group">
-                            <input type="text" wire:model.lazy="direc" class="form-control" placeholder="ej: Huejutla" disabled maxlength="25">
+                            <input type="text" wire:model.lazy="correo" class="form-control" placeholder="ej: jj@gmail.com " disabled maxlength="50">
                         </div>
                         @error('direc')
                         <span class="text-danger er">{{$message}}</span>
                         @enderror
                     </div>
-                    @if($saldo >= 1)
-                    <div class="col-sm-12 col-md-6">
-                        <label>SALDO DEUDA *</label>
-                        <div class="input-group">
-                            <input type="number" wire:model.lazy="saldo" class="form-control" disabled maxlength="23">
-                        </div>
-                        @error('saldo')
-                        <span class="text-danger er">{{$message}}</span>
-                        @enderror
+                    <div class="col-sm-12 col-md-12">
+                        <label>ESTADO CLIENTE*</label>
+                        <label class="check">
+                            <input type="checkbox" wire:change="estadoClient($('#p' + {{$selected_id
+                            }}).is(':checked'))"
+                            id="p{{ $selected_id }}"
+                            value="{{$selected_id}}"
+                            class="new-control-input "
+                            {{$estadoC == 'activo' ? 'checked' : ''}}
+                            {{$saldo > 0 ? 'disabled' : ''}}
+                            >
+                              <span class="check-1"></span>
+                          </label>
                     </div>
-
-                    <div class="col-sm-12 col-md-6">
-                        <label>TIPO DE PAGO *</label>
-                        <div class="form-group">
-
-                            <select wire:model='tipopago' name="" class="form-control" required>
-                                <option value="0" disabled>ElEGIR</option>
-                                <option value="1">ABONAR</option>
-                                <option value="2">LIQUIDAR</option>
-
-                            </select>
-                            @error('client_id')<span class="text-danger er">{{$message}}</span>@enderror
-                        </div>
-                    </div>
-                    @else
-                    <div class="col-sm-12 col-md-10">
-                        <br>
-                        <br>
-                        <h5 class="text-center">!! POR EL MOMENTO NO CUENTA CON ESTA INACTIVO LO SENTIMOS ..¡¡</h5>
-                    </div>
-                    @endif
-
-                    @if($tipopago==1)
-                    <div class="col-sm-12 col-md-6">
-                        <label>CANTIDAD A ABONAR *</label>
-                        <div class="input-group">
-                            <input type="number" wire:model.lazy="efectivo" class="form-control" placeholder="Digite el monto a abonar" maxlength="23">
-                        </div>
-                        @error('saldo')
-                        <span class="text-danger er">{{$message}}</span>
-                        @enderror
-                    </div>
-                    @endif
                 </div>
+
 
                 <div class="modal-footer">
                     <button type="button" wire:click.prevent="resetUI()" class="btn btn-dark close-btn text-info" data-dismiss="modal">

@@ -22,7 +22,7 @@
     <div class="col-sm-12 col-md-6">
         <label>TELEFONO *</label>
         <div class="input-group">
-            <input type="tel" wire:model.lazy="tel" class="form-control" placeholder="7711.." maxlength="25">
+            <input type="tel" wire:model.lazy="tel" class="form-control" placeholder="7711.." maxlength="10">
         </div>
         @error('tel')
         <span class="text-danger er">{{$message}}</span>

@@ -9,7 +9,7 @@ use App\Models\Meripuntos;
 
 class ClientesController extends Component
 {
-    public $search, $name, $debt, $efectivo, $tipopago, $direc, $tel, $correo, $selected_id, $pageTitle, $componentName, $saldo, $limite;
+    public $estadoC, $search, $name, $debt, $efectivo, $tipopago, $direc, $tel, $correo, $selected_id, $pageTitle, $componentName, $saldo, $limite;
 
     private $pagination = 10;
 
@@ -20,6 +20,7 @@ class ClientesController extends Component
         $this->tipopago = 0;
         $this->debt = 0;
         $this->efectivo = 0;
+        $this->estadoC= '';
     }
 
     public function render()
@@ -138,14 +139,34 @@ class ClientesController extends Component
             $this->correo = $d->email;
             $this->saldo = $d->saldo;
             $this->limite = $d->limite;
+            $this->estadoC = $d->estado;
 
             // ******quiero abrir este modal******////
             /*************************** */
+            $this->emit('pro-added', 'infomacion del clientedk');
             $this->emit('modal-estadocliente', 'infomacion del clientedk');
+
+
         }
 
         //$this->resetUI();
         //$this->emit('pro-added', 'Cliente Registrado con Exito.');
+    }
+    public function estadoClient($estados){
+
+        $clien = Cliente::find($this->selected_id);
+        $estadoC ='';
+        if($estados == 'true'){
+            $estadoC= 'activo';
+        }else{
+            $estadoC= 'inactivo';
+        }
+        $clien->update([
+            'estado' => $estadoC,
+        ]);
+        $this->estadoC=$estadoC;
+
+        $this->emit('item-updated', 'Datos Actualizados');
     }
 
     public function Update()
@@ -245,8 +266,8 @@ class ClientesController extends Component
                 'estado' => $estado,
             ]);
 
-            // $this->resetUI();
-            $this->emit('modal-estadocliente', 'Cliente inactivado');
+            $this->resetUI();
+            $this->emit('item-deleted', 'Cliente inactivado');
             return;
         }
     }

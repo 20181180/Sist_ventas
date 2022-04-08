@@ -13,8 +13,6 @@
             @include('commont.searchbox')
 
             <div class="widget-content">
-
-
                 <div class="table-responsive">
                     <table class="table table-bordered table-striped  mt-1">
                         <thead class="text-white" style="background: #3B3F5C">

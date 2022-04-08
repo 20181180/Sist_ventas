@@ -1,0 +1,39 @@
+.check {
+position: relative;
+display: block;
+margin: 1em;
+}
+
+.check input {
+    display: none;
+
+}
+
+.check-1 {
+    width: 100px;
+    height: 40px;
+    background: #ccc;
+    display: block;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all .4s ease-in-out;
+    border-radius: 50px;
+}
+
+.check-1::before {
+    content: '';
+    height: 32px;
+    width: 32px;
+    position: absolute;
+    left: 4px;
+    bottom: 4px;
+    background: #fff;
+    border-radius: 50%;
+}
+
+.check input:checked + .check-1 {
+    background: #03a9f4;
+}
+.check input:checked + .check-1::before {
+    left: 64px;
+}
