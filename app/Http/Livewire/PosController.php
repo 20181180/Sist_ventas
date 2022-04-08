@@ -69,8 +69,8 @@ class PosController extends Component
         $this->check_meripoints();
 
         $client = Cliente::join('meripuntos as m', 'm.client_id', 'clientes.id')
-                ->select('*',)
-                ->where('clientes.estado', 'activo')->get();
+            ->select('*',)
+            ->where('clientes.estado', 'activo')->get();
 
 
         return view('livewire.pos.component', [
@@ -363,13 +363,6 @@ class PosController extends Component
 
                 ]);
 
-                /*$total = $this->total;
-                $items = $this->itemsQuantity;
-                $venta = Sale::select('id')->orderBy('id', 'desc')->first();
-                dd($venta);
-
-                $this->emit('print-ticket', $items, $total);*/
-
                 if ($sale) {
                     $items = Cart::getContent();
                     foreach ($items as $item) {
@@ -410,6 +403,19 @@ class PosController extends Component
                     return;
                 }
                 $category = Meripuntos::Where('client_id', '=', $this->client_id)->first();
+                // if ($category->limite < Cart::getTotal()  && $category->saldo < $category->limite) {
+                //     $this->emit('sale-error', 'el limite es de $category->limite ');
+                //     return;
+                // }
+                if ($category->limite < Cart::getTotal()) {
+                    $this->emit('sale-error', 'A superado el limite de credito');
+                    return;
+                }
+                if ($category->limite < $category->saldo) {
+                    $this->emit('sale-error', 'credito insuficiente');
+                    return;
+                }
+
                 $sald = $category->saldo + (Cart::getTotal() - $this->efectivo);
                 $ab = $category->abono + $this->efectivo;
                 $category->update([
@@ -501,8 +507,8 @@ class PosController extends Component
             $items = $this->itemsQuantity;
             $idventa = Sale::select('id')->orderBy('id', 'desc')->first();
 
-            $this->emit('print-ticket',$idventa->id, $items, $total);
-             Cart::clear(); //limpiamos e inicializamos las varibles..
+            $this->emit('print-ticket', $idventa->id, $items, $total);
+            Cart::clear(); //limpiamos e inicializamos las varibles..
             $this->efectivo = 0;
             $this->change = 0;
             $this->puntos = 0;
@@ -516,12 +522,11 @@ class PosController extends Component
             DB::rollBack();
             $this->emit('sale-error', $e->getMessage());
         }
-
     }
 
 
 
-    public function printTicket($idventa,$total, $items)
+    public function printTicket($idventa, $total, $items)
     {
         $data = [];
         $data = Cart::getContent()->sortBy('name');
@@ -529,10 +534,10 @@ class PosController extends Component
         ->select('*',)
         ->where('sales.id', $idventa)
         ->get();*/
-        $data = SaleDetails::join('products as p', 'p.id' , 'sale_details.product_id')
-        ->select('sale_details.id','p.name','sale_details.price','sale_details.quantity')
-        ->where('sale_details.sale_id', $idventa)
-        ->get();
+        $data = SaleDetails::join('products as p', 'p.id', 'sale_details.product_id')
+            ->select('sale_details.id', 'p.name', 'sale_details.price', 'sale_details.quantity')
+            ->where('sale_details.sale_id', $idventa)
+            ->get();
 
         $user = Auth::user()->name;
         $fecha = Carbon::now();
