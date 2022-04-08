@@ -1,4 +1,4 @@
-<div wire:ignore.self class="modal fade" id="Modal3" tabindex="-1" role="dialog">
+<div wire:ignore.self class="modal fade" id="Modalesuwu" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
 
@@ -61,7 +61,7 @@
                     <div class="col-sm-12 col-md-10">
                         <br>
                         <br>
-                        <h5 class="text-center">!! POR EL MOMENTO NO CUENTA CON DEUDAS ..¡¡</h5>
+                        <h5 class="text-center">!! POR EL MOMENTO NO CUENTA CON ESTA INACTIVO LO SENTIMOS ..¡¡</h5>
                     </div>
                     @endif
 
@@ -82,9 +82,7 @@
                     <button type="button" wire:click.prevent="resetUI()" class="btn btn-dark close-btn text-info" data-dismiss="modal">
                         CERRAR
                     </button>
-                    <button type="button" wire:click.prevent="goPay()" style="background-color: #21BF73;color:white" class="btn mtmobile">
-                        GO - PAY-<i class="fas fa-coins" style="font-size:24px;"></i>
-                    </button>
+
                 </div>
 
             </div>

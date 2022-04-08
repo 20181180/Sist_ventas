@@ -78,10 +78,13 @@
                 </div>
             </div>
         </div>
+        @include('livewire.clients.form_estado')
     </div>
     @include('livewire.clients.form')
 </div>
+
 @include('livewire.clients.pay')
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         window.livewire.on('show-modal', msg => {
@@ -112,7 +115,7 @@
             noty(Msg)
         })
         window.livewire.on('modal-estadocliente', msg => {
-            $('#ModalEstado').modal('show');
+            $('#Modalesuwu').modal('show');
             noty(Msg)
         });
 

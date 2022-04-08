@@ -75,7 +75,7 @@ class ClientesController extends Component
         $this->selected_id = $d->client_id;
 
         $this->saldo = $d->saldo;
-      //  $this->debt = $d->saldo;
+        //  $this->debt = $d->saldo;
 
         //nos permite mostrar el modal con el elemento.
         $this->emit('abono-client', 'Abono del cliente');
@@ -103,9 +103,9 @@ class ClientesController extends Component
 
         $this->validate($rules, $messages);
 
-        $consul= Cliente::where('email', $this->correo)->first();
+        $consul = Cliente::where('email', $this->correo)->first();
 
-        if($consul == null){
+        if ($consul == null) {
             $clien = Cliente::create([
                 'name' => $this->name,
                 'address' => $this->direc,
@@ -125,11 +125,11 @@ class ClientesController extends Component
             ]);
             $this->emit('pro-added', 'Cliente Registrado con Exito.');
             $this->resetUI();
-        }else{
+        } else {
             $d = Cliente::join('meripuntos as m', 'm.client_id', 'clientes.id')
-            ->select('*',)
-            ->where('clientes.id', '=', $consul->id)
-            ->first();
+                ->select('*',)
+                ->where('clientes.id', '=', $consul->id)
+                ->first();
 
             $this->name = $d->name;
             $this->direc = $d->address;
@@ -139,10 +139,9 @@ class ClientesController extends Component
             $this->saldo = $d->saldo;
             $this->limite = $d->limite;
 
-        // ******quiero abrir este modal******////
-        /*************************** */
-        $this->emit('modal-estadocliente', 'infomacion del clientedk');
-
+            // ******quiero abrir este modal******////
+            /*************************** */
+            $this->emit('modal-estadocliente', 'infomacion del clientedk');
         }
 
         //$this->resetUI();
@@ -238,20 +237,18 @@ class ClientesController extends Component
             ->first();
 
         $estado = 'inactivo';
-        if($d->saldo > 0)
-        {
-        $this->emit('item-deleted', 'No puede inactivarse: el cliente tiene deudas');
-        return;
-        }else{
+        if ($d->saldo > 0) {
+            $this->emit('item-deleted', 'No puede inactivarse: el cliente tiene deudas');
+            return;
+        } else {
             $clien->update([
                 'estado' => $estado,
             ]);
 
-            $this->resetUI();
-            $this->emit('item-deleted', 'Cliente inactivado');
+            // $this->resetUI();
+            $this->emit('modal-estadocliente', 'Cliente inactivado');
             return;
         }
-
     }
 
 
