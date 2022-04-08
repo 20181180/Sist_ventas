@@ -61,7 +61,8 @@
                                     </a>
 
                                     <a href="javascript:void(0);" onclick="Confirm('{{$c->client_id}}')" class="btn btn-dark" title="Delete">
-                                        <i class="fas fa-trash"></i>
+                                        BLOQUEAR
+                                        <!-- <i class="fas fa-trash"></i> -->
                                     </a>
 
                                     <a href="javascript:void(0);" wire:click="Pay({{$c->client_id}})" class="btn mtmobile" style="background-color: #21BF73;color:white" title="Pay">
