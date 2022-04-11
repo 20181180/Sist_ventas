@@ -14,7 +14,7 @@ class ProductsController extends Component
     use WithPagination;
     use WithFileUploads;
 
-    public $name, $barcode, $stock_ing, $prove_id, $cost, $price, $price_m, $stock, $alerts, $categoryid, $search, $image, $selected_id, $pageTitle, $componentName;
+    public $name, $Pro_t, $barcode, $precio, $stock_ing, $prove_id, $cost, $price, $price_m, $stock, $alerts, $categoryid, $search, $image, $selected_id, $pageTitle, $componentName;
     private $pagination = 10;
 
 
@@ -35,6 +35,7 @@ class ProductsController extends Component
     public function render()
     {
         $this->price_wholesale_retail();
+        $this->datos_p();
         if (strlen($this->search) > 0)
             $products = Product::join('categories as c', 'c.id', 'products.category_id')
                 ->select('products.*', 'c.name as category')
@@ -48,6 +49,8 @@ class ProductsController extends Component
                 ->select('products.*', 'c.name as category')
                 ->orderBy('products.stock', 'asc')
                 ->paginate($this->pagination);
+
+
 
 
         return view('livewire.products.component', [
@@ -252,6 +255,12 @@ class ProductsController extends Component
 
         $this->resetUI();
         $this->emit('product-added', 'Producto Registrado.');
+    }
+    public function datos_p()
+    {
+        $products = Product::select('products.*');
+        $this->Pro_t = $products ? $products->sum('stock') : 0;
+        $this->precio = $products ? $products->sum('price') : 0;
     }
 
 

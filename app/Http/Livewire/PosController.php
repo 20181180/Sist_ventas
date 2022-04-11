@@ -539,7 +539,6 @@ class PosController extends Component
             ->select('sale_details.id', 'p.name', 'sale_details.price', 'sale_details.quantity')
             ->where('sale_details.sale_id', $idventa)
             ->get();
-
         $user = Auth::user()->name;
         $fecha = Carbon::now();
         $pdf = PDF::loadView('pdf.uwu', compact('data', 'total', 'items', 'user'));
