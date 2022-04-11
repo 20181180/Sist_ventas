@@ -37,9 +37,11 @@ class ClientesController extends Component
                 ->where('clientes.estado', 'activo')
                 ->select('*',)->paginate($this->pagination);
         }
+        $clientInactivos = Cliente::where('estado', 'inactivo')->get();
 
-
-        return view('livewire.clients.clientes', ['cliente' => $data])
+        return view('livewire.clients.clientes', [
+            'cliente' => $data,
+            'inactivosCli' => $clientInactivos,])
             ->extends('layouts.theme.app')
             ->section('content');
     }
@@ -152,9 +154,8 @@ class ClientesController extends Component
         //$this->resetUI();
         //$this->emit('pro-added', 'Cliente Registrado con Exito.');
     }
-    public function estadoClient($estados){
-
-        $clien = Cliente::find($this->selected_id);
+    public function estadoClient($estados, $id = null){
+        $clien = Cliente::find($id);
         $estadoC ='';
         if($estados == 'true'){
             $estadoC= 'activo';

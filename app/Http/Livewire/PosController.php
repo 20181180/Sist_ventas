@@ -32,7 +32,7 @@ class PosController extends Component
         $this->datosxd = [];
         $this->tipopago = 0;
         $this->datauwuxd = [];
-        $this->client_id = 5;
+        $this->client_id = 6;
         $this->estadoCheck = 'false';
         $this->cheked = '0';
         $this->efectivo = 0;
@@ -71,6 +71,7 @@ class PosController extends Component
         $client = Cliente::join('meripuntos as m', 'm.client_id', 'clientes.id')
             ->select('*',)
             ->where('clientes.estado', 'activo')->get();
+
 
 
         return view('livewire.pos.component', [

@@ -12,7 +12,7 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-sm-12 col-md-4">
-                        <label>NOMBRE DEL CLIENTE*</label>
+                        <label>NOMBRE DEL PRODUCTO*</label>
                         <div class="input-group">
                             <input type="text" wire:model.lazy="name" class="form-control" placeholder="ej:Norma Hernandez" disabled maxlength="25">
                         </div>
@@ -30,7 +30,7 @@
                     </div>
 
                     <div class="col-sm-12 col-md-4">
-                        <label> CANTIDAD A INGRESAR*</label>
+                        <label>CANTIDAD A INGRESAR*</label>
                         <div class="input-group">
                             <input type="number" wire:model="stock_ing" class="form-control" placeholder="Ejemplo: 10" maxlength="23">
                         </div>

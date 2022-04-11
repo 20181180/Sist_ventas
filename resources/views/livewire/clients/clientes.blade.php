@@ -11,7 +11,7 @@
             </div>
 
             @include('commont.searchbox')
-
+            <button class=" btn  text-white  mr-5" data-toggle="modal" data-target="#ModalClientesInactivos" style="background: #2666CF">Clientes Inactivos</button>
             <div class="widget-content">
                 <div class="table-responsive">
                     <table class="table table-bordered table-striped  mt-1">
@@ -76,6 +76,7 @@
                     {{$cliente->links()}}
                 </div>
             </div>
+            @include('livewire.clients.form_inactivos')
         </div>
         @include('livewire.clients.form_estado')
     </div>

@@ -16,7 +16,7 @@
             </div>
 
             <div class="mt-3">
-                <h6 class="mb-2">CLIENTES <span class="text-danger er"> <a href="">Registrar Nuevo</a></span></h6>
+                <h6 class="mb-2">CLIENTES <span class="text-danger er"> <a href="{{url('Client')}}">Registrar Nuevo</a></span></h6>
                 <div class="form-group">
 
                     <select wire:model='client_id' name="" class="form-control" required>

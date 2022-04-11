@@ -37,7 +37,7 @@
                         <label>ESTADO CLIENTE*</label>
                         <label class="check">
                             <input type="checkbox" wire:change="estadoClient($('#p' + {{$selected_id
-                            }}).is(':checked'))"
+                            }}).is(':checked'), {{ $selected_id }})"
                             id="p{{ $selected_id }}"
                             value="{{$selected_id}}"
                             class="new-control-input "

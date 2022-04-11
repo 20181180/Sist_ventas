@@ -25,15 +25,6 @@ function Confirm(id, eventName, text){
            }
        })
    }
-function ShowImg(imagen,nombre){
-    Swal.fire({
-  title: nombre,
-  text: 'Producto detalle',
-  imageUrl: imagen,
-  imageWidth: 600,
-  imageHeight: 400,
-  imageAlt: 'Custom image',
-})
-}
+
 
 </script>
