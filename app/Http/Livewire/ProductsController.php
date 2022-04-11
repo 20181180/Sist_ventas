@@ -14,7 +14,7 @@ class ProductsController extends Component
     use WithPagination;
     use WithFileUploads;
 
-    public $name, $Pro_t, $barcode, $precio, $stock_ing, $prove_id, $cost, $price, $price_m, $stock, $alerts, $categoryid, $search, $image, $selected_id, $pageTitle, $componentName;
+    public $precioTotal, $name, $Pro_t, $barcode, $precio, $stock_ing, $prove_id, $cost, $price, $price_m, $stock, $alerts, $categoryid, $search, $image, $selected_id, $pageTitle, $componentName;
     private $pagination = 10;
 
 
@@ -30,6 +30,7 @@ class ProductsController extends Component
         $this->price = 0;
         $this->prove_id = 0;
         $this->stock_ing = '';
+        $precioTotal=0;
         // $this->cost = 0;
     }
     public function render()
@@ -258,9 +259,15 @@ class ProductsController extends Component
     }
     public function datos_p()
     {
-        $products = Product::select('products.*');
+        $products = Product::select('stock' ,'price')->get();
         $this->Pro_t = $products ? $products->sum('stock') : 0;
         $this->precio = $products ? $products->sum('price') : 0;
+        $total = 0;
+        foreach ($products as $p) {
+           $total+= $p->stock * $p->price;
+        }
+
+       $this->precioTotal=$total;
     }
 
 
