@@ -4,9 +4,21 @@
 		<div class="widget widget-chart-one">
 			<div class="widget-heading">
 				<h4 class="card-title"><b>{{$componentName}} | {{$pageTitle}}</b></h4>
+				<ul class="tabs">
+					<h6>
+						Productos Existentes:
+						<label for="" style="color: #2666CF;"> {{$Pro_t}} en inventario.</label>
+					</h6>
+
+				</ul>
+				<ul class="tabs">
+
+					<h6>Costo de BD:<label for="" style="color: #2666CF;"> ${{$precio}} MXNS</label></h6>
+				</ul>
 				<ul class="tabs tab-pills">
 					<li><a href="javascript:void(0);" title="Registrar Productos" class="tabmenu " style="background-color: #2666CF;" data-toggle="modal" data-target="#theModal"><i class="fa fa-plus-circle" aria-hidden="true" style="font-size:22px;"></i>Agregar</a></li>
 				</ul>
+
 			</div>
 			@include('commont.searchbox')
 			<div class="widget-content">

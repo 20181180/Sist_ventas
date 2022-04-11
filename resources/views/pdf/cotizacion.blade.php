@@ -15,7 +15,7 @@
     <section class="header" style="top: -287px;">
         <table cellpadding="2" cellspacing="0" width="100%">
             <tr>
-                <td colspan="2" class="text-center">
+                <td colspan="4" class="text-center">
                     <span style="font-size: 25px; font-wight: bold;">Sistema de ventas MerijoMechatronics</span>
                 </td>
             </tr>
@@ -23,7 +23,7 @@
                 <td width="30%" style="vertical-align: top; padding-top: 10px; position: relative">
                     <img src="{{ asset('assets/img/icon.png')}}" alt="" class="invoice-logo">
                 </td>
-                <td class="text-left text-company" width="70%" style="vertical-align: top; padding-top: 10px">
+                <td colspan="2" class="text-left text-company" width="70%" style="vertical-align: top; padding-top: 10px">
                     <span style="font-size: 16px"> <strong>Cotizacion de productos</strong> </span>
                     <br>
                     <span style="font-size: 16px"> <strong>Fecha de consulta: {{ \Carbon\Carbon::now()->format('d-M-Y')}}</strong> </span>
@@ -31,11 +31,14 @@
                     <span style="font-size: 16px"> <strong>Lo atiende: {{$user}}</strong> </span>
                     <br>
                 </td>
+                <td width="30%" style="vertical-align: top; padding-top: 10px; position: relative">
+                    <span style="font-size: 13px;font-wight:bold" aling="left"> Clave #: {{$clav_id}} </span>
 
-                <span style="font-size: 13px;font-wight:bold" aling="left"> Clave:{{$clav_id}} </span>
-                <br>
-                <br>
-                <span style="font-size: 13px;font-wight:lighter"> Expiracion:{{$fechaV->format('d-M-Y')}} </span>
+                    <br>
+                    <br>
+                    <span style="font-size: 13px;font-wight:lighter"> Expiracion:{{$fechaV->format('d-M-Y')}} </span>
+
+                </td>
 
             </tr>
 

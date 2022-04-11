@@ -10,6 +10,7 @@ use Darryldecode\Cart\Facades\CartFacade as Cart;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
+use Hamcrest\Core\HasToString;
 
 class CotizacionController extends Controller
 
@@ -25,10 +26,13 @@ class CotizacionController extends Controller
         $fecha = Carbon::now();
         $fechaV = $fecha->addDays(15);
         $fechaV->toFormattedDateString();
+        $clav  = Carbon::now()->format('d-M-Y');
+        $fined_id = Cotizaciones::latest('id')->first();
+        $id = $fined_id->id;
 
+        $clav_id =  "$id" . '/' . "$clav";
 
-        $clav_id = Str::random(10);
-
+        // dd($clav);
 
         foreach ($data as $criterio) {
             $id_var = $criterio->id;
