@@ -17,7 +17,7 @@ class ProductsController extends Component
     use WithPagination;
     use WithFileUploads;
 
-    public $cantAlertas,$searchAlert, $precioTotal, $name, $Pro_t, $barcode, $precio, $stock_ing, $prove_id, $cost, $price, $price_m, $stock, $alerts, $categoryid, $search, $image, $selected_id, $pageTitle, $componentName;
+    public $namecate,  $imagecate,$cantAlertas,$searchAlert, $precioTotal, $name, $Pro_t, $barcode, $precio, $stock_ing, $prove_id, $cost, $price, $price_m, $stock, $alerts, $categoryid, $search, $image, $selected_id, $pageTitle, $componentName;
     private $pagination = 10;
 
 
@@ -329,5 +329,33 @@ class ProductsController extends Component
         return $pdf->download('salesReport.pdf');
 
         //Cart::clear(); //limpiamos e inicializamos las varibles..
+    }
+    public function Cate()
+    {
+        $rules = [
+            'namecate' => 'required|unique:categories|min:3'
+        ];
+
+        $messages = [
+            'namecate.required' => 'Categoria Obligatorio',
+            'namecate.unique' => 'Verifique que no exista la categoria',
+            'namecate.min' => 'Ingrese minimo 3 caracteres para el nombre de la categoria'
+        ];
+
+        $this->validate($rules, $messages);
+        $category = Category::create([
+            'name' => $this->namecate,
+        ]);
+
+        $customFileName;
+        if ($this->imagecate) {
+            $customFileName = uniqid() . '_.' . $this->imagecate->extension();
+            $this->imagecate->storeAs('public/categories', $customFileName);
+            $category->image = $customFileName;
+            $category->save();
+        }
+
+        $this->resetUI();
+        $this->emit('category-added', 'Categoria registrado xd');
     }
 }

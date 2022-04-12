@@ -69,13 +69,13 @@ class CategoriesController extends Component
             'name' => $this->name
         ]);
 
-        $customFileName;
-        if ($this->image) {
-            $customFileName = uniqid() . '_.' . $this->image->extension();
-            $this->image->storeAs('public/categories', $customFileName);
-            $category->image = $customFileName;
-            $category->save();
-        }
+        // $customFileName;
+        // if ($this->image) {
+        //     $customFileName = uniqid() . '_.' . $this->image->extension();
+        //     $this->image->storeAs('public/categories', $customFileName);
+        //     $category->image = $customFileName;
+        //     $category->save();
+        // }
 
         $this->resetUI();
         $this->emit('category-added', 'Categoria registrado xd');

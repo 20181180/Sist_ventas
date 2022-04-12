@@ -100,13 +100,13 @@
 					{{ $products->links() }}
 				</div>
 			</div>
+            @include('livewire.products.add_stock')
 		</div>
-		@include('livewire.products.tabla_alertasP')
+        @include('livewire.products.form')
 	</div>
-
-	@include('livewire.products.form')
+    @include('livewire.products.tabla_alertasP')
 </div>
-@include('livewire.products.add_stock')
+@include('livewire.products.form_cate')
 <script>
 	document.addEventListener('DOMContentLoaded', function() {
 
