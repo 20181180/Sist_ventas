@@ -15,7 +15,7 @@
 					<h6>Costo total BD:<label for="" style="color: #2666CF;"> ${{$precioTotal}} MXNS</label></h6>
 				</ul>
 				<ul class="tabs">
-					<h6>Productos en Alerta:<a href="javascript:void(0);" style="background-color: #cf2626;" data-toggle="modal" data-target="#ModalAlertas">Productos</a></h6>
+					<h6>Productos en Alerta:<a href="javascript:void(0);" style="background-color: #cf2626;" data-toggle="modal" data-target="#ModalAlertas">Productos ({{$cantAlertas}})</a></h6>
 				</ul>
 				<ul class="tabs tab-pills">
 					<li><a href="javascript:void(0);" title="Registrar Productos" class="tabmenu " style="background-color: #2666CF;" data-toggle="modal" data-target="#theModal"><i class="fa fa-plus-circle" aria-hidden="true" style="font-size:22px;"></i>Agregar</a></li>

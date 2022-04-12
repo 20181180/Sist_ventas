@@ -37,6 +37,7 @@
                                     <th class="table-th text-white">IMAGEN</th>
                                     <th class="table-th text-white">CODIGO</th>
                                     <th class="table-th text-white">STOCK</th>
+                                    <th class="table-th text-white">INV MIN</th>
                                     <th class="table-th text-white text-center">ACCION</th>
                                 </tr>
                             </thead>
@@ -69,7 +70,9 @@
                                     <td>
                                         <h6 class="text">{{$product->stock}}</h6>
                                     </td>
-
+                                    <td>
+                                        <h6 class="text">{{$product->alerts}}</h6>
+                                    </td>
 
                                     <td class="text-center">
                                         <input type="number" id="r{{$product->id}}" wire:change="goUpdate({{$product->id}}, $('#r' + {{$product->id}}).val())" style="width:28%;height: 35px;" class="rounded" >

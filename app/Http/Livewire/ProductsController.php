@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use Carbon\Carbon;
 use App\Models\Company;
 use App\Models\Product;
+use App\Models\Vista_stockalerts;
 use Livewire\Component;
 use App\Models\Category;
 use Livewire\WithPagination;
@@ -16,7 +17,7 @@ class ProductsController extends Component
     use WithPagination;
     use WithFileUploads;
 
-    public $searchAlert, $precioTotal, $name, $Pro_t, $barcode, $precio, $stock_ing, $prove_id, $cost, $price, $price_m, $stock, $alerts, $categoryid, $search, $image, $selected_id, $pageTitle, $componentName;
+    public $cantAlertas,$searchAlert, $precioTotal, $name, $Pro_t, $barcode, $precio, $stock_ing, $prove_id, $cost, $price, $price_m, $stock, $alerts, $categoryid, $search, $image, $selected_id, $pageTitle, $componentName;
     private $pagination = 10;
 
 
@@ -53,13 +54,10 @@ class ProductsController extends Component
                 ->paginate($this->pagination);
 
         if (strlen($this->searchAlert) > 0)
-            $productsAlert = Product::where('stock', '<=', 'alerts')->orwhere('name', 'like', '%' . $this->searchAlert . '%')->get();
+            $productsAlert = Product::select('*')->where('name', 'like', '%' . $this->searchAlert . '%')->get();
         else
-            $productsAlert = Product::where('stock', '<=', 'alerts')->get();
-
-
-
-
+            $productsAlert = Vista_stockalerts::select('*')->get();
+            $this->cantAlertas=count($productsAlert);
 
         return view('livewire.products.component', [
             'products' => $products,
