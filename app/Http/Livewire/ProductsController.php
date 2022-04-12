@@ -17,7 +17,7 @@ class ProductsController extends Component
     use WithPagination;
     use WithFileUploads;
 
-    public $namecate,  $imagecate,$cantAlertas,$searchAlert, $precioTotal, $name, $Pro_t, $barcode, $precio, $stock_ing, $prove_id, $cost, $price, $price_m, $stock, $alerts, $categoryid, $search, $image, $selected_id, $pageTitle, $componentName;
+    public  $imagecate, $cantAlertas, $names,  $searchAlert, $precioTotal, $name, $Pro_t, $barcode, $precio, $stock_ing, $prove_id, $cost, $price, $price_m, $stock, $alerts, $categoryid, $search, $image, $selected_id, $pageTitle, $componentName;
     private $pagination = 10;
 
 
@@ -57,7 +57,7 @@ class ProductsController extends Component
             $productsAlert = Product::select('*')->where('name', 'like', '%' . $this->searchAlert . '%')->get();
         else
             $productsAlert = Vista_stockalerts::select('*')->get();
-            $this->cantAlertas=count($productsAlert);
+        $this->cantAlertas = count($productsAlert);
 
         return view('livewire.products.component', [
             'products' => $products,
@@ -330,24 +330,25 @@ class ProductsController extends Component
 
         //Cart::clear(); //limpiamos e inicializamos las varibles..
     }
-    public function Cate()
+    public function Categoria()
     {
         $rules = [
-            'namecate' => 'required|unique:categories|min:3'
+            'name' => 'required|unique:categories|min:3'
         ];
 
         $messages = [
-            'namecate.required' => 'Categoria Obligatorio',
-            'namecate.unique' => 'Verifique que no exista la categoria',
-            'namecate.min' => 'Ingrese minimo 3 caracteres para el nombre de la categoria'
+            'name.required' => 'Categoria Obligatorio',
+            'name.unique' => 'Verifique que no exista la categoria',
+            'name.min' => 'Ingrese minimo 3 caracteres para el nombre de la categoria'
         ];
-
+        //$hl = $this->namecate;
+        // dd($hl);
         $this->validate($rules, $messages);
         $category = Category::create([
-            'name' => $this->namecate,
+            'name' => $this->name,
         ]);
 
-        $customFileName;
+        //  $customFileName;
         if ($this->imagecate) {
             $customFileName = uniqid() . '_.' . $this->imagecate->extension();
             $this->imagecate->storeAs('public/categories', $customFileName);

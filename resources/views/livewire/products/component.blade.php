@@ -100,11 +100,11 @@
 					{{ $products->links() }}
 				</div>
 			</div>
-            @include('livewire.products.add_stock')
+			@include('livewire.products.add_stock')
 		</div>
-        @include('livewire.products.form')
+		@include('livewire.products.form')
 	</div>
-    @include('livewire.products.tabla_alertasP')
+	@include('livewire.products.tabla_alertasP')
 </div>
 @include('livewire.products.form_cate')
 <script>
@@ -150,6 +150,11 @@
 			$('#Modal2').modal('hide');
 			noty(Msg)
 		})
+
+		window.livewire.on('category-added', msg => {
+			$('#theModalCate').modal('hide');
+			noty(msg)
+		});
 	})
 
 	function Confirm(id) {

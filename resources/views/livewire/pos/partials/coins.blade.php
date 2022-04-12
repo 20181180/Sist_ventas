@@ -121,7 +121,7 @@
                             </div>
                             <div class="col-sm-12 col-md-12 col-lg-6">
                                 @if ($tipopago==0 && $efectivo >= $total && $total > 0)
-                                <button wire:click.prevent="saveSale" wire:click="" class="btn btn-dark btn-md btn-block">
+                                <button wire:click.prevent="saveSale"  class="btn btn-dark btn-md btn-block">
                                     GUARDAR </button>
                                 @endif
                                 @if ($tipopago==1&&$efectivo >0)
