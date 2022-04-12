@@ -27,7 +27,7 @@ use App\Http\Livewire\ProvedoresController;
 use App\Http\Livewire\ReportsController;
 
 use App\Http\Livewire\UsersController;
-
+use App\Models\Product;
 
 Route::get('/', function () {
     return view('welcome');
@@ -74,6 +74,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('cotizacion/pdf/{total}/{items}', [CotizacionController::class, 'reportPDF']);
     Route::get('uwu/pdf/{idventa}/{total}/{items}', [PosController::class, 'printTicket']);
+    Route::get('inventory/pdf', [ProductsController::class, 'GeneratePDF']);
 });
 Route::get('pdf/reportventa/', function () {
     return view('reportventa');

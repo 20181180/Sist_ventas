@@ -2,12 +2,14 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Category;
+use Carbon\Carbon;
+use App\Models\Company;
 use App\Models\Product;
 use Livewire\Component;
-use Livewire\WithFileUploads;
+use App\Models\Category;
 use Livewire\WithPagination;
-use App\Models\Company;
+use Livewire\WithFileUploads;
+use Barryvdh\DomPDF\Facade as PDF;
 
 class ProductsController extends Component
 {
@@ -51,9 +53,9 @@ class ProductsController extends Component
                 ->paginate($this->pagination);
 
         if (strlen($this->searchAlert) > 0)
-                $productsAlert = Product::where('stock', '<=', 'alerts')->orwhere('name', 'like', '%' . $this->searchAlert . '%')->get();
+            $productsAlert = Product::where('stock', '<=', 'alerts')->orwhere('name', 'like', '%' . $this->searchAlert . '%')->get();
         else
-                $productsAlert = Product::where('stock', '<=', 'alerts')->get();
+            $productsAlert = Product::where('stock', '<=', 'alerts')->get();
 
 
 
@@ -173,11 +175,11 @@ class ProductsController extends Component
         $this->emit('add_stock', 'Agregar Producto');
     }
 
-    public function goUpdate($id=null,$cant=null)
+    public function goUpdate($id = null, $cant = null)
     {
-        if($id > 0 && $cant > 0){
-            $this->selected_id=$id;
-            $this->stock_ing=$cant;
+        if ($id > 0 && $cant > 0) {
+            $this->selected_id = $id;
+            $this->stock_ing = $cant;
         }
         $rules = [
             'stock_ing' => 'required',
@@ -270,15 +272,15 @@ class ProductsController extends Component
     }
     public function datos_p()
     {
-        $products = Product::select('stock' ,'price')->get();
+        $products = Product::select('stock', 'price')->get();
         $this->Pro_t = $products ? $products->sum('stock') : 0;
         $this->precio = $products ? $products->sum('price') : 0;
         $total = 0;
         foreach ($products as $p) {
-           $total+= $p->stock * $p->price;
+            $total += $p->stock * $p->price;
         }
 
-       $this->precioTotal=$total;
+        $this->precioTotal = $total;
     }
 
 
@@ -314,5 +316,20 @@ class ProductsController extends Component
 
         $this->resetUI();
         $this->emit('product-deleted', 'Producto Eliminado');
+    }
+
+    public function GeneratePDF()
+    {
+        $data = [];
+        $data = Product::join('categories as c', 'c.id', 'products.category_id')
+            ->select('products.*', 'c.name as category')->get();
+
+        $user = 'juan'; //cambiar a auth()
+        $fecha = Carbon::now();
+        $pdf = PDF::loadView('pdf.inventory', compact('data'));
+        return $pdf->stream('salesReport.pdf');
+        return $pdf->download('salesReport.pdf');
+
+        //Cart::clear(); //limpiamos e inicializamos las varibles..
     }
 }
