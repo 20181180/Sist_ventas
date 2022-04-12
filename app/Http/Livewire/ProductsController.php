@@ -14,7 +14,7 @@ class ProductsController extends Component
     use WithPagination;
     use WithFileUploads;
 
-    public $precioTotal, $name, $Pro_t, $barcode, $precio, $stock_ing, $prove_id, $cost, $price, $price_m, $stock, $alerts, $categoryid, $search, $image, $selected_id, $pageTitle, $componentName;
+    public $searchAlert, $precioTotal, $name, $Pro_t, $barcode, $precio, $stock_ing, $prove_id, $cost, $price, $price_m, $stock, $alerts, $categoryid, $search, $image, $selected_id, $pageTitle, $componentName;
     private $pagination = 10;
 
 
@@ -30,7 +30,6 @@ class ProductsController extends Component
         $this->price = 0;
         $this->prove_id = 0;
         $this->stock_ing = '';
-        $precioTotal=0;
         // $this->cost = 0;
     }
     public function render()
@@ -51,11 +50,18 @@ class ProductsController extends Component
                 ->orderBy('products.stock', 'asc')
                 ->paginate($this->pagination);
 
+        if (strlen($this->searchAlert) > 0)
+                $productsAlert = Product::where('stock', '<=', 'alerts')->orwhere('name', 'like', '%' . $this->searchAlert . '%')->get();
+        else
+                $productsAlert = Product::where('stock', '<=', 'alerts')->get();
+
+
 
 
 
         return view('livewire.products.component', [
             'products' => $products,
+            'productsA' => $productsAlert,
             'categories' => Category::orderBy('name', 'asc')->get(),
             'prove' => Company::orderBy('name', 'asc')->get()
         ])
@@ -167,8 +173,12 @@ class ProductsController extends Component
         $this->emit('add_stock', 'Agregar Producto');
     }
 
-    public function goUpdate()
+    public function goUpdate($id=null,$cant=null)
     {
+        if($id > 0 && $cant > 0){
+            $this->selected_id=$id;
+            $this->stock_ing=$cant;
+        }
         $rules = [
             'stock_ing' => 'required',
         ];
@@ -180,6 +190,7 @@ class ProductsController extends Component
         $this->validate($rules, $messages);
 
         //metdo de crear el producto}
+
 
         $product = Product::find($this->selected_id);
         $h = $product->stock + $this->stock_ing;

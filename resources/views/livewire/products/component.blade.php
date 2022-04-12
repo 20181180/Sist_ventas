@@ -18,8 +18,7 @@
 				</ul>
                 <ul class="tabs">
 
-					<h6>Productos en Alerta:<label for="" style="color: #2666CF;"> <a href="http://">Productos</a></label></h6>
-
+					<h6>Productos en Alerta:<a href="javascript:void(0);" style="background-color: #cf2626;" data-toggle="modal" data-target="#ModalAlertas">Productos</a></h6>
 
 				</ul>
 				<ul class="tabs tab-pills">
@@ -99,7 +98,9 @@
 				</div>
 			</div>
 		</div>
+        @include('livewire.products.tabla_alertasP')
 	</div>
+
 	@include('livewire.products.form')
 </div>
 @include('livewire.products.add_stock')
