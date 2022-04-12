@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\CotizacionController;
-use App\Http\Controllers\ExportController;
+use App\Models\Product;
+use App\Http\Livewire\Informes;
 use App\Http\Livewire\PosController;
 
 use Illuminate\Support\Facades\Route;
@@ -10,24 +10,26 @@ use App\Http\Livewire\CoinsController;
 
 use App\Http\Livewire\RolesController;
 
-use App\Http\Livewire\AsignarController;
+use App\Http\Livewire\UsersController;
 
-use App\Http\Livewire\CashoutController;
+use App\Http\Livewire\AsignarController;
 
 //use App\Http\Livewire\PermisosController;
 
-use App\Http\Livewire\ProductsController;
-
-use App\Http\Livewire\CategoriesController;
-use App\Http\Livewire\ClientesController;
-use App\Http\Livewire\PermisosController;
-
-use App\Http\Livewire\ProvedoresController;
+use App\Http\Livewire\CashoutController;
 
 use App\Http\Livewire\ReportsController;
+use App\Http\Livewire\ClientesController;
+use App\Http\Livewire\InformesController;
+use App\Http\Livewire\PermisosController;
 
-use App\Http\Livewire\UsersController;
-use App\Models\Product;
+use App\Http\Livewire\ProductsController;
+
+use App\Http\Controllers\ExportController;
+
+use App\Http\Livewire\CategoriesController;
+use App\Http\Livewire\ProvedoresController;
+use App\Http\Controllers\CotizacionController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -75,6 +77,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('cotizacion/pdf/{total}/{items}', [CotizacionController::class, 'reportPDF']);
     Route::get('uwu/pdf/{idventa}/{total}/{items}', [PosController::class, 'printTicket']);
     Route::get('inventory/pdf', [ProductsController::class, 'GeneratePDF']);
+    Route::get('produc_baj/pdf', [InformesController::class, 'GeneratePDF']);
+
+
+    Route::get('informes', InformesController::class);
 });
 Route::get('pdf/reportventa/', function () {
     return view('reportventa');
