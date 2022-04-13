@@ -99,14 +99,16 @@
 					</table>
 					{{ $products->links() }}
 				</div>
+                @include('livewire.products.add_stock')
 			</div>
-			@include('livewire.products.add_stock')
+            @include('livewire.products.form')
 		</div>
-		@include('livewire.products.form')
+        @include('livewire.products.tabla_alertasP')
 	</div>
-	@include('livewire.products.tabla_alertasP')
+    @include('livewire.products.form_cate')
 </div>
-@include('livewire.products.form_cate')
+
+@include('livewire.products.form_prov')
 <script>
 	document.addEventListener('DOMContentLoaded', function() {
 
@@ -153,6 +155,10 @@
 
 		window.livewire.on('category-added', msg => {
 			$('#theModalCate').modal('hide');
+			noty(msg)
+		});
+        window.livewire.on('pro-added', msg => {
+			$('#ModalProveedores').modal('hide');
 			noty(msg)
 		});
 	})

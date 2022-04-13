@@ -72,6 +72,7 @@
 
     <div class="col-sm-12 col-md-4">
         <div class="form-group">
+
             <label>Categoria *</label> <span class="text-danger er"> <a href="javascript:void(0);" data-toggle="modal" data-target="#theModalCate">Crear Nuevo</a></span>
             <select wire:model='categoryid' name="" class="form-control">
                 <option value="0" disabled>Elegir</option>
@@ -85,7 +86,7 @@
 
     <div class="col-sm-12 col-md-4">
         <div class="form-group">
-            <label>Proveedor *</label> <span class="text-danger er"> <a href="javascript:void(0);" data-toggle="modal" data-target="#ModalAlertas">No existe? Registralo</a></span>
+            <label>Proveedor *</label> <span class="text-danger er"> <a href="javascript:void(0);" data-toggle="modal" data-target="#ModalProveedores">No existe? Registralo</a></span>
             <select wire:model='prove_id' name="" class="form-control">
                 <option value="0" disabled>Elegir</option>
                 @foreach ($prove as $pro)
@@ -108,3 +109,4 @@
 
 </div>
 @include('commont.modalFooter')
+

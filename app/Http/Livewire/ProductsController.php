@@ -17,7 +17,7 @@ class ProductsController extends Component
     use WithPagination;
     use WithFileUploads;
 
-    public  $imagecate, $cantAlertas, $names,  $searchAlert, $precioTotal, $name, $Pro_t, $barcode, $precio, $stock_ing, $prove_id, $cost, $price, $price_m, $stock, $alerts, $categoryid, $search, $image, $selected_id, $pageTitle, $componentName;
+    public  $direc, $tel, $empresa,$imagecate, $cantAlertas, $names,  $searchAlert, $precioTotal, $name, $Pro_t, $barcode, $precio, $stock_ing, $prove_id, $cost, $price, $price_m, $stock, $alerts, $categoryid, $search, $image, $selected_id, $pageTitle, $componentName;
     private $pagination = 10;
 
 
@@ -142,7 +142,8 @@ class ProductsController extends Component
             }
         }
 
-
+        $this->categoryid = 0;
+        $this->prove_id = 0;
         $this->resetUI();
         $this->emit('product-added', 'Producto Registrado');
     }
@@ -264,7 +265,8 @@ class ProductsController extends Component
                 }
             }
         }
-
+        $this->categoryid = 0;
+        $this->prove_id = 0;
         $this->resetUI();
         $this->emit('product-added', 'Producto Registrado.');
     }
@@ -282,20 +284,7 @@ class ProductsController extends Component
     }
 
 
-    public function resetUI()
-    {
-        $this->name = '';
-        $this->cost = '';
-        $this->barcode = '';
-        $this->price = '';
-        $this->stock = '';
-        $this->alerts = '';
-        $this->categoryid = 0;
-        $this->prove_id = 0;
-        $this->image = 'null';
-        $this->selected_id = 0;
-        $this->stock_ing = '';
-    }
+
 
     protected $listeners = ['deleteRow' => 'Destroy'];
 
@@ -355,8 +344,57 @@ class ProductsController extends Component
             $category->image = $customFileName;
             $category->save();
         }
+        $idcat = Category::select('id')->orderBy('id', 'desc')->first();
+        $this->categoryid = $idcat->id;
+        //$this->resetUI();
+        $this->emit('category-added', 'Categoria registrado xd');
+    }
+    public function Proveedor()
+    {
+        $rules = [
+            'name' => 'required',
+            'direc' => 'required',
+            'tel' => 'required|max:10',
+            'empresa' => 'required'
+        ];
+
+        $messages = [
+            'name.required' => 'El nombre es obligatorio',
+            'direc.required' => 'Direccion obligatorio',
+            'tel.required' => 'Ingrese un telefono',
+            'tel.max' => 'Numero a digitos',
+        ];
+
+        $this->validate($rules, $messages);
+
+        $companie = Company::create([
+            'name' => $this->name,
+            'address' => $this->direc,
+            'phone' => $this->tel,
+            'taxpayer_id' => $this->empresa,
+        ]);
+        $idprov = Company::select('id')->orderBy('id', 'desc')->first();
+        $this->prove_id = $idprov->id;
 
         $this->resetUI();
-        $this->emit('category-added', 'Categoria registrado xd');
+        $this->emit('pro-added', 'Provedor Registrado con Exito.');
+    }
+    public function resetUI()
+    {
+        $this->name = '';
+        $this->cost = '';
+        $this->barcode = '';
+        $this->price = '';
+        $this->stock = '';
+        $this->alerts = '';
+        // $this->categoryid = 0;
+        //$this->prove_id = 0;
+        $this->image = 'null';
+        $this->selected_id = 0;
+        $this->stock_ing = '';
+        $this->direc;
+        $this->tel;
+        $this->empresa;
+
     }
 }
