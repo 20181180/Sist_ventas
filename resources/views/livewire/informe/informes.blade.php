@@ -23,7 +23,7 @@
                         <thead class="text-white" style="background: #226F">
 
                             <tr>
-                                <a class="btn btn-dark btn-block {{count($products) <1 ? 'disabled' : '' }}" href=" {{ url('produc_baj/pdf')}}" target="_black">GENERAR PDF DE CATALOGO DE PRODUCTOS</a>
+                                <a class="btn btn-dark btn-block {{count($products) <1 ? 'disabled' : '' }}" href="#" target="_black">GENERAR PDF DE CATALOGO DE PRODUCTOS</a>
                                 <br>
                                 <th class="table-th text-white">NOMBRE</th>
                                 <th class="table-th text-white text-center">CODIGO BARRA</th>
@@ -67,7 +67,7 @@
                         @elseif($estado == 3)
                         <thead class="text-white" style="background: #226F">
                             <tr>
-                                <a class="btn btn-dark btn-block {{count($prod_bj) <1 ? 'disabled' : '' }}">GENERAR PDF DE PRODUCTOS BAJOS</a>
+                                <a class="btn btn-dark btn-block {{count($prod_bj) <1 ? 'disabled' : '' }}" href=" {{ url('produc_baj/pdf')}}" target="_black">GENERAR PDF DE PRODUCTOS BAJOS</a>
                                 <br>
                                 <th class="table-th text-white">NOMBRE</th>
                                 <th class="table-th text-white text-center">CODIGO BARRA</th>
@@ -183,7 +183,7 @@
                         @elseif($estado==4)
                         <thead class="text-white" style="background: #226F">
                             <tr>
-                                <a class="btn btn-dark btn-block {{count($prod_exi) <1 ? 'disabled' : '' }}" href=" {{ url('produc_baj/pdf')}}" target="_black">GENERAR PDF DE PRODUCTOS EXISTENTES</a>
+                                <a class="btn btn-dark btn-block {{count($prod_exi) <1 ? 'disabled' : '' }}" href="#" target="_black">GENERAR PDF DE PRODUCTOS EXISTENTES</a>
                                 <br>
                                 <th class="table-th text-white">NOMBRE</th>
                                 <th class="table-th text-white text-center">CODIGO BARRA</th>
