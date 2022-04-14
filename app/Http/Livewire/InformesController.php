@@ -7,16 +7,17 @@ use App\Models\Cliente;
 use App\Models\Product;
 use Livewire\Component;
 use Barryvdh\DomPDF\Facade as PDF;
+use Illuminate\Support\Facades\Auth;
 
 class InformesController extends Component
 {
-    public $deu, $m, $prod_bj, $prod_exi,$catg_p, $estado;
+    public $deu, $m, $prod_bj, $prod_exi, $catg_p, $estado;
     public function mount()
     {
         $this->deu = [];
         $this->estado = 0;
         $this->prod_bj = [];
-        $this->prod_exi=[];
+        $this->prod_exi = [];
     }
     public function render()
     {
@@ -30,20 +31,6 @@ class InformesController extends Component
             ->section('content');
     }
 
-
-    public function GeneratePDF()
-    {
-        $data = [];
-        $data = Product::join('categories as c', 'c.id', 'products.category_id')
-            ->select('products.*', 'c.name as category')
-            ->where('stock', '<', 1)->get();
-
-        $user = 'juan'; //cambiar a auth()
-        $fecha = Carbon::now();
-        $pdf = PDF::loadView('pdf.produc_baj', compact('data'));
-        return $pdf->stream('salesReport.pdf');
-        return $pdf->download('salesReport.pdf');
-    }
 
     public function client_deud()
     {
@@ -76,5 +63,31 @@ class InformesController extends Component
             ->select('products.*', 'c.name as category')
             ->where('stock', '>=', 1)->get();
         $this->estado = 4;
+    }
+    public function GeneratePDF()
+    {
+        $data = [];
+        $data = Product::join('categories as c', 'c.id', 'products.category_id')
+            ->select('products.*', 'c.name as category')
+            ->where('stock', '<', 1)->get();
+
+        $user = 'juan'; //cambiar a auth()
+        $fecha = Carbon::now();
+        $pdf = PDF::loadView('pdf.produc_baj', compact('data'));
+        return $pdf->stream('salesReport.pdf');
+        return $pdf->download('salesReport.pdf');
+    }
+
+    public function catalogoP_PDF()
+    {
+        $data = [];
+        $data = Product::join('categories as c', 'c.id', 'products.category_id')
+            ->select('products.*', 'c.name as category')->get();
+
+        $user = Auth::user()->name; //cambiar a auth()
+        $fecha = Carbon::now();
+        $pdf = PDF::loadView('pdf.catalogo', compact('data', 'user'));
+        return $pdf->stream('salesReport.pdf');
+        return $pdf->download('salesReport.pdf');
     }
 }

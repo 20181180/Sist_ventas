@@ -77,7 +77,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('cotizacion/pdf/{total}/{items}', [CotizacionController::class, 'reportPDF']);
     Route::get('uwu/pdf/{idventa}/{total}/{items}', [PosController::class, 'printTicket']);
     Route::get('inventory/pdf', [ProductsController::class, 'GeneratePDF']);
-    Route::get('produc_baj/pdf', [InformesController::class, 'GeneratePDF']);
+    Route::get('catalogo/pdf', [InformesController::class, 'catalogoP_PDF']);
+
 
 
     Route::get('informes', InformesController::class);

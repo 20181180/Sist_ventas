@@ -23,7 +23,7 @@
                         <thead class="text-white" style="background: #226F">
 
                             <tr>
-                                <a class="btn btn-dark btn-block {{count($products) <1 ? 'disabled' : '' }}" href="#" target="_black">GENERAR PDF DE CATALOGO DE PRODUCTOS</a>
+                                <a class="btn btn-dark btn-block {{count($products) <1 ? 'disabled' : '' }}" href="{{ url('catalogo/pdf')}}" target="_black">GENERAR PDF DE CATALOGO DE PRODUCTOS</a>
                                 <br>
                                 <th class="table-th text-white">NOMBRE</th>
                                 <th class="table-th text-white text-center">CODIGO BARRA</th>
