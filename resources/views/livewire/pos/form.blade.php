@@ -11,7 +11,11 @@
             @include('commont.searchbox')
             <div class="modal-body">
                 <div class="widget-content">
-
+                    <select wire:model='Modaltipo_precio' name="" class="form-control">
+                        <option value="0" >Precio unitario</option>
+                        <option value="1">Precio Mayoreo</option>
+                        @role('Admin')<option value="2">Costo</option>@endcan
+                    </select>
                     <div class="table-responsive">
 
                         <table class="table tblscroll table-bordered table-striped  mt-1">
@@ -20,6 +24,7 @@
                                     <th class="table-th text-white text-center">NOMBRE</th>
                                     <th class="table-th text-white">IMAGEN</th>
                                     <th class="table-th text-white text-center">CODIGO BARRA</th>
+                                    <th class="table-th text-white text-center">PRECIO</th>
                                     <th class="table-th text-white text-center">AGREGAR</th>
                                 </tr>
                             </thead>
@@ -39,8 +44,18 @@
                                     <td>
                                         <h6 class="text-center">{{$product->barcode}}</h6>
                                     </td>
+                                    <td>
+                                        @if($Modaltipo_precio==1)
+                                            <h6 class="text-center">{{$product->price_mayoreo}}</h6>
+                                        @elseif($Modaltipo_precio==2)
+                                        <h6 class="text-center">{{$product->cost}}</h6>
+                                        @elseif($Modaltipo_precio==0)
+                                        <h6 class="text-center">{{$product->price}}</h6>
+                                        @endif
 
+                                    </td>
                                     <td class="text-center">
+                                        <input type="number" id="r{{$product->id}}" wire:change="ScanCode({{$product->barcode}},$('#r' + {{$product->id}}).val())" style="width:28%;height: 35px;" class="rounded" >
                                         <a href="javascript:void(0);" type="text" wire:click.prevent="ScanCode({{$product->barcode}})" class="btn btn-dark mtmobile" title="Edit">
                                             <i class="fa fa-cart-plus"></i>
                                         </a>

@@ -21,10 +21,11 @@ use Barryvdh\DomPDF\Facade as PDF;
 
 class PosController extends Component
 {
-    public $cangeo, $colorStock, $puntos1, $tipopago, $category, $datosxd, $datauwuxd, $cheked, $searchD, $search, $estadoCheck, $producId, $tipoVenta, $client_id, $total, $itemsQuantity, $efectivo, $change, $valiente, $meri, $puntos;
+    public $cangeo, $colorStock, $puntos1, $tipopago, $category, $datosxd, $datauwuxd, $cheked, $searchD, $search, $estadoCheck, $producId, $tipoVenta, $client_id, $total, $itemsQuantity, $efectivo, $change, $valiente, $meri, $puntos, $tipo_precio, $Modaltipo_precio;
 
     public function mount()
     {
+        $this-> tipo_precio=1;
         $this->cangeo = 0;
         $this->colorStock = '';
         $this->tipoVenta = 'Elegir';
@@ -52,8 +53,6 @@ class PosController extends Component
         else
             $data = Product::orderBy('name', 'desc')->get();
         $dataD = [];
-        foreach ($cart as $c) {
-        }
 
         foreach ($cart as $c) {
 
@@ -64,9 +63,14 @@ class PosController extends Component
             if ($c->price == $product->price_mayoreo) {
                 $c->checado = 1;
             }
+            if ($c->price == $product->cost) {
+                $c->checado = 1;
+            }
         }
 
         $this->check_meripoints();
+
+
 
         $client = Cliente::join('meripuntos as m', 'm.client_id', 'clientes.id')
             ->select('*',)
@@ -86,6 +90,10 @@ class PosController extends Component
             ->extends('layouts.theme.app')
             ->section('content');
     }
+    public function pruebas(){
+
+    }
+
     //el metodo a cash es para calcular el cambio
     public function ACash($value)
     {
@@ -157,6 +165,14 @@ class PosController extends Component
         if ($product == null) {
             $this->emit('scan-notfound', 'El producto no esta registrado');
         } else {
+            if($this->Modaltipo_precio==1)
+            {
+                $this->estadoCheck="true";
+            }else if($this->Modaltipo_precio==2){
+                $this->estadoCheck="true";
+            }else if($this->Modaltipo_precio==0){
+                $this->estadoCheck="false";
+            }
             if ($this->InCart($product->id)) {
 
                 $this->increaseQty($product->id, $this->estadoCheck);
@@ -167,8 +183,16 @@ class PosController extends Component
                 $this->emit('no-stock', 'Stock insuficiente :/');
                 return;
             }
+            if($this->Modaltipo_precio==1)
+            {
+                Cart::add($product->id, $product->name, $product->price_mayoreo, $cant, $product->image);
+            }else if($this->Modaltipo_precio==2){
+                Cart::add($product->id, $product->name, $product->cost, $cant, $product->image);
+            }else if($this->Modaltipo_precio==0){
+                Cart::add($product->id, $product->name, $product->price, $cant, $product->image);
+            }
 
-            Cart::add($product->id, $product->name, $product->price, $cant, $product->image);
+
             $this->total = Cart::getTotal();
             $this->puntos = (Cart::getTotal()) / 100 * 10;
             $this->itemsQuantity = Cart::getTotalQuantity();
@@ -202,11 +226,24 @@ class PosController extends Component
                 return;
             }
         }
-        if ($state == 'true') {
-            Cart::add($product->id, $product->name, $product->price_mayoreo, $cant, $product->image);
-        } else {
+        // if ($state == 'true') {
+        //     Cart::add($product->id, $product->name, $product->price_mayoreo, $cant, $product->image);
+        // } else {
 
+        //     Cart::add($product->id, $product->name, $product->price, $cant, $product->image);
+        // }
+        if ($state == 'true') {
+            if($this->tipo_precio=='1'){
+                Cart::add($product->id, $product->name, $product->price_mayoreo, $cant, $product->image);
+
+            }else {
+                Cart::add($product->id, $product->name, $product->cost, $cant, $product->image);
+
+            }
+
+        } else {
             Cart::add($product->id, $product->name, $product->price, $cant, $product->image);
+
         }
         $this->total = Cart::getTotal();
         $this->puntos = (Cart::getTotal()) / 100 * 10;
@@ -269,10 +306,17 @@ class PosController extends Component
 
         if ($cant > 0) {
             if ($state == 'true') {
-                Cart::add($product->id, $product->name, $product->price_mayoreo, $cant, $product->image);
-            } else {
+                if($this->tipo_precio=='1'){
+                    Cart::add($product->id, $product->name, $product->price_mayoreo, $cant, $product->image);
+                    $title = 'Mayoreo producto:';
+                }else {
+                    Cart::add($product->id, $product->name, $product->cost, $cant, $product->image);
+                    $title = 'costo producto:';
+                }
 
+            } else {
                 Cart::add($product->id, $product->name, $product->price, $cant, $product->image);
+                $title = 'Menudeo producto:';
             }
             $this->total = Cart::getTotal();
             $this->puntos = (Cart::getTotal()) / 100 * 10;
@@ -547,7 +591,30 @@ class PosController extends Component
 
         Cart::clear(); //limpiamos e inicializamos las varibles..
     }
+/// lo comente por si habia pedos jejeje
+    // public function SyncPermiso($state, $id)
+    // {
+    //     $product = Product::find($id);
+    //     $item = Cart::get($id);
+    //     $cart = Cart::getContent()->sortBy('name');
+    //     Cart::remove($id);
 
+    //     if ($state == 'true') {
+    //         Cart::add($product->id, $product->name, $product->price_mayoreo, $item->quantity, $product->image);
+    //         $title = 'Mayoreo producto:';
+    //     } else {
+
+    //         Cart::add($product->id, $product->name, $product->price, $item->quantity, $product->image);
+    //         $title = 'Menudeo producto:';
+    //     }
+
+    //     $this->estadoCheck = $state;
+    //     $this->producId = $id;
+    //     $this->total = Cart::getTotal();
+    //     $this->puntos = (Cart::getTotal()) / 100 * 10;
+    //     $this->itemsQuantity = Cart::getTotalQuantity();
+    //     $this->emit('scan-ok', "$title $product->name");
+    // }
     public function SyncPermiso($state, $id)
     {
         $product = Product::find($id);
@@ -556,13 +623,19 @@ class PosController extends Component
         Cart::remove($id);
 
         if ($state == 'true') {
-            Cart::add($product->id, $product->name, $product->price_mayoreo, $item->quantity, $product->image);
-            $title = 'Mayoreo producto:';
-        } else {
+            if($this->tipo_precio=='1'){
+                Cart::add($product->id, $product->name, $product->price_mayoreo, $item->quantity, $product->image);
+                $title = 'Mayoreo producto:';
+            }else {
+                Cart::add($product->id, $product->name, $product->cost, $item->quantity, $product->image);
+                $title = 'costo producto:';
+            }
 
+        } else {
             Cart::add($product->id, $product->name, $product->price, $item->quantity, $product->image);
             $title = 'Menudeo producto:';
         }
+
 
         $this->estadoCheck = $state;
         $this->producId = $id;
@@ -571,10 +644,11 @@ class PosController extends Component
         $this->itemsQuantity = Cart::getTotalQuantity();
         $this->emit('scan-ok', "$title $product->name");
     }
+
     public function SyncAll()
     {
 
-        $this->cheked = '1';
+        $this->cheked = '1'; ///utilizare esta variable para manipularlo  con el input select
         $cart = Cart::getContent()->sortBy('name');
         foreach ($cart as $c) {
             $this->SyncPermiso('true', $c->id);
@@ -590,6 +664,7 @@ class PosController extends Component
             $c->checado = 0;
         }
     }
+
 
     public function stockcolores($productId)
     {
