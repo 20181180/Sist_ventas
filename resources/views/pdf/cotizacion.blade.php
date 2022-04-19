@@ -24,20 +24,26 @@
                     <img src="{{ asset('assets/img/icon.png')}}" alt="" class="invoice-logo">
                 </td>
                 <td colspan="2" class="text-left text-company" width="70%" style="vertical-align: top; padding-top: 10px">
-                    <span style="font-size: 16px"> <strong>Cotizacion de productos</strong> </span>
+                    <span style="font-size: 16px"> <strong>Cotizacion de productos.</strong> </span>
                     <br>
-                    <span style="font-size: 16px"> <strong>Fecha de consulta: {{ \Carbon\Carbon::now()->format('d-M-Y')}}</strong> </span>
+                    <span style="font-size: 16px"> <strong>Fecha de consulta: {{ \Carbon\Carbon::now()->format('d-M-Y')}}.</strong> </span>
                     <br>
                     <span style="font-size: 16px"> <strong>Lo atiende: {{$user}}</strong> </span>
                     <br>
                 </td>
                 <td width="30%" style="vertical-align: top; padding-top: 10px; position: relative">
-                    <span style="font-size: 13px;font-wight:bold" aling="left"> Clave #: {{$clav_id}} </span>
+                    <u>
+                        <span style="font-size: 13px;font-wight:bold" aling="left"> Clave #: {{$clav_id}} </span>
+
+                    </u>
 
                     <br>
                     <br>
-                    <span style="font-size: 13px;font-wight:lighter"> Expiracion:{{$fechaV->format('d-M-Y')}} </span>
+                    <u style="color: red;"> <span style="font-size: 13px;font-wight:bold"> Expiracion:{{$fechaV->format('d-M-Y')}}. </span></u>
 
+                    <br>
+                    <br>
+                    <span style="font-size: 13px;font-wight:lighter"> Meripuntos : {{$points}} mptos. </span>
                 </td>
 
             </tr>
@@ -78,13 +84,13 @@
 
                     </td>
                     <td class="text-center">
-                        <span><b>TOTAL=</b></span>
+                        <span><b>TOTAL</b></span>
                     </td>
                     <td class="text-center">
                         {{$items}} Articulos
                     </td>
                     <td class="text-center">
-                        <span><strong>$ {{$total}} MXN</strong></span>
+                        <span><strong>= $ {{$total}} MXN</strong></span>
                     </td>
 
                     <td class="text-center">

@@ -16,7 +16,7 @@ class CotizacionController extends Controller
 
 {
 
-    public function reportPDF($total, $items)
+    public function reportPDF($total, $items, $points)
     {
         $data = [];
 
@@ -28,9 +28,14 @@ class CotizacionController extends Controller
         $fechaV->toFormattedDateString();
         $clav  = Carbon::now()->format('d-M-Y');
         $fined_id = Cotizaciones::latest('id')->first();
-        $id = $fined_id->id;
 
-        $clav_id =  "$id" . '/' . "$clav";
+        if (empty($fined_id)) {
+            $clav_id =  "01" . '/' . "$clav";
+        } else {
+            $id = $fined_id->id;
+            $clav_id =  "$id" . '/' . "$clav";
+        }
+
 
         // dd($clav);
 
@@ -40,18 +45,18 @@ class CotizacionController extends Controller
             $cantid = $criterio->quantity;
             $nom = $criterio->name;
 
-            $contizaciones = Cotizaciones::create([
-                'total' => $items,
-                'price' => $precio,
-                'quantity' => $cantid,
-                'clave_id' => $clav_id,
-                'name' => $nom,
-                'expiration_date' => $fechaV,
-                'id_produc' => $id_var,
-            ]);
+            // $contizaciones = Cotizaciones::create([
+            //     'total' => $items,
+            //     'price' => $precio,
+            //     'quantity' => $cantid,
+            //     'clave_id' => $clav_id,
+            //     'name' => $nom,
+            //     'expiration_date' => $fechaV,
+            //     'id_produc' => $id_var,
+            // ]);
         }
 
-        $pdf = PDF::loadView('pdf.cotizacion', compact('data', 'total', 'items', 'user', 'clav_id', 'fechaV'));
+        $pdf = PDF::loadView('pdf.cotizacion', compact('data', 'total', 'items', 'user', 'clav_id', 'fechaV', 'points'));
         return $pdf->stream('salesReport.pdf');
         return $pdf->download('salesReport.pdf');
     }

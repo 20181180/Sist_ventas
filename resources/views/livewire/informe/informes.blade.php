@@ -117,7 +117,7 @@
                         @elseif($estado == 1)
                         <thead class="text-white" style="background: #3B3F5C">
                             <tr>
-                                <a class="btn btn-dark btn-block {{count($deu) <1 ? 'disabled' : '' }}" href="#" target="_black">GENERAR PDF DEUDORES</a>
+                                <a class="btn btn-dark btn-block {{count($deu) <1 ? 'disabled' : '' }}" href="{{ url('report/excel')}}" target="_black">GENERAR EXCEL DEUDORES</a>
 
                                 <th class="table-th text-white">CLIENTE</th>
                                 <th class="table-th text-center text-white">DIRECCION</th>

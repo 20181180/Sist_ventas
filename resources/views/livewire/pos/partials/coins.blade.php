@@ -121,7 +121,7 @@
                             </div>
                             <div class="col-sm-12 col-md-12 col-lg-6">
                                 @if ($tipopago==0 && $efectivo >= $total && $total > 0)
-                                <button wire:click.prevent="saveSale"  class="btn btn-dark btn-md btn-block">
+                                <button wire:click.prevent="saveSale" class="btn btn-dark btn-md btn-block">
                                     GUARDAR </button>
                                 @endif
                                 @if ($tipopago==1&&$efectivo >0)
@@ -136,7 +136,7 @@
                             </div>
                             <div class="col-sm-12 col-md-12 col-lg-12 mt-4">
                                 <a class="btn btn-dark btn-block {{count($cart) <1 ? 'disabled' : '' }} {{$cangeo == 1 ? 'disabled' : '' }}" href="{{ url('cotizacion/pdf' . '/' . $total . '/'
-                                 . $itemsQuantity) }}" target="_black">Generar cotizacion</a>
+                                 . $itemsQuantity. '/' . $puntos) }}" target="_black">Generar cotizacion</a>
                             </div>
                             <div class="col-sm-12 col-md-12 col-lg-12 mt-4">
                                 <a style="background: #F76E11" class="btn btn-dark btn-block {{$client_id ==5 ? 'disabled' : '' }} " wire:click.prevent="saveMeri">Canjear Puntos</a>

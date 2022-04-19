@@ -74,7 +74,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('report/excel/{user}/{type}/{f1}/{f2}', [ExportController::class, 'reporteExcel']);
     Route::get('report/excel/{user}/{type}', [ExportController::class, 'reporteExcel']);
 
-    Route::get('cotizacion/pdf/{total}/{items}', [CotizacionController::class, 'reportPDF']);
+    Route::get('cotizacion/pdf/{total}/{items}/{points}', [CotizacionController::class, 'reportPDF']);
     Route::get('uwu/pdf/{idventa}/{total}/{items}', [PosController::class, 'printTicket']);
     Route::get('inventory/pdf', [ProductsController::class, 'GeneratePDF']);
     Route::get('catalogo/pdf', [InformesController::class, 'catalogoP_PDF']);
