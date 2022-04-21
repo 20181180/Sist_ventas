@@ -17,7 +17,7 @@ class ProductsController extends Component
     use WithPagination;
     use WithFileUploads;
 
-    public  $direc, $tel, $empresa,$imagecate, $cantAlertas, $names,  $searchAlert, $precioTotal, $name, $Pro_t, $barcode, $precio, $stock_ing, $prove_id, $cost, $price, $price_m, $stock, $alerts, $categoryid, $search, $image, $selected_id, $pageTitle, $componentName;
+    public  $direc, $tel, $empresa, $imagecate, $cantAlertas, $names,  $searchAlert, $precioTotal, $name, $Pro_t, $barcode, $precio, $stock_ing, $prove_id, $cost, $price, $price_m, $stock, $alerts, $categoryid, $search, $image, $selected_id, $pageTitle, $componentName;
     private $pagination = 10;
 
 
@@ -89,7 +89,7 @@ class ProductsController extends Component
             'price' => 'required',
             'stock' => 'required',
             'alerts' => 'required',
-            'barcode' => 'required',
+            //'barcode' => 'required',
             'categoryid' => 'required|not_in:Elegir',
             'prove_id' => 'required|not_in:Elegir',
 
@@ -103,7 +103,7 @@ class ProductsController extends Component
             'price.required' => 'Precio requerido',
             'stock.required' => 'Ingrese la cantidad cantidad existente',
             'alerts.required' => 'Ingresa un valor minimo en existencia',
-            'barcode.required' => 'Ingrese un codigo',
+            //'barcode.required' => 'Ingrese un codigo',
             'categoryid.required' => 'Campo obligatorio',
             'categoryid.not_in' => 'Eliga una opcion valido',
             'prove_id.not_in' => 'Eliga una opcion valido',
@@ -111,6 +111,16 @@ class ProductsController extends Component
 
         $this->validate($rules, $messages);
         //metdo de crear el producto
+        $fined_id = Product::latest('id')->first();
+        $id = $fined_id->id + 1;
+        //dd($id);
+        if (empty($fined_id)) {
+            $this->barcode =  "M0000";
+        } else {
+            $id = $fined_id->id + 1;
+            $this->barcode =  'M000' . $id;
+        }
+
 
         $product = Product::create([
             'name' => $this->name,
@@ -395,6 +405,5 @@ class ProductsController extends Component
         $this->direc;
         $this->tel;
         $this->empresa;
-
     }
 }

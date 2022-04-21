@@ -3,6 +3,6 @@
 
 @section('content')
 
-    @include('livewire.startpage.init')
+@include('livewire.startpage.init')
 
 @endsection

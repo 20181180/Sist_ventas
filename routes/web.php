@@ -30,6 +30,8 @@ use App\Http\Controllers\ExportController;
 use App\Http\Livewire\CategoriesController;
 use App\Http\Livewire\ProvedoresController;
 use App\Http\Controllers\CotizacionController;
+use App\Http\Livewire\Datos;
+//use App\Http\Livewire\Header;
 
 Route::get('/', function () {
     return view('welcome');
@@ -38,7 +40,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
+//Route::get('/home', [App\Http\Livewire\Header::class, 'render'])->name('home');
 Route::middleware(['auth'])->group(function () {
 
     Route::get('categories', CategoriesController::class)->middleware('role:Admin');
@@ -82,6 +84,8 @@ Route::middleware(['auth'])->group(function () {
 
 
     Route::get('informes', InformesController::class);
+    Route::get('datos', Datos::class);
+    //Route::get(Header::class);
 });
 Route::get('pdf/reportventa/', function () {
     return view('reportventa');

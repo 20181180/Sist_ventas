@@ -45,15 +45,15 @@ class CotizacionController extends Controller
             $cantid = $criterio->quantity;
             $nom = $criterio->name;
 
-            // $contizaciones = Cotizaciones::create([
-            //     'total' => $items,
-            //     'price' => $precio,
-            //     'quantity' => $cantid,
-            //     'clave_id' => $clav_id,
-            //     'name' => $nom,
-            //     'expiration_date' => $fechaV,
-            //     'id_produc' => $id_var,
-            // ]);
+            $contizaciones = Cotizaciones::create([
+                'total' => $items,
+                'price' => $precio,
+                'quantity' => $cantid,
+                'clave_id' => $clav_id,
+                'name' => $nom,
+                'expiration_date' => $fechaV,
+                'id_produc' => $id_var,
+            ]);
         }
 
         $pdf = PDF::loadView('pdf.cotizacion', compact('data', 'total', 'items', 'user', 'clav_id', 'fechaV', 'points'));
