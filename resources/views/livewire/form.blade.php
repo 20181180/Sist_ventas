@@ -5,7 +5,7 @@
                 <h5 class="modal-title text-white text-center">
                     <b class="text-center"> FORMULARIO DE BUSQUEDA</b>
                 </h5>
-                <h6 class="text-center text-warnig" wire:loading>POR FAVOR ESPERE...</h6>
+                <h6 class="text-center text-warnig" style="color: white;" wire:loading>POR FAVOR ESPERE...</h6>
             </div>
             <br>
 
@@ -14,7 +14,7 @@
                     <div class="col-sm-12 col-md-8">
                         <div class="form-group">
                             <label>Nombre de la empresa *</label>
-                            <input type="text" wire:model.lazy="empresa" class="form-control" title="Nombre de Oficial.">
+                            <input type="text" required wire:model.lazy="empresa" class="form-control" title="Nombre de Oficial.">
                             @error('empresa')
                             <span class="text-danger er">{{$message}}</span>
                             @enderror
@@ -24,7 +24,7 @@
                     <div class="col-sm-12 col-md-4">
                         <div class="form-group">
                             <label>Correo electronico *</label>
-                            <input type="email" wire:model.lazy="correo" class="form-control" title="Ingrese el correo de la empresa.">
+                            <input type="email" wire:model.lazy="correo" required class="form-control" title="Ingrese el correo de la empresa.">
                             @error('correo')
                             <span class="text-danger er">{{$message}}</span>
                             @enderror
@@ -34,7 +34,7 @@
                     <div class="col-sm-12 col-md-4">
                         <div class="form-group">
                             <label>Telefono *</label>
-                            <input type="tel" wire:model="tel" title="Telefono de la empresa" class="form-control">
+                            <input type="tel" required maxlength="10" wire:model.lazy="tel" title="Telefono de la empresa" class="form-control">
                             @error('tel')
                             <span class="text-danger er">{{$message}}</span>
                             @enderror
@@ -65,7 +65,7 @@
                     <div class="col-sm-12 col-md-4">
                         <div class="form-group">
                             <label>Codigo Postal *</label>
-                            <input type="number" wire:model.lazy="cp" class="form-control" title="Codigo al que pertenece el lugar.">
+                            <input type="number" maxlength="6" wire:model.lazy="cp" class="form-control" title="Codigo al que pertenece el lugar.">
                             @error('cp')
                             <span class="text-danger er">{{$message}}</span>
                             @enderror

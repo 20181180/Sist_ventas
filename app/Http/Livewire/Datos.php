@@ -14,7 +14,10 @@ class Datos extends Component
 
     public function render()
     {
-        return view('livewire.datos')
+        return view('livewire.datos', [
+            'inf' => Informacion::orderBy('id', 'desc')->get(),
+
+        ])
 
             ->extends('layouts.theme.app')
             ->section('content');
@@ -40,25 +43,28 @@ class Datos extends Component
 
     public function Store()
     {
-        // $rules = [
-        //     'empresa' => 'required|unique:informacion|min:3',
-        //     'direc' => 'required',
-        //     'tel' => 'required',
-        //     'cp' => 'required',
-        //     'correo' => 'required',
-        // ];
+        //dd('hola');
+        $rules = [
+            'empresa' => 'required|unique:Informacions|min:3',
+            'direc' => 'required',
+            'tel' => 'required',
+            'cp' => 'required',
+            'correo' => 'required',
+            'image' => 'required',
+        ];
 
-        // $messages = [
-        //     'empresa.required' => 'Lo sentimos el nombre es obligatorio',
-        //     'empresa.min' => 'Ingrese minimo 3 caracteres para el producto',
-        //     'direc.required' => 'Costo Obligatorio',
-        //     'tel.required' => 'Telefono requerido',
-        //     'cp.required' => 'Ingrese la cantidad cantidad existente',
-        //     'correo.required' => 'Correo obligatorio',
+        $messages = [
+            'empresa.required' => 'Lo sentimos el nombre es obligatorio *',
+            'empresa.min' => 'Ingrese minimo 3 caracteres para el nombre *',
+            'direc.required' => 'Costo Obligatorio *',
+            'tel.required' => 'Telefono requerido *',
+            'cp.required' => 'Ingrese un CP',
+            'correo.required' => 'Correo obligatorio*',
+            'image.required' => 'Obligatorio *',
 
-        // ];
+        ];
 
-        // $this->validate($rules, $messages);
+        $this->validate($rules, $messages);
         // //metdo de crear el producto
 
         $product = Informacion::create([
@@ -77,7 +83,7 @@ class Datos extends Component
             // dd($ex);
             if ($ex == '.jpg' || $ex == '.png') {
                 $customFileName = uniqid() . '_.' . $this->image->extension();
-                $this->image->storeAs('public/products', $customFileName);
+                $this->image->storeAs('public/datos', $customFileName);
                 $product->image = $customFileName;
                 $product->save();
             } elseif ($ex != 'jpg' || $ex != 'png') {
@@ -94,5 +100,13 @@ class Datos extends Component
     public function resetUI()
     {
         # code...
+        $this->direc = '';
+        $this->tel = '';
+        //  $this->image = null;
+        $this->empresa = '';
+        $this->face = '';
+        $this->correo = '';
+
+        $this->cp = '';
     }
 }

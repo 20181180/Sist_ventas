@@ -41,9 +41,9 @@
                             </div>
                         </div>
                         <div class="dropdown-item">
-                            <a href="user_profile.html">
+                            <a href="{{url('datos')}} ">
                                 <i class="fas fa-user"></i>
-                                <span>Mi Perfil</span>
+                                <span>Perfil De Empresa</span>
                             </a>
                         </div>
                         <div class="dropdown-item">
