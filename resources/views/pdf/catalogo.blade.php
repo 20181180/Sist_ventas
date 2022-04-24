@@ -97,7 +97,7 @@
                     <p class="card-text text-company" style="font-size: 14px">CODIGO DEL PRODUCTO: {{$item->barcode}} </p>
                 </div>
 
-                <div id="yin-yang"></div>jajaja el famuso YIN-YANG, se parece a hombre araña jajaj
+                <div id="yin-yang"></div>
 
             </div>
         </div>
