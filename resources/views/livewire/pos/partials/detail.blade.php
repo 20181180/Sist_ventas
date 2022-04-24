@@ -67,7 +67,7 @@
                                 <td class="text-center">${{number_format($item->price,2)}}</td>
 
                                 <td class="{{$item->marcado == 1 ? 'table-primary' : '' }}">
-                                    <input type="number" id="r{{$item->id}}" wire:change="updateQty({{$item->id}},$('#p' + {{$item->id}}).is(':checked'), $('#r' + {{$item->id}}).val())" style="font-size: 1rem!important" class="form-control text-center" value="{{$item->quantity}}">
+                                    <input type="number" id="a{{$item->id}}" wire:change="updateQty({{$item->id}},$('#p' + {{$item->id}}).is(':checked'), $('#a' + {{$item->id}}).val())" style="font-size: 1rem!important" class="form-control text-center" value="{{$item->quantity}}">
                                 </td>
 
                                 <td class="text-center">

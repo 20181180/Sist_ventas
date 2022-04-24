@@ -21,7 +21,7 @@ use Barryvdh\DomPDF\Facade as PDF;
 
 class PosController extends Component
 {
-    public $cangeo, $colorStock, $puntos1, $tipopago, $category, $datosxd, $datauwuxd, $cheked, $searchD, $search, $estadoCheck, $producId, $tipoVenta, $client_id, $total, $itemsQuantity, $efectivo, $change, $valiente, $meri, $puntos, $tipo_precio, $Modaltipo_precio;
+    public $cantis,$cangeo, $colorStock, $puntos1, $tipopago, $category, $datosxd, $datauwuxd, $cheked, $searchD, $search, $estadoCheck, $producId, $tipoVenta, $client_id, $total, $itemsQuantity, $efectivo, $change, $valiente, $meri, $puntos, $tipo_precio, $Modaltipo_precio;
 
     public function mount()
     {
@@ -157,30 +157,38 @@ class PosController extends Component
         $this->change = ($this->total - $this->efectivo);
     }
     //este evento es pra escanear el codigo de barras
-    public function ScanCode($barcode, $cant = 1)
+    public function ScanCode($barcode, $cant)
     {
 
+
         $product = Product::where('barcode', $barcode)->orWhere('name', $barcode)->first();
+
 
         if ($product == null) {
             $this->emit('scan-notfound', 'El producto no esta registrado');
         } else {
-            if($this->Modaltipo_precio==1)
-            {
-                $this->estadoCheck="true";
-            }else if($this->Modaltipo_precio==2){
-                $this->estadoCheck="true";
-            }else if($this->Modaltipo_precio==0){
-                $this->estadoCheck="false";
-            }
-            if ($this->InCart($product->id)) {
 
-                $this->increaseQty($product->id, $this->estadoCheck);
+            if ($this->InCart($product->id)) {
+                if($this->Modaltipo_precio==1)
+                {
+                    $this->estadoCheck="true";
+                }else if($this->Modaltipo_precio==2){
+                    $this->estadoCheck="true";
+                }else if($this->Modaltipo_precio==0){
+                    $this->estadoCheck="false";
+                }
+                $this->increaseQty($product->id, $this->estadoCheck,$cant);
                 return;
             }
             if ($product->stock < 1) {
 
                 $this->emit('no-stock', 'Stock insuficiente :/');
+                return;
+            }
+
+            if ($product->stock < $cant) {
+
+                $this->emit('no-stock', 'Stock insuficiente');
                 return;
             }
             if($this->Modaltipo_precio==1)
@@ -254,6 +262,7 @@ class PosController extends Component
 
     public function incre_meri($productId, $cant = 1)
     {
+
         $title = '';
         $product = Product::find($productId);
         $exist = Cart::get($productId);
@@ -356,6 +365,7 @@ class PosController extends Component
     public function clearCart()
     {
         Cart::clear();
+        $this->puntos1='';
         $this->efectivo = 0;
         $this->change = 0;
         $this->total = Cart::getTotal();
@@ -697,7 +707,10 @@ class PosController extends Component
             $this->emit('sale-error', 'Para poder obtener puntos, Favor de comprar.');
             return;
         }
-
+        if($this->puntos < $this->puntos1){
+            $this->puntos=$this->puntos;
+            return;
+        }
 
         if ($dataD != null) {
             $this->puntos = 0.1 * $dataD->meripuntos;
@@ -716,7 +729,7 @@ class PosController extends Component
         $this->datosxd = Product::Where('price', '<=', $this->puntos)->get();
     }
 
-    public function Meri($barcode, $cant = 1)
+    public function Meri($barcode, $cant=1)
     {
 
         $product = Product::where('barcode', $barcode)->first();
@@ -731,6 +744,7 @@ class PosController extends Component
                 return;
             }
             if ($this->InCart($product->id)) {
+
 
                 $this->incre_meri($product->id);
                 return;
@@ -797,6 +811,7 @@ class PosController extends Component
             $this->efectivo = 0;
             $this->change = 0;
             $this->puntos = 0;
+            $this->puntos1 = '';
             $this->client_id = 5;
             $this->cangeo = 0;
             $this->tipopago = 0;
@@ -826,13 +841,14 @@ class PosController extends Component
         $this->emit('scan-ok', 'Cantidad actualizada');
     }
 
-    public function updateMery($productId, $state, $cant = 1)
+    public function updateMery($productId, $cant)
     {
         $title = '';
         //$meriP = Meripuntos::find($id);
         $meriP = Meripuntos::where('client_id', '=', $this->client_id)->first();
         $product = Product::find($productId);
         $exist = Cart::get($productId);
+
         $merivalor = ($product->price * 10) * $cant;
         if ($merivalor <= $meriP->meripuntos) {
             if ($exist)
@@ -852,15 +868,13 @@ class PosController extends Component
             }
         }
 
-        $this->remover($productId);
+
 
         if ($cant > 0) {
-            if ($state == 'true') {
-                Cart::add($product->id, $product->name, $product->price_mayoreo, $cant, $product->image);
-            } else {
+
 
                 Cart::add($product->id, $product->name, $product->price, $cant, $product->image);
-            }
+
             $this->total = Cart::getTotal();
             $this->p =  $this->puntos1 - $this->total;
             $this->puntos = $this->p;
@@ -888,5 +902,6 @@ class PosController extends Component
         $this->barcode = '';
         $this->search = '';
         $this->searchD = '';
+        $this->puntos1= '';
     }
 }

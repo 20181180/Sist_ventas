@@ -3,7 +3,7 @@
         <div class="modal-content">
             <div class="modal-header bg-dark">
                 <h5 class="modal-title text-white text-center">
-                    <b class="text-center"> FORMULARIO DE BUSQUEDA</b>
+                    <b class="text-center">FORMULARIO DE BUSQUEDA</b>
                 </h5>
                 <h6 class="text-center text-warnig" wire:loading>POR FAVOR ESPERE...</h6>
             </div>
@@ -46,17 +46,18 @@
                                     </td>
                                     <td>
                                         @if($Modaltipo_precio==1)
-                                            <h6 class="text-center">{{$product->price_mayoreo}}</h6>
+                                            <h6 class="text-center">${{$product->price_mayoreo}}</h6>
                                         @elseif($Modaltipo_precio==2)
-                                        <h6 class="text-center">{{$product->cost}}</h6>
+                                        <h6 class="text-center">${{$product->cost}}</h6>
                                         @elseif($Modaltipo_precio==0)
-                                        <h6 class="text-center">{{$product->price}}</h6>
+                                        <h6 class="text-center">${{$product->price}}</h6>
                                         @endif
 
                                     </td>
                                     <td class="text-center">
-                                        <input type="number" id="r{{$product->id}}" wire:change="ScanCode({{$product->barcode}},$('#r' + {{$product->id}}).val())" style="width:28%;height: 35px;" class="rounded" >
-                                        <a href="javascript:void(0);" type="text" wire:click.prevent="ScanCode({{$product->barcode}})" class="btn btn-dark mtmobile" title="Edit">
+                                        <input type="number" id="r{{$product->id}}" wire:keydown.enter.prevent="ScanCode('{{$product->barcode}}',$('#r' + '{{$product->id}}').val())" style="width:28%;height: 35px;" class="rounded" >
+
+                                        <a href="javascript:void(0);" type="text"  wire:click.prevent="ScanCode('{{$product->barcode}}','1')" class="btn btn-dark mtmobile" title="Edit">
                                             <i class="fa fa-cart-plus"></i>
                                         </a>
                                     </td>
@@ -80,7 +81,9 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-
+            livewire.on('scan-ok', action => {
+            $('#r').val('1');
+            });
             /* window.livewire.on('category-added', msg => {
                  $('#theModal').modal('hide');
              });

@@ -30,7 +30,7 @@
                     </div>
                     <div class="col-sm">
                         <h5 class="text mt-3"> MERIPUNTOS:$ {{$puntos*10}}</h5>
-
+                            {{$cantis}}
                     </div>
                 </div>
             </div>
@@ -85,11 +85,11 @@
                                     </td>
 
                                     <td class="text-center">
-                                        <input type="number" id="r{{$product->id}}" wire:change="updateMery({{$product->id}},$('#p' + {{$product->id}}).is(':checked'), $('#r' + {{$product->id}}).val())" style="width:28%;height: 35px;" class="rounded" value="{{$product->quantity}}">
-                                        <a href="javascript:void(0);" type="text" wire:click.prevent="decreaseMeri({{$product->id}})" class="btn btn-dark mtmobile" title="Edit">
+                                        <input type="number" id="x{{$product->id}}" wire:keydown.enter.prevent="updateMery('{{$product->id}}',$('#x' + {{$product->id}}).val())" style="width:28%;height: 35px;" class="rounded" value="{{$product->quantity}}">
+                                        <a href="javascript:void(0);" type="text" wire:click.prevent="decreaseMeri('{{$product->id}}')" class="btn btn-dark mtmobile" title="Edit">
                                             <i class="fas fa-minus"></i>
                                         </a>
-                                        <a href="javascript:void(0);" type="text" wire:click.prevent="$emit('Canjear',{{$product->barcode}})" class="btn btn-dark mtmobile" title="Edit">
+                                        <a href="javascript:void(0);" type="text" wire:click.prevent="Meri('{{$product->barcode}}','1')" class="btn btn-dark mtmobile" title="Edit">
                                             <i class="fa fa-cart-plus"></i>
                                         </a>
                                     </td>
@@ -102,7 +102,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" wire:click.prevent="resetUI()" class="btn btn-dark close-btn text-info" data-dismiss="modal">
+                    <button type="button" class="btn btn-dark close-btn text-info" data-dismiss="modal">
                         CERRAR
                     </button>
 
