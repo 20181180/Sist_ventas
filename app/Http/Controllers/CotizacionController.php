@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Barryvdh\DomPDF\Facade as PDF;
-use App\Models\User;
-use App\Models\Cotizaciones;
-use Darryldecode\Cart\Facades\CartFacade as Cart;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
 use Carbon\Carbon;
+use App\Models\User;
+use App\Models\Informacion;
+use Illuminate\Support\Str;
+use App\Models\Cotizaciones;
+use Illuminate\Http\Request;
 use Hamcrest\Core\HasToString;
+use Barryvdh\DomPDF\Facade as PDF;
+use Illuminate\Support\Facades\Auth;
+use Darryldecode\Cart\Facades\CartFacade as Cart;
 
 class CotizacionController extends Controller
 
@@ -28,6 +29,7 @@ class CotizacionController extends Controller
         $fechaV->toFormattedDateString();
         $clav  = Carbon::now()->format('d-M-Y');
         $fined_id = Cotizaciones::latest('id')->first();
+        $infoE = Informacion::where('id', 1)->first();
 
         if (empty($fined_id)) {
             $clav_id =  "01" . '/' . "$clav";
@@ -56,7 +58,7 @@ class CotizacionController extends Controller
             ]);
         }
 
-        $pdf = PDF::loadView('pdf.cotizacion', compact('data', 'total', 'items', 'user', 'clav_id', 'fechaV', 'points'));
+        $pdf = PDF::loadView('pdf.cotizacion', compact('data', 'total', 'items', 'user', 'clav_id', 'fechaV', 'points', 'infoE'));
         return $pdf->stream('salesReport.pdf');
         return $pdf->download('salesReport.pdf');
     }

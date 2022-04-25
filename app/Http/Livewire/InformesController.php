@@ -6,12 +6,14 @@ use Carbon\Carbon;
 use App\Models\Cliente;
 use App\Models\Product;
 use Livewire\Component;
+use App\Models\Informacion;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Facades\Auth;
 
 class InformesController extends Component
 {
     public $deu, $m, $prod_bj, $prod_exi, $catg_p, $estado;
+
     public function mount()
     {
         $this->deu = [];
@@ -70,10 +72,11 @@ class InformesController extends Component
         $data = Product::join('categories as c', 'c.id', 'products.category_id')
             ->select('products.*', 'c.name as category')
             ->where('stock', '<', 1)->get();
+        $infoE = Informacion::where('id', 1)->first();
 
-        $user = 'juan'; //cambiar a auth()
+        $user = Auth::user()->name; //cambiar a auth()
         $fecha = Carbon::now();
-        $pdf = PDF::loadView('pdf.produc_baj', compact('data'));
+        $pdf = PDF::loadView('pdf.produc_baj', compact('data', 'infoE', 'user'));
         return $pdf->stream('salesReport.pdf');
         return $pdf->download('salesReport.pdf');
     }
@@ -86,7 +89,10 @@ class InformesController extends Component
 
         $user = Auth::user()->name; //cambiar a auth()
         $fecha = Carbon::now();
-        $pdf = PDF::loadView('pdf.catalogo', compact('data', 'user'));
+
+        $infoE = Informacion::where('id', 1)->first();
+
+        $pdf = PDF::loadView('pdf.catalogo', compact('data', 'user', 'infoE'));
         return $pdf->stream('salesReport.pdf');
         return $pdf->download('salesReport.pdf');
     }

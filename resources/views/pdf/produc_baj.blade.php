@@ -13,23 +13,35 @@
 <body>
 
     <section class="header" style="top: -287px;">
-        <table cellpadding="2" cellspacing="0" width="100%">
+        <table cellpadding="0" cellspacing="0" width="100%">
             <tr>
-                <td colspan="2" class="text-center text-company">
-                    <span style="font-size: 20px; font-wight: bold;"> <strong> MERIJOMECHATRONICS S.A de CV.</strong></span>
+                <td colspan="6" class="text-center text-company">
+                    <span style="font-size: 20px; font-wight: bold;"> <strong> {{$infoE->empresa}} S.A de CV.</strong></span>
                 </td>
             </tr>
             <tr>
                 <td width="30%" style="vertical-align: top; padding-top: 10px; position: relative">
-                    <img src="{{ asset('assets/img/icon.png')}}" alt="" class="invoice-logo">
+                    <img src="{{asset('storage/datos/' . $infoE->image)}}" alt="" class="invoice-logo">
                 </td>
-                <td class="text-left text-company" width="70%" style="vertical-align: top; padding-top: 10px">
-                    <span style="font-size: 16px"> <strong>Productos Bajos</strong> </span>
+                <td colspan="4" class="text-left text-company" width="70%" style="vertical-align: top; padding-top: 10px">
+                    <span style="font-size: 16px"> <strong>PRODUCTOS BAJOS</strong> </span>
                     <br>
                     <span style="font-size: 16px"> <strong>Fecha de consulta: {{ \Carbon\Carbon::now()->format('d-M-Y')}}</strong> </span>
                     <br>
-                    <span style="font-size: 16px"> <strong>Lo atiende:juan</strong> </span>
+                    <span style="font-size: 16px"> <strong>Lo atiende:{{$user}}</strong> </span>
                     <br>
+                </td>
+                <td width="30%" style="vertical-align: top; padding-top: 15px; position: relative">
+
+                    <span style="font-size: 13px;font-wight:bold" aling="left"> Telefono :{{$infoE->tel}} </span>
+
+                    <br>
+                    <br>
+                    <span style="font-size: 13px;font-wight:bold;text-transform: uppercase;" aling="left"> Direccion :{{$infoE->ubicacion}} </span>
+                    <br>
+                    <br>
+                    <u style="color: red;"> <span style="font-size: 13px;font-wight:bold"> E-Mail:{{$infoE->correo}} </span></u>
+
                 </td>
 
             </tr>
@@ -58,7 +70,7 @@
                     <td align="center">$ {{$item->price}}</td>
 
 
-                    <td align="center">{{$item->stock}}</td>
+                    <td align="center">Sin Stock</td>
                     <td align="center"><img src="{{ asset('storage/products/' . $item->image) }}" alt="imagen de productos" height="50" width="50" class="rounded"></td>
 
                 </tr>

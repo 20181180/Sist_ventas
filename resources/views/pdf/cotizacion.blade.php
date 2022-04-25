@@ -16,12 +16,12 @@
         <table cellpadding="2" cellspacing="0" width="100%">
             <tr>
                 <td colspan="4" class="text-center">
-                    <span style="font-size: 25px; font-wight: bold;">Sistema de ventas MerijoMechatronics</span>
+                    <span style="font-size: 25px; font-wight: bold;">{{$infoE->empresa}} S.A de CV.</span>
                 </td>
             </tr>
             <tr>
                 <td width="30%" style="vertical-align: top; padding-top: 10px; position: relative">
-                    <img src="{{ asset('assets/img/icon.png')}}" alt="" class="invoice-logo">
+                    <img src="{{asset('storage/datos/' . $infoE->image)}}" alt="" class="invoice-logo">
                 </td>
                 <td colspan="2" class="text-left text-company" width="70%" style="vertical-align: top; padding-top: 10px">
                     <span style="font-size: 16px"> <strong>Cotizacion de productos.</strong> </span>

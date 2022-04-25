@@ -9,9 +9,11 @@
                 <a class="btn btn-dark" wire:click="client_deud()">Deudores</a>
                 <a class="btn btn-dark" wire:click="meri()">Meripuntos</a>
 
-                <a class="btn btn-dark" wire:click="pro_bajos()">Productos Bajos</a>
+                <a class="btn btn-dark" wire:click="pro_bajos()">Productos Sin Stock</a>
 
                 <a class="btn btn-dark" wire:click="pro_exis()">Productos Existentes</a>
+
+                <a class="btn btn-dark" href="{{url('informes')}}">Catalogo Productos</a>
 
             </div>
             <br>
@@ -117,7 +119,7 @@
                         @elseif($estado == 1)
                         <thead class="text-white" style="background: #3B3F5C">
                             <tr>
-                                <a class="btn btn-dark btn-block {{count($deu) <1 ? 'disabled' : '' }}" href="{{ url('report/excel')}}" target="_black">GENERAR EXCEL DEUDORES</a>
+                                <!-- <a class="btn btn-dark btn-block {{count($deu) <1 ? 'disabled' : '' }}" href="{{ url('report/excel')}}" target="_black">GENERAR EXCEL DEUDORES</a> -->
 
                                 <th class="table-th text-white">CLIENTE</th>
                                 <th class="table-th text-center text-white">DIRECCION</th>
@@ -152,7 +154,7 @@
                         @elseif($estado==2)
                         <thead class="text-white" style="background: #3B3F5C">
                             <tr>
-                                <a class="btn btn-dark btn-block {{count($deu) <1 ? 'disabled' : '' }}" href="#" target="_black">GENERAR PDF DE MERIPUNTOS</a>
+                                <!-- <a class="btn btn-dark btn-block {{count($deu) <1 ? 'disabled' : '' }}" href="#" target="_black">GENERAR PDF DE MERIPUNTOS</a> -->
 
                                 <th class="table-th text-white">CLIENTE</th>
                                 <th class="table-th text-center text-white">DIRECCION</th>
@@ -183,7 +185,7 @@
                         @elseif($estado==4)
                         <thead class="text-white" style="background: #226F">
                             <tr>
-                                <a class="btn btn-dark btn-block {{count($prod_exi) <1 ? 'disabled' : '' }}" href="#" target="_black">GENERAR PDF DE PRODUCTOS EXISTENTES</a>
+                                <!-- <a class="btn btn-dark btn-block {{count($prod_exi) <1 ? 'disabled' : '' }}" href="#" target="_black">GENERAR PDF DE PRODUCTOS EXISTENTES</a> -->
                                 <br>
                                 <th class="table-th text-white">NOMBRE</th>
                                 <th class="table-th text-white text-center">CODIGO BARRA</th>
