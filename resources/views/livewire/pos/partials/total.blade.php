@@ -19,7 +19,7 @@
                                     <h5 class="text-muted mt-3">ARTICULOS: {{$itemsQuantity}}</h5>
                                 </div>
                                 <div>
-                                    <h5 class="text-muted mt-3"> MERIPUNTOS:{{$puntos}}</h5>
+                                    <h5 class="text-muted mt-3"> MERIPUNTOS: {{number_format($puntos,2)}}</h5>
                                 </div>
 
 

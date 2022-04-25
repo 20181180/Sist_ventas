@@ -21,11 +21,11 @@ use Barryvdh\DomPDF\Facade as PDF;
 
 class PosController extends Component
 {
-    public $cantis,$cangeo, $colorStock, $puntos1, $tipopago, $category, $datosxd, $datauwuxd, $cheked, $searchD, $search, $estadoCheck, $producId, $tipoVenta, $client_id, $total, $itemsQuantity, $efectivo, $change, $valiente, $meri, $puntos, $tipo_precio, $Modaltipo_precio;
+    public $cantis, $cangeo, $colorStock, $puntos1, $tipopago, $category, $datosxd, $datauwuxd, $cheked, $searchD, $search, $estadoCheck, $producId, $tipoVenta, $client_id, $total, $itemsQuantity, $efectivo, $change, $valiente, $meri, $puntos, $tipo_precio, $Modaltipo_precio;
 
     public function mount()
     {
-        $this-> tipo_precio=1;
+        $this->tipo_precio = 1;
         $this->cangeo = 0;
         $this->colorStock = '';
         $this->tipoVenta = 'Elegir';
@@ -33,7 +33,7 @@ class PosController extends Component
         $this->datosxd = [];
         $this->tipopago = 0;
         $this->datauwuxd = [];
-        $this->client_id = 6;
+        $this->client_id = 5;
         $this->estadoCheck = 'false';
         $this->cheked = '0';
         $this->efectivo = 0;
@@ -90,8 +90,8 @@ class PosController extends Component
             ->extends('layouts.theme.app')
             ->section('content');
     }
-    public function pruebas(){
-
+    public function pruebas()
+    {
     }
 
     //el metodo a cash es para calcular el cambio
@@ -169,15 +169,14 @@ class PosController extends Component
         } else {
 
             if ($this->InCart($product->id)) {
-                if($this->Modaltipo_precio==1)
-                {
-                    $this->estadoCheck="true";
-                }else if($this->Modaltipo_precio==2){
-                    $this->estadoCheck="true";
-                }else if($this->Modaltipo_precio==0){
-                    $this->estadoCheck="false";
+                if ($this->Modaltipo_precio == 1) {
+                    $this->estadoCheck = "true";
+                } else if ($this->Modaltipo_precio == 2) {
+                    $this->estadoCheck = "true";
+                } else if ($this->Modaltipo_precio == 0) {
+                    $this->estadoCheck = "false";
                 }
-                $this->increaseQty($product->id, $this->estadoCheck,$cant);
+                $this->increaseQty($product->id, $this->estadoCheck, $cant);
                 return;
             }
             if ($product->stock < 1) {
@@ -191,12 +190,11 @@ class PosController extends Component
                 $this->emit('no-stock', 'Stock insuficiente');
                 return;
             }
-            if($this->Modaltipo_precio==1)
-            {
+            if ($this->Modaltipo_precio == 1) {
                 Cart::add($product->id, $product->name, $product->price_mayoreo, $cant, $product->image);
-            }else if($this->Modaltipo_precio==2){
+            } else if ($this->Modaltipo_precio == 2) {
                 Cart::add($product->id, $product->name, $product->cost, $cant, $product->image);
-            }else if($this->Modaltipo_precio==0){
+            } else if ($this->Modaltipo_precio == 0) {
                 Cart::add($product->id, $product->name, $product->price, $cant, $product->image);
             }
 
@@ -241,17 +239,13 @@ class PosController extends Component
         //     Cart::add($product->id, $product->name, $product->price, $cant, $product->image);
         // }
         if ($state == 'true') {
-            if($this->tipo_precio=='1'){
+            if ($this->tipo_precio == '1') {
                 Cart::add($product->id, $product->name, $product->price_mayoreo, $cant, $product->image);
-
-            }else {
+            } else {
                 Cart::add($product->id, $product->name, $product->cost, $cant, $product->image);
-
             }
-
         } else {
             Cart::add($product->id, $product->name, $product->price, $cant, $product->image);
-
         }
         $this->total = Cart::getTotal();
         $this->puntos = (Cart::getTotal()) / 100 * 10;
@@ -315,14 +309,13 @@ class PosController extends Component
 
         if ($cant > 0) {
             if ($state == 'true') {
-                if($this->tipo_precio=='1'){
+                if ($this->tipo_precio == '1') {
                     Cart::add($product->id, $product->name, $product->price_mayoreo, $cant, $product->image);
                     $title = 'Mayoreo producto:';
-                }else {
+                } else {
                     Cart::add($product->id, $product->name, $product->cost, $cant, $product->image);
                     $title = 'costo producto:';
                 }
-
             } else {
                 Cart::add($product->id, $product->name, $product->price, $cant, $product->image);
                 $title = 'Menudeo producto:';
@@ -365,7 +358,7 @@ class PosController extends Component
     public function clearCart()
     {
         Cart::clear();
-        $this->puntos1='';
+        $this->puntos1 = '';
         $this->efectivo = 0;
         $this->change = 0;
         $this->total = Cart::getTotal();
@@ -601,7 +594,7 @@ class PosController extends Component
 
         Cart::clear(); //limpiamos e inicializamos las varibles..
     }
-/// lo comente por si habia pedos jejeje
+    /// lo comente por si habia pedos jejeje
     // public function SyncPermiso($state, $id)
     // {
     //     $product = Product::find($id);
@@ -633,14 +626,13 @@ class PosController extends Component
         Cart::remove($id);
 
         if ($state == 'true') {
-            if($this->tipo_precio=='1'){
+            if ($this->tipo_precio == '1') {
                 Cart::add($product->id, $product->name, $product->price_mayoreo, $item->quantity, $product->image);
                 $title = 'Mayoreo producto:';
-            }else {
+            } else {
                 Cart::add($product->id, $product->name, $product->cost, $item->quantity, $product->image);
                 $title = 'costo producto:';
             }
-
         } else {
             Cart::add($product->id, $product->name, $product->price, $item->quantity, $product->image);
             $title = 'Menudeo producto:';
@@ -707,8 +699,8 @@ class PosController extends Component
             $this->emit('sale-error', 'Para poder obtener puntos, Favor de comprar.');
             return;
         }
-        if($this->puntos < $this->puntos1){
-            $this->puntos=$this->puntos;
+        if ($this->puntos < $this->puntos1) {
+            $this->puntos = $this->puntos;
             return;
         }
 
@@ -729,7 +721,7 @@ class PosController extends Component
         $this->datosxd = Product::Where('price', '<=', $this->puntos)->get();
     }
 
-    public function Meri($barcode, $cant=1)
+    public function Meri($barcode, $cant = 1)
     {
 
         $product = Product::where('barcode', $barcode)->first();
@@ -873,7 +865,7 @@ class PosController extends Component
         if ($cant > 0) {
 
 
-                Cart::add($product->id, $product->name, $product->price, $cant, $product->image);
+            Cart::add($product->id, $product->name, $product->price, $cant, $product->image);
 
             $this->total = Cart::getTotal();
             $this->p =  $this->puntos1 - $this->total;
@@ -902,6 +894,6 @@ class PosController extends Component
         $this->barcode = '';
         $this->search = '';
         $this->searchD = '';
-        $this->puntos1= '';
+        $this->puntos1 = '';
     }
 }
