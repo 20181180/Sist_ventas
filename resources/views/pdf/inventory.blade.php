@@ -16,19 +16,19 @@
         <table cellpadding="2" cellspacing="0" width="100%">
             <tr>
                 <td colspan="2" class="text-center text-company">
-                    <span style="font-size: 20px; font-wight: bold;"> <strong> MERIJOMECHATRONICS S.A de CV.</strong></span>
+                    <span style="font-size: 20px; font-wight: bold;"> <strong>Sistema de ventas {{$infoE->empresa}}</strong></span>
                 </td>
             </tr>
             <tr>
                 <td width="30%" style="vertical-align: top; padding-top: 10px; position: relative">
-                    <img src="{{ asset('assets/img/icon.png')}}" alt="" class="invoice-logo">
+                    <img src="{{ asset('storage/datos/' . $infoE->image)}}" alt="" class="invoice-logo">
                 </td>
                 <td class="text-left text-company" width="70%" style="vertical-align: top; padding-top: 10px">
                     <span style="font-size: 16px"> <strong>Reporte inventario</strong> </span>
                     <br>
                     <span style="font-size: 16px"> <strong>Fecha de consulta: {{ \Carbon\Carbon::now()->format('d-M-Y')}}</strong> </span>
                     <br>
-                    <span style="font-size: 16px"> <strong>Lo atiende:juan</strong> </span>
+                    <span style="font-size: 16px"> <strong>Lo atiende:{{$user}}</strong> </span>
                     <br>
                 </td>
 
@@ -99,10 +99,10 @@
         <table cellpadding="0" cellspacing="0" witdh="100%" class="table-items">
             <tr>
                 <td width="20%">
-                    <span>Sistema de ventas MerijoMechatronics</span>
+                    <span>Sistema {{$infoE->empresa}}</span>
                 </td>
                 <td width="60%" class="text-center">
-                    MerijoMechatronics
+                    {{$infoE->empresa}}
                 </td>
                 <td width="20%" class="text-center">
                     pagina <span class="pagenum"></span>

@@ -8,9 +8,11 @@ use App\Models\Product;
 use App\Models\Vista_stockalerts;
 use Livewire\Component;
 use App\Models\Category;
+use App\Models\Informacion;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
 use Barryvdh\DomPDF\Facade as PDF;
+use Illuminate\Support\Facades\Auth;
 
 class ProductsController extends Component
 {
@@ -37,6 +39,7 @@ class ProductsController extends Component
     }
     public function render()
     {
+        $infoE = Informacion::where('id', 1)->first();
         $this->price_wholesale_retail();
         $this->datos_p();
         if (strlen($this->search) > 0)
@@ -63,7 +66,8 @@ class ProductsController extends Component
             'products' => $products,
             'productsA' => $productsAlert,
             'categories' => Category::orderBy('name', 'asc')->get(),
-            'prove' => Company::orderBy('name', 'asc')->get()
+            'prove' => Company::orderBy('name', 'asc')->get(),
+            'infoE' => $infoE,
         ])
             ->extends('layouts.theme.app')
             ->section('content');
@@ -320,10 +324,11 @@ class ProductsController extends Component
         $data = [];
         $data = Product::join('categories as c', 'c.id', 'products.category_id')
             ->select('products.*', 'c.name as category')->get();
+            $infoE = Informacion::where('id', 1)->first();
 
-        $user = 'juan'; //cambiar a auth()
+        $user = Auth::user()->name;
         $fecha = Carbon::now();
-        $pdf = PDF::loadView('pdf.inventory', compact('data'));
+        $pdf = PDF::loadView('pdf.inventory', compact('data','user','infoE'));
         return $pdf->stream('salesReport.pdf');
         return $pdf->download('salesReport.pdf');
 

@@ -1,6 +1,6 @@
 <div class="footer-wrapper">
     <div class="footer-section f-section-1">
-        <p class="">Sistema de ventas <a target="_blank" href="https://designreset.com"></a> - Merijomechatronics</p>
+        <p class="">Sistema de ventas <a target="_blank" href="https://designreset.com"></a></p>
     </div>
     <div class="footer-section f-section-2">
         <p class="">Version 1.0<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart">
