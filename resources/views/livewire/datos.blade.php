@@ -3,7 +3,7 @@
     <div class="col-sm-12 ">
         <div class="widget widget-chart-one">
             <div class="widget-heading">
-                <h4 class="card-title"><b> INFORMACION | PERFIL DE LA EMPRESA</b></h4>
+                <h4 class="card-title"><b> DATOS | PERFIL DE LA EMPRESA</b></h4>
                 <ul class="tabs tab-pills">
                     <!-- @can('Crear_categoria') -->
                     <!-- <li><a href="javascript:void(0);" class="bg-dark btn-block" data-toggle="modal" data-target="#modalxd">CARGAR DATOS DE LA EMPRESA</a></li> -->
@@ -18,7 +18,9 @@
                     <table class="table table-bordered table-striped  mt-1">
                         <thead class="text-white" style="background: #3B3F5C">
                             <tr>
-                                <a href="javascript:void(0);" class="btn btn-dark btn-block" data-toggle="modal" data-target="#modalxd"> CARGAR DATOS DE LA EMPRESA</a>
+                                <a href="javascript:void(0);" wire:click="Edit()" class="btn btn-dark btn-block" title="Edit">
+                                    ACTUALIZAR DATOS DE LA EMPRESA <i class="fas fa-edit"></i>
+                                </a>
 
                                 <th class="table-th text-white">NOM/EMPRESA</th>
                                 <th class="table-th text-white text-center">EMAIL</th>
@@ -53,7 +55,7 @@
                                 </td>
                                 <td class="text-center">
                                     <span>
-                                        <img src=" {{asset('storage/datos/' . $d->image )}}" onclick="ShowImg('{{ asset('storage/datos/' . $d->image) }}','{{$d->empresa}}')" height="70" width="80" class="rounded zom" alt="no-image">
+                                        <img src=" {{asset('storage/datos/' . $d->image )}}" onclick="ShowImagen('{{ asset('storage/datos/' . $d->image) }}','{{$d->empresa}}')" height="70" width="80" class="rounded zom" alt="no-image">
                                     </span>
                                 </td>
                             </tr>

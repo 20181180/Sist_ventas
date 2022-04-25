@@ -10,7 +10,7 @@ class Datos extends Component
 {
     use WithFileUploads;
 
-    public  $direc, $tel, $empresa, $image, $cp, $face, $correo;
+    public  $direc, $tel, $empresa, $image, $cp, $face, $correo, $selecid;
 
     public function render()
     {
@@ -97,6 +97,82 @@ class Datos extends Component
         $this->emit('inf-added', 'Informacion Registrado');
     }
 
+
+    public function Edit()
+    {
+        $this->selecid = 1;
+        $id = 1;
+        $record = Informacion::find($id, ['empresa', 'correo', 'face', 'tel', 'ubicacion', 'codigopostal', 'image']);
+
+        $this->direc = $record->ubicacion;
+        $this->tel = $record->tel;
+
+        $this->empresa = $record->empresa;
+        $this->face = $record->face;
+        $this->correo = $record->correo;
+        $this->cp = $record->codigopostal;
+        $this->image = null;
+
+        //nos permite mostrar el modal con el elemento.
+        $this->emit('show-modal', 'Informacion de la empresa..');
+    }
+
+    public function Update()
+    {
+        $rules = [
+            'empresa' => 'required|min:3',
+            'direc' => 'required',
+            'tel' => 'required',
+            'cp' => 'required',
+            'correo' => 'required',
+            //'image' => 'required',
+        ];
+
+        $messages = [
+            'empresa.required' => 'Lo sentimos el nombre es obligatorio *',
+            'empresa.min' => 'Ingrese minimo 3 caracteres para el nombre *',
+            'direc.required' => 'Costo Obligatorio *',
+            'tel.required' => 'Telefono requerido *',
+            'cp.required' => 'Ingrese un CP',
+            'correo.required' => 'Correo obligatorio*',
+            // 'image.required' => 'Obligatorio *',
+
+        ];
+
+        $this->validate($rules, $messages);
+        // //metdo de crear el producto
+        $id = 1;
+        $da = Informacion::find($id);
+        $da->update([
+            // 'name' => $this->name,
+
+            'empresa' => $this->empresa,
+            'ubicacion' => $this->direc,
+            'tel' => $this->tel,
+            'codigopostal' => $this->cp,
+            'correo' => $this->correo,
+            'face' => $this->face,
+        ]);
+
+        if ($this->image) {
+            $customFileName = uniqid() . '_.' . $this->image->extension();
+            $this->image->storeAs('public/datos', $customFileName);
+            $imageName = $da->image;
+
+            $da->image = $customFileName;
+            $da->save();
+            if ($imageName != null) {
+                if (file_exists('storage/datos/' . $imageName)) {
+                    unlink('storage/datos/' . $imageName);
+                }
+            }
+        }
+
+        $this->resetUI();
+        $this->emit('category-updated', 'Datos Actualizada');
+    }
+
+
     public function resetUI()
     {
         # code...
@@ -106,7 +182,7 @@ class Datos extends Component
         $this->empresa = '';
         $this->face = '';
         $this->correo = '';
-
+        $this->selecid = 0;
         $this->cp = '';
     }
 }

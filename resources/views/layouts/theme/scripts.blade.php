@@ -31,16 +31,27 @@
 </script>
 <script src="{{ asset('plugins/flatpickr/flatpickr.js') }}"></script>
 <script>
-    function ShowImg(imagen,nombre){
-    Swal.fire({
-  title: nombre,
-  text: 'Producto detalle',
-  imageUrl: imagen,
-  imageWidth: 600,
-  imageHeight: 400,
-  imageAlt: 'Custom image',
-})
-}
+    function ShowImg(imagen, nombre) {
+        Swal.fire({
+            title: nombre,
+            text: 'Producto detalle',
+            imageUrl: imagen,
+            imageWidth: 600,
+            imageHeight: 400,
+            imageAlt: 'Custom image',
+        })
+    }
+
+    function ShowImagen(imagen, nombre) {
+        Swal.fire({
+            title: nombre,
+            text: 'Logotipo de la empresa',
+            imageUrl: imagen,
+            imageWidth: 600,
+            imageHeight: 400,
+            imageAlt: 'Custom image',
+        })
+    }
 </script>
 
 @livewireScripts
