@@ -2,19 +2,6 @@
     <div class="col-sm-12">
         <div class="connect-sorting">
 
-            <h5 class="text-center mb-2">DENOMINACIONES</h5>
-            <div class="container">
-                <div class="row">
-                    @foreach ($denominations as $d)
-                    <div class="col-sm mt-2">
-                        <button wire:click.prevent="ACash({{$d->value}})" class="btn btn-dark btn-block den">
-                            {{ $d->value >0 ? '$' . number_format($d->value,2, '.', '') : 'Exacto'}}
-                        </button>
-                    </div>
-                    @endforeach
-                </div>
-            </div>
-
             <div class="mt-3">
                 <h6 class="mb-2">CLIENTES <span class="text-danger er"> <a href="{{url('Client')}}">Registrar Nuevo</a></span></h6>
                 <div class="form-group">
@@ -33,7 +20,6 @@
                 <div class="form-group">
 
                     <select wire:model='tipopago' name="" class="form-control" required>
-
                         <option value="0">Pago en efectivo</option>
                         <option value="1">A Credito</option>
                         <option value="2">Tarjeta de credito</option>
@@ -42,6 +28,57 @@
                     @error('client_id')<span class="text-danger er">{{$message}}</span>@enderror
                 </div>
             </div>
+            <div class="mt-3">
+                <h6 class="mb-2">Tipo compra </h6>
+                <div class="form-group">
+
+                    <select wire:model='tipoenvio' name="" class="form-control" required>
+                        <option value="0">Tienda</option>
+                        <option value="1">Envio</option>
+                    </select>
+                    @error('tipoenvio')<span class="text-danger er">{{$message}}</span>@enderror
+                </div>
+            </div>
+            <div class="mt-3">
+                @if($tipoenvio==1)
+                    <div class="form-group">
+                        <div class="col-sm-12 col-md-12">
+                            <div class="form-group">
+                                <label>Costo envio *</label>
+                                <input type="number" wire:model.lazy="costo_envio" class="form-control" placeholder="ej: $0.00">
+                                @error('costo_envio')
+                                <span class="text-danger er">{{$message}}</span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 col-md-12">
+                            <div class="form-group">
+                                <label>Direccion *</label>
+                                <input type="text" wire:model.lazy="direccion" value="" class="form-control" placeholder="ej: Huej...">
+                                @error('direccion')
+                                <span class="text-danger er">{{$message}}</span>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                @endif
+            </div>
+
+            <h5 class="text-center mb-2">DENOMINACIONES</h5>
+            <div class="container">
+                <div class="row">
+                    @foreach ($denominations as $d)
+                    <div class="col-sm mt-2">
+                        <button wire:click.prevent="ACash({{$d->value}})" class="btn btn-dark btn-block den">
+                            {{ $d->value >0 ? '$' . number_format($d->value,2, '.', '') : 'Exacto'}}
+                        </button>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+
+
 
             <div class="connect-sorting-content mt-4">
                 <div class="card simple-title-task ui-sortable-handle">

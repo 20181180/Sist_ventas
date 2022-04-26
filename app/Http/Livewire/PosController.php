@@ -21,10 +21,11 @@ use Barryvdh\DomPDF\Facade as PDF;
 
 class PosController extends Component
 {
-    public $cantis, $cangeo, $colorStock, $puntos1, $tipopago, $category, $datosxd, $datauwuxd, $cheked, $searchD, $search, $estadoCheck, $producId, $tipoVenta, $client_id, $total, $itemsQuantity, $efectivo, $change, $valiente, $meri, $puntos, $tipo_precio, $Modaltipo_precio;
+    public $direccion,$costo_envio,$tipoenvio,$cantis, $cangeo, $colorStock, $puntos1, $tipopago, $category, $datosxd, $datauwuxd, $cheked, $searchD, $search, $estadoCheck, $producId, $tipoVenta, $client_id, $total, $itemsQuantity, $efectivo, $change, $valiente, $meri, $puntos, $tipo_precio, $Modaltipo_precio;
 
     public function mount()
     {
+        $this->tipoenvio = '0';
         $this->tipo_precio = 1;
         $this->cangeo = 0;
         $this->colorStock = '';
@@ -40,7 +41,7 @@ class PosController extends Component
         $this->change = 0;
         $this->puntos1 = 0;
         $this->meri = 0;
-        $this->total = Cart::getTotal();
+        $this->total = Cart::getTotal() + $this->costo_envio;
         $this->puntos = Cart::getTotal();
         $this->itemsQuantity = Cart::getTotalQuantity();
     }
@@ -97,13 +98,8 @@ class PosController extends Component
     //el metodo a cash es para calcular el cambio
     public function ACash($value)
     {
-        //dd($value);
-        /*$this->efectivo += ($value == 0 ? $this->total : $value);
-        $this->change = ($this->efectivo - $this->total) - 0.5;
-        $this->efectivo = $this->efectivo - 0.5;*/
-
         $this->efectivo += ($value == 0 ? $this->total : $value);
-        $this->change = ($this->efectivo - $this->total);
+        $this->change = ($this->efectivo - $this->total );
     }
 
     protected $listeners = [
@@ -147,6 +143,7 @@ class PosController extends Component
     }
     public function ACashAmano($value)
     {
+
         $this->efectivo = ($value == 0 ? $this->total : $value);
         $this->change = ($this->efectivo - $this->total);
     }
@@ -400,16 +397,32 @@ class PosController extends Component
                     $this->emit('sale-error', 'el efetivo de venta debe de ser mayor o igual al total resultado');
                     return;
                 }
-                $sale = Sale::create([
-                    'total' => $this->total,
-                    'items' => $this->itemsQuantity,
-                    'dinero' => $this->efectivo,
-                    'cambio' => $this->change,
-                    'tipo_pago' => $this->tipopago,
-                    'user_id' => Auth()->user()->id,
-                    'client_id' => $this->client_id,
+                if($this->tipoenvio== '0'){
+                    $sale = Sale::create([
+                        'total' => $this->total + $this->costo_envio,
+                        'items' => $this->itemsQuantity,
+                        'dinero' => $this->efectivo,
+                        'cambio' => $this->change,
+                        'tipo_pago' => $this->tipopago,
+                        'user_id' => Auth()->user()->id,
+                        'client_id' => $this->client_id,
 
-                ]);
+                    ]);
+                }else{
+                    $sale = Sale::create([
+                        'total' => $this->total + $this->costo_envio,
+                        'items' => $this->itemsQuantity,
+                        'dinero' => $this->efectivo,
+                        'cambio' => $this->change,
+                        'tipoVenta' => 'Envio',
+                        'direccion' => $this->direccion,
+                        'tipo_pago' => $this->tipopago,
+                        'user_id' => Auth()->user()->id,
+                        'client_id' => $this->client_id,
+
+                    ]);
+                }
+
 
                 if ($sale) {
                     $items = Cart::getContent();
@@ -551,12 +564,14 @@ class PosController extends Component
                 }
             }
             DB::commit();
+
             $total = $this->total;
             $items = $this->itemsQuantity;
             $idventa = Sale::select('id')->orderBy('id', 'desc')->first();
 
             $this->emit('print-ticket', $idventa->id, $items, $total);
             Cart::clear(); //limpiamos e inicializamos las varibles..
+            $this->tipoenvio= 0;
             $this->efectivo = 0;
             $this->change = 0;
             $this->puntos = 0;

@@ -46,7 +46,6 @@
                                     <th class="table-th text-white text-center">NOMBRE</th>
                                     <th class="table-th text-white">IMAGEN</th>
                                     <th class="table-th text-white">CODIGO</th>
-                                    <th class="table-th text-white">PRECIO</th>
                                     <th class="table-th text-white">PUNTOS</th>
                                     <th class="table-th text-white text-center">ACCION</th>
                                 </tr>
@@ -80,15 +79,11 @@
                                     <td>
                                         <h6 class="text">{{$product->price}}</h6>
                                     </td>
-                                    <td>
-                                        <h6 class="text">{{$product->price*10}}</h6>
-                                    </td>
+
 
                                     <td class="text-center">
                                         <input type="number" id="x{{$product->id}}" wire:keydown.enter.prevent="updateMery('{{$product->id}}',$('#x' + {{$product->id}}).val())" style="width:28%;height: 35px;" class="rounded" value="{{$product->quantity}}">
-                                        <a href="javascript:void(0);" type="text" wire:click.prevent="decreaseMeri('{{$product->id}}')" class="btn btn-dark mtmobile" title="Edit">
-                                            <i class="fas fa-minus"></i>
-                                        </a>
+
                                         <a href="javascript:void(0);" type="text" wire:click.prevent="Meri('{{$product->barcode}}','1')" class="btn btn-dark mtmobile" title="Edit">
                                             <i class="fa fa-cart-plus"></i>
                                         </a>
