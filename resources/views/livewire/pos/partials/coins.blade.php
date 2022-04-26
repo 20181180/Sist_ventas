@@ -41,27 +41,27 @@
             </div>
             <div class="mt-3">
                 @if($tipoenvio==1)
-                    <div class="form-group">
-                        <div class="col-sm-12 col-md-12">
-                            <div class="form-group">
-                                <label>Costo envio *</label>
-                                <input type="number" wire:model.lazy="costo_envio" class="form-control" placeholder="ej: $0.00">
-                                @error('costo_envio')
-                                <span class="text-danger er">{{$message}}</span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="col-sm-12 col-md-12">
-                            <div class="form-group">
-                                <label>Direccion *</label>
-                                <input type="text" wire:model.lazy="direccion" value="" class="form-control" placeholder="ej: Huej...">
-                                @error('direccion')
-                                <span class="text-danger er">{{$message}}</span>
-                                @enderror
-                            </div>
+                <div class="form-group">
+                    <div class="col-sm-12 col-md-12">
+                        <div class="form-group">
+                            <label>Costo envio *</label>
+                            <input type="number" wire:model.lazy="costo_envio" class="form-control" placeholder="ej: $0.00">
+                            @error('costo_envio')
+                            <span class="text-danger er">{{$message}}</span>
+                            @enderror
                         </div>
                     </div>
+
+                    <div class="col-sm-12 col-md-12">
+                        <div class="form-group">
+                            <label>Direccion *</label>
+                            <input type="text" wire:model.lazy="direccion" value="" class="form-control" placeholder="ej: Huej...">
+                            @error('direccion')
+                            <span class="text-danger er">{{$message}}</span>
+                            @enderror
+                        </div>
+                    </div>
+                </div>
                 @endif
             </div>
 

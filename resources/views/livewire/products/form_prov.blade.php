@@ -19,7 +19,7 @@
                                     </span>
                                 </span>
                             </div>
-                            <input type="text" wire:model.lazy="prov" class="form-control" placeholder="ej:Norma Hernandez" maxlength="25">
+                            <input type="text" wire:model.l="prov" class="form-control" placeholder="ej:Norma Hernandez" maxlength="25">
                         </div>
                         @error('name')
                         <span class="text-danger er">{{$message}}</span>

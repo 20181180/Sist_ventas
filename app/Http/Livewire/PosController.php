@@ -21,7 +21,7 @@ use Barryvdh\DomPDF\Facade as PDF;
 
 class PosController extends Component
 {
-    public $direccion,$costo_envio,$tipoenvio,$cantis, $cangeo, $colorStock, $puntos1, $tipopago, $category, $datosxd, $datauwuxd, $cheked, $searchD, $search, $estadoCheck, $producId, $tipoVenta, $client_id, $total, $itemsQuantity, $efectivo, $change, $valiente, $meri, $puntos, $tipo_precio, $Modaltipo_precio;
+    public $direccion, $costo_envio, $tipoenvio, $cantis, $cangeo, $colorStock, $puntos1, $tipopago, $category, $datosxd, $datauwuxd, $cheked, $searchD, $search, $estadoCheck, $producId, $tipoVenta, $client_id, $total, $itemsQuantity, $efectivo, $change, $valiente, $meri, $puntos, $tipo_precio, $Modaltipo_precio;
 
     public function mount()
     {
@@ -41,12 +41,17 @@ class PosController extends Component
         $this->change = 0;
         $this->puntos1 = 0;
         $this->meri = 0;
-        $this->total = Cart::getTotal() + $this->costo_envio;
+        $this->costo_envio = 0;
+        $this->total = Cart::getTotal();
         $this->puntos = Cart::getTotal();
         $this->itemsQuantity = Cart::getTotalQuantity();
     }
     public function render()
     {
+
+
+        $this->xdtotal();
+
         $cart = Cart::getContent()->sortBy('name');
         if (strlen($this->search) > 0)
             $data = Product::Where('name', 'like', '%' . $this->search . '%')->get();
@@ -99,7 +104,7 @@ class PosController extends Component
     public function ACash($value)
     {
         $this->efectivo += ($value == 0 ? $this->total : $value);
-        $this->change = ($this->efectivo - $this->total );
+        $this->change = ($this->efectivo - $this->total);
     }
 
     protected $listeners = [
@@ -145,6 +150,8 @@ class PosController extends Component
     {
 
         $this->efectivo = ($value == 0 ? $this->total : $value);
+        $this->total = Cart::getTotal() + $this->costo_envio;
+        //dd($this->total);
         $this->change = ($this->efectivo - $this->total);
     }
 
@@ -324,6 +331,14 @@ class PosController extends Component
         }
     }
 
+    public function xdtotal()
+    {
+        if ($this->tipoenvio == '1') {
+            $this->total = Cart::getTotal() + $this->costo_envio;
+        } else {
+            $this->total = Cart::getTotal();
+        }
+    }
     //elimnar el producto del carrito
     public function removeItem($productId)
     {
@@ -397,9 +412,9 @@ class PosController extends Component
                     $this->emit('sale-error', 'el efetivo de venta debe de ser mayor o igual al total resultado');
                     return;
                 }
-                if($this->tipoenvio== '0'){
+                if ($this->tipoenvio == '0') {
                     $sale = Sale::create([
-                        'total' => $this->total + $this->costo_envio,
+                        'total' => $this->total,
                         'items' => $this->itemsQuantity,
                         'dinero' => $this->efectivo,
                         'cambio' => $this->change,
@@ -408,9 +423,9 @@ class PosController extends Component
                         'client_id' => $this->client_id,
 
                     ]);
-                }else{
+                } else {
                     $sale = Sale::create([
-                        'total' => $this->total + $this->costo_envio,
+                        'total' => $this->total,
                         'items' => $this->itemsQuantity,
                         'dinero' => $this->efectivo,
                         'cambio' => $this->change,
@@ -571,7 +586,7 @@ class PosController extends Component
 
             $this->emit('print-ticket', $idventa->id, $items, $total);
             Cart::clear(); //limpiamos e inicializamos las varibles..
-            $this->tipoenvio= 0;
+            $this->tipoenvio = 0;
             $this->efectivo = 0;
             $this->change = 0;
             $this->puntos = 0;
