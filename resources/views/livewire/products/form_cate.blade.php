@@ -23,9 +23,9 @@
                                 </span>
 
                             </div>
-                            <input type="text" wire:model="name" class="form-control" placeholder="ej: Categoria">
+                            <input type="text" wire:model="cat" class="form-control" placeholder="ej: Categoria">
                         </div>
-                        @error('name')
+                        @error('cat')
                         <span class="text-danger er">{{$message}}</span>
                         @enderror
                     </div>
@@ -43,7 +43,7 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" wire:click.prevent="resetUI()" class="btn btn-dark close-btn text-info" data-dismiss="modal">
+                    <button type="button" wire:click.prevent="resetuno()" class="btn btn-dark close-btn text-info" data-dismiss="modal">
                         CERRAR
                     </button>
 

@@ -19,7 +19,7 @@ class ProductsController extends Component
     use WithPagination;
     use WithFileUploads;
 
-    public  $direc, $tel, $empresa, $imagecate, $cantAlertas, $names,  $searchAlert, $precioTotal, $name, $Pro_t, $barcode, $precio, $stock_ing, $prove_id, $cost, $price, $price_m, $stock, $alerts, $categoryid, $search, $image, $selected_id, $pageTitle, $componentName;
+    public  $direc, $tel, $prov, $empresa, $cat, $imagecate, $cantAlertas, $names,  $searchAlert, $precioTotal, $name, $Pro_t, $barcode, $precio, $stock_ing, $prove_id, $cost, $price, $price_m, $stock, $alerts, $categoryid, $search, $image, $selected_id, $pageTitle, $componentName;
     private $pagination = 10;
 
 
@@ -35,6 +35,7 @@ class ProductsController extends Component
         $this->price = 0;
         $this->prove_id = 0;
         $this->stock_ing = '';
+        $this->name = '';
         // $this->cost = 0;
     }
     public function render()
@@ -324,11 +325,11 @@ class ProductsController extends Component
         $data = [];
         $data = Product::join('categories as c', 'c.id', 'products.category_id')
             ->select('products.*', 'c.name as category')->get();
-            $infoE = Informacion::where('id', 1)->first();
+        $infoE = Informacion::where('id', 1)->first();
 
         $user = Auth::user()->name;
         $fecha = Carbon::now();
-        $pdf = PDF::loadView('pdf.inventory', compact('data','user','infoE'));
+        $pdf = PDF::loadView('pdf.inventory', compact('data', 'user', 'infoE'));
         return $pdf->stream('salesReport.pdf');
         return $pdf->download('salesReport.pdf');
 
@@ -336,6 +337,7 @@ class ProductsController extends Component
     }
     public function Categoria()
     {
+        $this->name = $this->cat;
         $rules = [
             'name' => 'required|unique:categories|min:3'
         ];
@@ -347,6 +349,7 @@ class ProductsController extends Component
         ];
         //$hl = $this->namecate;
         // dd($hl);
+
         $this->validate($rules, $messages);
         $category = Category::create([
             'name' => $this->name,
@@ -361,11 +364,16 @@ class ProductsController extends Component
         }
         $idcat = Category::select('id')->orderBy('id', 'desc')->first();
         $this->categoryid = $idcat->id;
+
         //$this->resetUI();
-        $this->emit('category-added', 'Categoria registrado xd');
+
+        $this->cat = '';
+        $this->name = '';
+        $this->emit('category-added', 'Categoria registrado');
     }
     public function Proveedor()
     {
+        $this->name = $this->prov;
         $rules = [
             'name' => 'required',
             'direc' => 'required',
@@ -391,7 +399,8 @@ class ProductsController extends Component
         $idprov = Company::select('id')->orderBy('id', 'desc')->first();
         $this->prove_id = $idprov->id;
 
-        $this->resetUI();
+        $this->resetpro();
+        $this->name = '';
         $this->emit('pro-added', 'Provedor Registrado con Exito.');
     }
     public function resetUI()
@@ -402,13 +411,24 @@ class ProductsController extends Component
         $this->price = '';
         $this->stock = '';
         $this->alerts = '';
-        // $this->categoryid = 0;
-        //$this->prove_id = 0;
+        $this->categoryid = 0;
+        $this->prove_id = 0;
         $this->image = 'null';
         $this->selected_id = 0;
         $this->stock_ing = '';
-        $this->direc;
-        $this->tel;
-        $this->empresa;
+    }
+
+    public function resetuno()
+    {
+        $this->cat = '';
+    }
+
+    public function resetpro()
+    {
+        $this->prov = '';
+        $this->prov = '';
+        $this->direc = '';
+        $this->tel = '';
+        $this->empresa = '';
     }
 }
