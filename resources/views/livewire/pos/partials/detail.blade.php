@@ -16,7 +16,7 @@
                     <select wire:model='tipo_precio' name="" class="btn btn-dark mbmobile mr-5 text-center">
                         <option value="0" disabled>Elegir</option>
                         <option value="1">Precio Mayoreo</option>
-                        @role('Admin')<option value="2">Precio Costo  </option>@endcan
+                        @role('Admin')<option value="2">Precio Costo </option>@endcan
                     </select>
                     <button class=" btn  text-white {{$cangeo == 1 ? 'disabled' : '' }} mr-5" data-toggle="modal" data-target="#theModal" style="background: #2666CF">BUSCAR PRODUCTOS</button>
                     <button class="tabmenu btn mbmobile text-white   mr-5" data-toggle="modal" data-target="#Modal2" style="background: #F76E11">CANJEAR MERIPUNTOS</button>
@@ -125,6 +125,10 @@
         });
         livewire.on('cotizacion', action => {
             $('#coti').val('');
+        });
+
+        livewire.on('cotizacion', action => {
+            $('#name').val('');
         });
     })
 </script>

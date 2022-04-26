@@ -1,16 +1,44 @@
 @include('commont.modalHead')
 <div class="row">
-    <div class="col-sm-12 col-md-8">
+
+    <div class="col-sm-12 col-md-6">
+        <div class="form-group">
+
+            <label>Categoria *</label> <span class="text-danger er"> <a href="javascript:void(0);" data-toggle="modal" data-target="#theModalCate">Crear Nuevo</a></span>
+            <select wire:model='categoryid' name="" class="form-control">
+                <option value="0" disabled>Elegir</option>
+                @foreach ($categories as $category)
+                <option value="{{$category->id}}">{{$category->name}}</option>
+                @endforeach
+            </select>
+            @error('categoryid')<span class="text-danger er">{{$message}}</span>@enderror
+        </div>
+    </div>
+
+    <div class="col-sm-12 col-md-6">
+        <div class="form-group">
+            <label>Proveedor *</label> <span class="text-danger er"> <a href="javascript:void(0);" data-toggle="modal" data-target="#ModalProveedores">No existe? Registralo</a></span>
+            <select wire:model='prove_id' name="" class="form-control">
+                <option value="0" disabled>Elegir</option>
+                @foreach ($prove as $pro)
+                <option value="{{$pro->id}}">{{$pro->taxpayer_id}}</option>
+                @endforeach
+            </select>
+            @error('prove_id')<span class="text-danger er">{{$message}}</span>@enderror
+        </div>
+    </div>
+
+    <div class="col-sm-12 col-md-4">
         <div class="form-group">
             <label>Nombre *</label>
-            <input type="text" wire:model.lazy="name" class="form-control" placeholder="ej: producto">
+            <input type="text" wire:model="name" class="form-control" {{$categoryid < 1 ? 'disabled' : '' }} {{$prove_id < 1 ? 'disabled' : '' }} placeholder="ej: producto">
             @error('name')
             <span class="text-danger er">{{$message}}</span>
             @enderror
         </div>
     </div>
 
-     
+
 
     <div class="col-sm-12 col-md-4">
         <div class="form-group">
@@ -62,32 +90,7 @@
         </div>
     </div>
 
-    <div class="col-sm-12 col-md-4">
-        <div class="form-group">
 
-            <label>Categoria *</label> <span class="text-danger er"> <a href="javascript:void(0);" data-toggle="modal" data-target="#theModalCate">Crear Nuevo</a></span>
-            <select wire:model='categoryid' name="" class="form-control">
-                <option value="0" disabled>Elegir</option>
-                @foreach ($categories as $category)
-                <option value="{{$category->id}}">{{$category->name}}</option>
-                @endforeach
-            </select>
-            @error('categoryid')<span class="text-danger er">{{$message}}</span>@enderror
-        </div>
-    </div>
-
-    <div class="col-sm-12 col-md-4">
-        <div class="form-group">
-            <label>Proveedor *</label> <span class="text-danger er"> <a href="javascript:void(0);" data-toggle="modal" data-target="#ModalProveedores">No existe? Registralo</a></span>
-            <select wire:model='prove_id' name="" class="form-control">
-                <option value="0" disabled>Elegir</option>
-                @foreach ($prove as $pro)
-                <option value="{{$pro->id}}">{{$pro->taxpayer_id}}</option>
-                @endforeach
-            </select>
-            @error('prove_id')<span class="text-danger er">{{$message}}</span>@enderror
-        </div>
-    </div>
     <div class="col-sm-12 col-md-8">
         <label>Cargar imagen *</label>
         <div class="form-group custom-file">
@@ -101,4 +104,3 @@
 
 </div>
 @include('commont.modalFooter')
-
