@@ -3,20 +3,21 @@
 namespace App\Http\Livewire;
 
 use Exception;
+use Carbon\Carbon;
 use App\Models\Sale;
+use App\Models\Cliente;
 use App\Models\Product;
 use Livewire\Component;
-use App\Models\SaleDetails;
 use App\Models\Meripuntos;
-use App\Models\Denomination;
-use App\Models\Cliente;
+use App\Models\Informacion;
+use App\Models\SaleDetails;
 use App\Models\Cotizaciones;
-use Darryldecode\Cart\Facades\CartFacade as Cart;
 //use Dompdf\JavascriptEmbedder;
+use App\Models\Denomination;
+use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon;
-use Barryvdh\DomPDF\Facade as PDF;
+use Darryldecode\Cart\Facades\CartFacade as Cart;
 //anadi una prueva
 
 class PosController extends Component
@@ -91,6 +92,7 @@ class PosController extends Component
             'clientes' => $client,
             'cart' => $cart,
             'tipoventa' => $this->tipoVenta,
+
 
         ])
             ->extends('layouts.theme.app')
@@ -616,9 +618,10 @@ class PosController extends Component
             ->select('sale_details.id', 'p.name', 'sale_details.price', 'sale_details.quantity')
             ->where('sale_details.sale_id', $idventa)
             ->get();
+        $infoE = Informacion::where('id', 1)->first();
         $user = Auth::user()->name;
         $fecha = Carbon::now();
-        $pdf = PDF::loadView('pdf.uwu', compact('data', 'total', 'items', 'user'));
+        $pdf = PDF::loadView('pdf.uwu', compact('data', 'total', 'items', 'user', 'infoE'));
         return $pdf->stream('salesReport.pdf');
         return $pdf->download('salesReport.pdf');
 

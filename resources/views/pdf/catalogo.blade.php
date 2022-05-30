@@ -76,7 +76,7 @@
 
                     <p class="card-text text-company" style="font-size: 14px">PRECIO UNITARIO: $ {{$item->price}} MXNS </p>
 
-                    <p class="card-text text-company" style="font-size: 14px">MERIPUNTOS: $ {{$item->price /10*100}} MXNS </p>
+                    <p class="card-text text-company" style="font-size: 14px">MERIPUNTOS: {{$item->price /10*100}} PUNTOS </p>
 
                     <p class="card-text text-company" style="font-size: 14px">CODIGO DEL PRODUCTO: {{$item->barcode}} </p>
                 </div>

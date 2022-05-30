@@ -15,16 +15,16 @@
     <section class="header" style="top: -287px;">
         <table cellpadding="2" cellspacing="0" width="100%">
             <tr>
-                <td colspan="2" class="text-center">
-                    <span style="font-size: 25px; font-wight: bold;">Sistema de ventas MerijoMechatronics</span>
+                <td colspan="4" class="text-center">
+                    <span style="font-size: 25px; font-wight: bold;">{{$infoE->empresa}} S.A de CV.</span>
                 </td>
             </tr>
             <tr>
                 <td width="30%" style="vertical-align: top; padding-top: 10px; position: relative">
-                    <img src="{{ asset('assets/img/icon.png')}}" alt="" class="invoice-logo">
+                    <img src="{{asset('storage/datos/' . $infoE->image)}}" alt="" class="invoice-logo">
                 </td>
                 <td class="text-left text-company" width="70%" style="vertical-align: top; padding-top: 10px">
-                    <span style="font-size: 16px"> <strong>Acuse de venta</strong> </span>
+                    <span style="font-size: 16px"> <strong>Comprobante de Venta.</strong> </span>
                     <br>
                     <span style="font-size: 16px"> <strong>Fecha de consulta: {{ \Carbon\Carbon::now()->format('d-M-Y')}}</strong> </span>
                     <br>
@@ -34,11 +34,11 @@
 
 
                 <br>
-                <span style="font-size: 13px;font-wight:lighter"> Comprobante de venta </span>
+                <span style="font-size: 13px;font-wight:lighter"> TEL: {{$infoE->tel}} </span>
 
                 <br>
                 <br>
-                <span style="font-size: 13px;font-wight:lighter"> {{ \Carbon\Carbon::now()->format('d-M-Y')}} </span>
+                <span style="font-size: 13px;font-wight:lighter"> E-Mail: {{$infoE->correo}} </span>
             </tr>
 
         </table>
@@ -46,13 +46,16 @@
     </section>
     <section style="margin-top: -110px">
         <table cellpadding="0" cellspacing="0" class="table-items" width="100%">
+
             <thead>
+
                 <tr>
+
                     <th width="10%">FOLIO</th>
-                    <th width="12%">NOMBRE</th>
-                    <th width="10%">PRECIO</th>
+                    <th width="12%">PRODUCTO</th>
                     <th width="12%">CANTIDAD</th>
-                    <th width="12%">IMAGEN</th>
+                    <th width="10%">PRECIO</th>
+
 
                 </tr>
             </thead>
@@ -61,32 +64,33 @@
                 <tr>
                     <td align="center">{{$item->id}}</td>
                     <td align="center">{{$item->name}}</td>
-                    <td align="center">$ {{$item->price}}</td>
                     <td align="center">{{$item->quantity}}</td>
-
-
+                    <td align="center">$ {{$item->price}}</td>
 
                 </tr>
                 @endforeach
-
             </tbody>
+
             <tfoot>
+
                 <tr>
+
                     <td class="text-center">
-                        <span><b>TOTAL</b></span>
+                        <span><b></b></span>
                     </td>
                     <td class="text-center">
 
                     </td>
                     <td class="text-center">
-                        <span><strong>${{$total}}</strong></span>
+                        <br><br>
+                        <span><strong>{{$total}} Art</strong></span>
                     </td>
-                    <td class="text-center">
-                        {{$items}}
-                    </td>
-                    <td class="text-center">
 
+                    <td class="text-center">
+                        <br><br>
+                        Total: ${{$items}} MXN
                     </td>
+
 
                 </tr>
             </tfoot>
@@ -96,10 +100,10 @@
         <table cellpadding="0" cellspacing="0" witdh="100%" class="table-items">
             <tr>
                 <td width="20%">
-                    <span>Sistema de ventas MerijoMechatronics</span>
+                    <span>{{$infoE->empresa}} /</span>
                 </td>
                 <td width="60%" class="text-center">
-                    MerijoMechatronics
+                    Facebook {{$infoE->face}} / CP {{$infoE->codigopostal}}
                 </td>
                 <td width="20%" class="text-center">
                     pagina <span class="pagenum"></span>

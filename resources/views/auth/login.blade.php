@@ -24,7 +24,7 @@
     <main class="bg-white max-w-lg mx-auto p-8 md:p-12 my-10 rounded-lg shadow-2xl">
 
         <section>
-            <h3 class="font-bold text-2xl">Bienvenidos</h3>
+            <h3 class="font-bold text-2xl">Bienvenido de Nuevo al Sistema.</h3>
             <p class="text-gray-600 pt-2">Inicia sesión con su cuenta.</p>
         </section>
 
